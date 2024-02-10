@@ -4,11 +4,13 @@ import pygame
 pygame.init()
 
 # Definir dimensiones de la pantalla
-SCREEN_WIDTH = 720
-SCREEN_HEIGHT = 410
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 640
+LOWER_MARGIN = 100
+SIDE_MARGIN = 300
 
 # Crear la pantalla
-screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
+screen = pygame.display.set_mode([SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT+LOWER_MARGIN])
 pygame.display.set_caption("Impel Down - Luffy's Adventure")
 
 # Reloj para controlar la velocidad de fotogramas
@@ -24,8 +26,8 @@ PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 55
 
 # Definir la posición inicial del jugador
-player_x = 10
-player_y = 300
+player_static_x = 10
+player_static_y = 300
 
 # Definir las animaciones del jugador
 # Estos números representan los índices de los frames en la hoja de sprites
@@ -53,10 +55,10 @@ while not done:
 
     # Actualizar la posición del jugador según las teclas presionadas
     if keys[pygame.K_LEFT]:
-        player_x -= player_speed
+        player_static_x -= player_speed
         player_direction = "right"
     elif keys[pygame.K_RIGHT]:
-        player_x += player_speed
+        player_static_y += player_speed
         player_direction = "left"
 
     # Actualizar la animación del jugador
@@ -76,7 +78,8 @@ while not done:
     player_image = pygame.Surface((PLAYER_WIDTH, PLAYER_HEIGHT), pygame.SRCALPHA)  # Crear una superficie transparente
     player_image.blit(player_sheet, (0, 0), player_clip)  # Copiar el frame del jugador a la superficie transparente
     player_image = pygame.transform.flip(player_image, True, False) if player_direction == "left" else player_image
-    screen.blit(player_image, (player_x, player_y))
+    screen.blit(player_image, (player_static_x, player_static_y))
+
 
     # Actualizar la pantalla
     pygame.display.flip()
