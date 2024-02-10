@@ -5,7 +5,7 @@ pygame.init()
 
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 640
+SCREEN_HEIGHT = 540
 LOWER_MARGIN = 100
 SIDE_MARGIN = 300
 
