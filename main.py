@@ -1,5 +1,6 @@
 import pygame
 import pirate
+import settings
 
 pygame.init()
 
@@ -13,26 +14,61 @@ SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 
 # Crear la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Impel Down - Luffy's Adventure")
-
-# Cargar el fondo
-background = pygame.image.load('Imagenes/Background/dungeon3.png').convert_alpha()
+pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
 # Crear un jugador
-player = pirate.Pirate(50, 500, 1)
+player = pirate.Pirate('pirate', 200, 200, 1, 4)
+enemy = pirate.Pirate('enemy', 400, 200, 1, 4)
 
+# define colours
+BG = (144, 201, 120)
+WHITE = (255, 255, 255)
+RED = (200, 25, 25)
+GREEN = (144, 201, 120)
+
+
+# dibujar en segundo plano
+def draw_bg():
+    screen.fill(BG)
+
+
+# Variables de movimiento
+move_left = False
+move_right = False
 
 # Bucle principal del juego
 run = True
 while run:
 
+    # Establecer la velocidad del juego
+    clock.tick(FPS)
+    draw_bg()
+
     # Dibujar jugador
     player.draw()
+    enemy.draw()
+    player.move(move_left, move_right)
 
     # Actualizar la pantalla
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
+    # Presionar teclas para mover al jugador
+
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+            move_left = True
+        if event.key == pygame.K_RIGHT:
+            move_right = True
+        if event.type == pygame.K_ESCAPE:
+            run = False
+
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_LEFT:
+            move_left = False
+        if event.key == pygame.K_RIGHT:
+            move_right = False
 
     pygame.display.update()
 
