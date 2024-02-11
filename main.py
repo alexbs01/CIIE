@@ -44,10 +44,21 @@ while run:
     clock.tick(FPS)
     draw_bg()
 
+    # Realiza las animaciones
+    player.update_animation()
+
     # Dibujar jugador
     player.draw()
     enemy.draw()
+
+    # Actualiza la accion del jugador
+    if move_left or move_right:
+        player.update_action(1) #1 -> animacion run
+    else:
+        player.update_action(0) #0 -> animacion idle
+
     player.move(move_left, move_right)
+
 
     # Actualizar la pantalla
     for event in pygame.event.get():
