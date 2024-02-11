@@ -1,5 +1,8 @@
 import pygame
+import os
 
+# Variables de entorno
+GRAVITY = 0.75
 
 # Clase pirata
 class Pirate(pygame.sprite.Sprite):
@@ -11,28 +14,29 @@ class Pirate(pygame.sprite.Sprite):
         self.speed = speed
         self.direction = 1
         self.flip = False
+        self.jump = False
+        self.in_air = True # Para saber si el player ya ha saltado
+        self.vel_y = 0 # Controla cuanto salta el player
         
         self.animation_list = [] #Lista de listas
         self.frame_index = 0
-        self.action = 0 #Cada animacion es una accion
+        self.action = 0 #Cada animacion trenda un int accion asociado
         self.update_time = pygame.time.get_ticks()
 
-        temp_list = [] # Lista temporal
-        # Carga la animacion idle_right
-        for i in range(1,6):
-            img = pygame.image.load(f'Imagenes/player/idle_right/{i}.png')
-            img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
-            temp_list.append(img)
-        self.animation_list.append(temp_list) # Guardamos en la lista de listas el contenido de la lista temporal
+        # Tipos de animaciones
+        animation_types = ['Idle','Run','Jump']
 
-        temp_list = []
-        # Carga la animacion run_right
-        for i in range(1,7):
-            img = pygame.image.load(f'Imagenes/player/run_right/{i}.png')
-            img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
-            temp_list.append(img)
-        self.animation_list.append(temp_list)
+        # Bucle que comprueba que animacion hacer
+        for animation in animation_types:
+            temp_list = [] # Reseteamos lista temporal
 
+            # Contamos n de ficheros en la carpeta
+            n_frames = len(os.listdir(f'Imagenes/player/{animation}'))
+            for i in range(n_frames):
+                img = pygame.image.load(f'Imagenes/player/{animation}/{i}.png')
+                img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
+                temp_list.append(img)
+            self.animation_list.append(temp_list) # Guardamos en la lista de listas el contenido de la lista temporal
 
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
@@ -57,6 +61,23 @@ class Pirate(pygame.sprite.Sprite):
             dx += self.speed
             self.flip = False
             self.direction = 1
+
+        # Salto
+        if self.jump == True and self.in_air == False: #self.in_air a False impide doble salto
+            self.vel_y = -11
+            self.jump = False
+            self.in_air = True
+
+        # Aplicamos gravedad
+        self.vel_y += GRAVITY
+        if self.vel_y > 10:
+            self.vel_y = 10
+        dy += self.vel_y
+
+        # Comprobamos colision con el suelo
+        if self.rect.bottom + dy > 400:
+            dy = 400 - self.rect.bottom
+            self.in_air = False
 
         # Actualizar la posición del jugador
         self.rect.x += dx

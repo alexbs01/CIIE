@@ -25,11 +25,13 @@ BG = (144, 201, 120)
 WHITE = (255, 255, 255)
 RED = (200, 25, 25)
 GREEN = (144, 201, 120)
+LINE = (255,0,0)
 
 
 # dibujar en segundo plano
 def draw_bg():
     screen.fill(BG)
+    pygame.draw.line(screen, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
 
 
 # Variables de movimiento
@@ -52,7 +54,9 @@ while run:
     enemy.draw()
 
     # Actualiza la accion del jugador
-    if move_left or move_right:
+    if player.in_air:
+        player.update_action(2) #2 -> animacion jump
+    elif move_left or move_right:
         player.update_action(1) #1 -> animacion run
     else:
         player.update_action(0) #0 -> animacion idle
@@ -67,19 +71,21 @@ while run:
 
     # Presionar teclas para mover al jugador
 
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_LEFT:
-            move_left = True
-        if event.key == pygame.K_RIGHT:
-            move_right = True
-        if event.type == pygame.K_ESCAPE:
-            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                move_left = True
+            if event.key == pygame.K_RIGHT:
+                move_right = True
+            if event.key == pygame.K_SPACE:
+                player.jump = True
+            if event.type == pygame.K_ESCAPE:
+                run = False
 
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_LEFT:
-            move_left = False
-        if event.key == pygame.K_RIGHT:
-            move_right = False
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                move_left = False
+            if event.key == pygame.K_RIGHT:
+                move_right = False
 
     pygame.display.update()
 
