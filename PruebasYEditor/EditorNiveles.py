@@ -23,7 +23,7 @@ ROWS = 20
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
-TILE_TYPES = 21
+TILE_TYPES = 23
 
 level = 1
 current_tile = 0
@@ -33,16 +33,16 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-dungeon_img = pygame.image.load('Imagenes/Background/dungeon3.png').convert_alpha()
+dungeon_img = pygame.image.load('../Imagenes/Background/dungeon3.png').convert_alpha()
 # store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'Imagenes/tiles/{x}.png').convert_alpha()
+    img = pygame.image.load(f'../Imagenes/tiles/{x}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
-save_img = pygame.image.load('Imagenes/save_btn.png').convert_alpha()
-load_img = pygame.image.load('Imagenes/load_btn.png').convert_alpha()
+save_img = pygame.image.load('../Imagenes/save_btn.png').convert_alpha()
+load_img = pygame.image.load('../Imagenes/load_btn.png').convert_alpha()
 # Definir colores
 GREEN = (144, 201, 120)
 WHITE = (255, 255, 255)
@@ -92,10 +92,10 @@ button_list = []
 button_col = 0
 button_row = 0
 for i in range(len(img_list)):
-    tile_button = button.Button(SCREEN_WIDTH + (75 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
+    tile_button = button.Button(SCREEN_WIDTH + (50 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
     button_list.append(tile_button)
     button_col += 1
-    if button_col == 3:
+    if button_col == 5:
         button_row += 1
         button_col = 0
 
