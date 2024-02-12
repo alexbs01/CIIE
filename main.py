@@ -37,6 +37,7 @@ def draw_bg():
 # Variables de movimiento
 move_left = False
 move_right = False
+attack = False
 
 # Bucle principal del juego
 run = True
@@ -54,7 +55,9 @@ while run:
     enemy.draw()
 
     # Actualiza la accion del jugador
-    if player.in_air:
+    if player.attack:
+        player.update_action(3) #3 -> animacion ataque
+    elif player.in_air:
         player.update_action(2) #2 -> animacion jump
     elif move_left or move_right:
         player.update_action(1) #1 -> animacion run
@@ -78,6 +81,8 @@ while run:
                 move_right = True
             if event.key == pygame.K_SPACE:
                 player.jump = True
+            if event.key == pygame.K_f:
+                player.attack = True
             if event.type == pygame.K_ESCAPE:
                 run = False
 
@@ -86,6 +91,8 @@ while run:
                 move_left = False
             if event.key == pygame.K_RIGHT:
                 move_right = False
+            if event.key == pygame.K_f:
+                player.attack = False
 
     pygame.display.update()
 

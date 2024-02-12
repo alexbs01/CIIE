@@ -17,6 +17,8 @@ class Pirate(pygame.sprite.Sprite):
         self.jump = False
         self.in_air = True # Para saber si el player ya ha saltado
         self.vel_y = 0 # Controla cuanto salta el player
+
+        self.attack = False
         
         self.animation_list = [] #Lista de listas
         self.frame_index = 0
@@ -24,7 +26,7 @@ class Pirate(pygame.sprite.Sprite):
         self.update_time = pygame.time.get_ticks()
 
         # Tipos de animaciones
-        animation_types = ['Idle','Run','Jump']
+        animation_types = ['Idle','Run','Jump','Attack']
 
         # Bucle que comprueba que animacion hacer
         for animation in animation_types:
@@ -85,7 +87,11 @@ class Pirate(pygame.sprite.Sprite):
 
     # Actualizar la animación
     def update_animation(self):
+    
         ANIMATION_COOLDOWN = 100
+        if self.action == 3:  # Si la acción es de ataque reducimos cooldown entre frames
+            ANIMATION_COOLDOWN = 10
+
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
         # Actualizar la animación
