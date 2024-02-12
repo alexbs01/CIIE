@@ -37,7 +37,6 @@ def draw_bg():
 # Variables de movimiento
 move_left = False
 move_right = False
-attack = False
 
 # Bucle principal del juego
 run = True
