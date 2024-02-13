@@ -5,7 +5,7 @@ class Tile(pygame.sprite.Sprite):
         self.display = display
         self.imagen = pygame.image.load("Imagenes/tiles/0.png")
         self.rect = self.imagen.get_rect()
-        self.rect.centerx = position_x
+        self.rect.centerx = position_x +1
         self.rect.centery = position_y
 
     def draw(self):
