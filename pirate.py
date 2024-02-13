@@ -15,9 +15,9 @@ class Pirate(pygame.sprite.Sprite):
         self.direction = 1
         self.flip = False
         self.jump = False
+        self.double_jump = True
         self.in_air = True # Para saber si el player ya ha saltado
         self.vel_y = 0 # Controla cuanto salta el player
-
         self.attack = False
         
         self.animation_list = [] #Lista de listas
@@ -80,10 +80,19 @@ class Pirate(pygame.sprite.Sprite):
         if self.rect.bottom + dy > 400:
             dy = 400 - self.rect.bottom
             self.in_air = False
+            self.double_jump = True
 
         # Actualizar la posición del jugador
         self.rect.x += dx
         self.rect.y += dy
+    
+    def check_collision(self, tiles):
+        col_tiles = pygame.sprite.spritecollide(self, tiles, False)
+        if col_tiles:
+            self.in_air = False
+            self.double_jump = True
+            self.rect.y = col_tiles[0].rect.y - self.rect.height
+            self.vel_y = 0
 
     # Actualizar la animación
     def update_animation(self):
@@ -103,8 +112,9 @@ class Pirate(pygame.sprite.Sprite):
             self.frame_index = 0
 
     # Actualiza la accion 
-    def update_action(self, new_action):
+    def update_action(self, new_action, tiles):
         # Comprueba si la acción actual es diferente a la anterior
+        self.check_collision(tiles)
         if new_action != self.action:
             self.action = new_action
             # Actualizamos los nuevos valores
