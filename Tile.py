@@ -2,14 +2,22 @@ import pygame
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, display, position_x, position_y):
+        super().__init__()
         self.display = display
-        self.imagen = pygame.image.load("Imagenes/tiles/0.png")
-        self.rect = self.imagen.get_rect()
-        self.rect.centerx = position_x +1
+        self.image = pygame.image.load("Imagenes/tiles/0.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = position_x
         self.rect.centery = position_y
+        
+        # Ver las colisiones
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 2, self.rect.centery -self.rect.height / 2, self.rect.width, self.rect.height)
 
     def draw(self):
-        self.display.blit(self.imagen, self.rect)
+        # Dibujar la imagen del tile
+        self.display.blit(self.image, self.rect)
+
+        # Dibujar el rectángulo de colisión (en color rojo)
+        pygame.draw.rect(self.display, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
     def update(self):
         self.draw()

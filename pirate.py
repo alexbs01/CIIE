@@ -43,11 +43,13 @@ class Pirate(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4 , self.rect.centery - self.rect.height / 2, self.rect.width / 2, self.rect.height)
 
     # Dibujar el pirata en la pantalla
     def draw(self):
         from main import screen
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
+        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
     def move(self, move_left, move_right):
         # Resetear variables de movimiento
