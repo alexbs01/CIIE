@@ -1,10 +1,10 @@
 import pygame
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, display, position_x, position_y):
+    def __init__(self, display, position_x, position_y, tile):
         super().__init__()
         self.display = display
-        self.image = pygame.image.load("assets/tiles/0.png")
+        self.image = pygame.image.load("assets/tiles/" + str(tile) + ".png")
         self.rect = self.image.get_rect()
         self.rect.centerx = position_x
         self.rect.centery = position_y

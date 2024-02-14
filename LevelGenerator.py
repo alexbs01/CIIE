@@ -14,3 +14,4 @@ class LevelGenerator:
             for row in reader:
                 self.tiles.append(row)
         print(self.tiles)
+        return self.tiles
