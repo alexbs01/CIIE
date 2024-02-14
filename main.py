@@ -1,4 +1,6 @@
 import pygame
+
+import Enemies
 import pirate
 import settings
 from Tile import Tile
@@ -19,23 +21,22 @@ pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
 # Crear un jugador
 player = pirate.Pirate('pirate', 200, 200, 1, 4)
-enemy = pirate.Pirate('enemy', 400, 200, 1, 4)
+enemy = Enemies.CucumberEnemy('enemy', 500, 500, 1, 4)
 
 # Crear suelo
-tiles = []
-tiles.append(Tile(display=screen, position_x=200, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=264, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=296, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=328, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=360, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=232, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=392, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=424, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=456, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT-285))
-tiles.append(Tile(display=screen, position_x=520, position_y=SCREEN_HEIGHT-250))
-tiles.append(Tile(display=screen, position_x=552, position_y=SCREEN_HEIGHT-250))
+tiles = [Tile(display=screen, position_x=200, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=264, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=296, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=328, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=360, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=232, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=392, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=424, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=456, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT - 285),
+         Tile(display=screen, position_x=520, position_y=SCREEN_HEIGHT - 250),
+         Tile(display=screen, position_x=552, position_y=SCREEN_HEIGHT - 250)]
 
 # define colours
 BG = (144, 201, 120)
@@ -69,6 +70,7 @@ while run:
     # Dibujar jugador
     player.draw()
     enemy.draw()
+
     for tile in tiles:
         tile.update()
     # Actualiza la accion del jugador
