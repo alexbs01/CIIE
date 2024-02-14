@@ -92,23 +92,23 @@ while run:
     # Presionar teclas para mover al jugador
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_a:
                 move_left = True
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_d:
                 move_right = True
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_w:
                 player.jump = True
-            if event.key == pygame.K_f:
+            if event.key == pygame.K_SPACE:
                 player.attack = True
             if event.type == pygame.K_ESCAPE:
                 run = False
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_a:
                 move_left = False
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_d:
                 move_right = False
-            if event.key == pygame.K_f:
+            if event.key == pygame.K_SPACE:
                 player.attack = False
 
     pygame.display.update()

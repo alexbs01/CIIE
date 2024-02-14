@@ -33,9 +33,9 @@ class Pirate(pygame.sprite.Sprite):
             temp_list = [] # Reseteamos lista temporal
 
             # Contamos n de ficheros en la carpeta
-            n_frames = len(os.listdir(f'Imagenes/player/{animation}'))
+            n_frames = len(os.listdir(f'assets/player/{animation}'))
             for i in range(n_frames):
-                img = pygame.image.load(f'Imagenes/player/{animation}/{i}.png')
+                img = pygame.image.load(f'assets/player/{animation}/{i}.png')
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list) # Guardamos en la lista de listas el contenido de la lista temporal
