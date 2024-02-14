@@ -21,22 +21,15 @@ pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
 # Crear un jugador
 player = pirate.Pirate('pirate', 200, 200, 1, 4)
-enemy = Enemies.CucumberEnemy('enemy', 500, 500, 1, 4)
+enemy = Enemies.CucumberEnemy('enemy', 400, 370, 1, 4)
 
 # Crear suelo
-tiles = [Tile(display=screen, position_x=200, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=264, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=296, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=328, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=360, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=232, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=392, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=424, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=456, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=488, position_y=SCREEN_HEIGHT - 285),
-         Tile(display=screen, position_x=520, position_y=SCREEN_HEIGHT - 250),
-         Tile(display=screen, position_x=552, position_y=SCREEN_HEIGHT - 250)]
+tiles = []
+tiles.append(Tile(display=screen, position_x=200, position_y=SCREEN_HEIGHT-250, tile=1))
+tiles.append(Tile(display=screen, position_x=264, position_y=SCREEN_HEIGHT-250, tile=1))
+tiles.append(Tile(display=screen, position_x=296, position_y=SCREEN_HEIGHT-250, tile=1))
+tiles.append(Tile(display=screen, position_x=328, position_y=SCREEN_HEIGHT-250, tile=1)
+)
 
 # define colours
 BG = (144, 201, 120)
@@ -70,7 +63,6 @@ while run:
     # Dibujar jugador
     player.draw()
     enemy.draw()
-
     for tile in tiles:
         tile.update()
     # Actualiza la accion del jugador
@@ -84,6 +76,10 @@ while run:
         player.update_action(0, tiles) #0 -> animacion idle
 
     player.move(move_left, move_right)
+
+    # haz que el enemigo se mueva mas rapido que el jugador
+    enemy.move(move_left, move_right)
+    enemy.update_animation()
 
 
     # Actualizar la pantalla

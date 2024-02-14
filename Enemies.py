@@ -2,6 +2,8 @@ import os
 
 import pygame
 
+import pirate
+
 GRAVITY = 0.75
 
 class CucumberEnemy(pygame.sprite.Sprite):
@@ -75,7 +77,7 @@ class CucumberEnemy(pygame.sprite.Sprite):
             return dx, dy
 
         def update_animation(self):
-            ANIMATION_COOLDOWN = 100
+            ANIMATION_COOLDOWN = 75
             self.image = self.animation_list[self.action][self.frame_index]
             if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
                 self.update_time = pygame.time.get_ticks()

@@ -87,6 +87,8 @@ class Pirate(pygame.sprite.Sprite):
         # Actualizar la posición del jugador
         self.rect.x += dx
         self.rect.y += dy
+
+
     
     def check_collision(self, tiles):
         col_tiles = pygame.sprite.spritecollide(self, tiles, False)
@@ -122,4 +124,5 @@ class Pirate(pygame.sprite.Sprite):
             # Actualizamos los nuevos valores
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
+
 
