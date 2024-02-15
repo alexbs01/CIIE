@@ -4,6 +4,7 @@ import Enemies
 import pirate
 import settings
 from Tile import Tile
+import LevelGenerator
 
 pygame.init()
 
@@ -23,13 +24,12 @@ pygame.display.set_caption("Impel Down - Ivankov Adventure")
 player = pirate.Pirate('pirate', 200, 200, 1, 4)
 enemy = Enemies.CucumberEnemy('enemy', 400, 370, 1, 4)
 
+level1 = LevelGenerator.LevelGenerator('PruebasYEditor\level1_data.csv')
+#print(level1.load_level())
+level1.load_level()
 # Crear suelo
-tiles = []
-tiles.append(Tile(display=screen, position_x=200, position_y=SCREEN_HEIGHT-250, tile=1))
-tiles.append(Tile(display=screen, position_x=264, position_y=SCREEN_HEIGHT-250, tile=1))
-tiles.append(Tile(display=screen, position_x=296, position_y=SCREEN_HEIGHT-250, tile=1))
-tiles.append(Tile(display=screen, position_x=328, position_y=SCREEN_HEIGHT-250, tile=1)
-)
+tiles = level1.create_level()
+print(tiles)
 
 # define colours
 BG = (144, 201, 120)

@@ -15,3 +15,18 @@ class LevelGenerator:
                 self.tiles.append(row)
         print(self.tiles)
         return self.tiles
+
+    def create_level(self):
+        from main import screen
+        from Tile import Tile
+        initial_x = 0
+        initial_y = 0
+        tiles = []
+        for row in self.tiles:
+            for tile in row:
+                if tile != "-1":
+                    tiles.append(Tile(screen, initial_x, initial_y, tile))
+                initial_x += 32
+            initial_y += 32
+            initial_x = 0
+        return tiles

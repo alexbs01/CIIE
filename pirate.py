@@ -79,8 +79,8 @@ class Pirate(pygame.sprite.Sprite):
         dy += self.vel_y
 
         # Comprobamos colision con el suelo
-        if self.rect.bottom + dy > 400:
-            dy = 400 - self.rect.bottom
+        if self.rect.bottom + dy > 4000:
+            dy = 4000 - self.rect.bottom
             self.in_air = False
             self.double_jump = True
 
