@@ -10,7 +10,7 @@ class Tile(pygame.sprite.Sprite):
         self.rect.centery = position_y
         
         # Ver las colisiones
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 2, self.rect.centery -self.rect.height / 2, self.rect.width, self.rect.height)
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 2, self.rect.centery - self.rect.height / 2, self.rect.width, self.rect.height)
 
     def draw(self):
         # Dibujar la imagen del tile

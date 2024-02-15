@@ -43,12 +43,14 @@ class Pirate(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4 , self.rect.centery - self.rect.height / 2, self.rect.width / 2, self.rect.height)
-
+        self.rect.width = self.image.get_width()
+        self.rect.height = self.image.get_height()
+        
     # Dibujar el pirata en la pantalla
     def draw(self):
         from main import screen
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4 , self.rect.centery - self.rect.height / 2, self.rect.width / 2, self.rect.height)
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
     def move(self, move_left, move_right, tiles):
@@ -94,13 +96,13 @@ class Pirate(pygame.sprite.Sprite):
     def check_collision(self, tiles):
         col_tiles = pygame.sprite.spritecollide(self, tiles, False)
         for tile in col_tiles:
-            if tile.rect.y > self.rect.y: # Suelo
+            if tile.collision_rect.bottom > self.rect.y and (tile.collision_rect.left > self.rect.x): # Suelo
                 self.vel_y = 0
                 self.rect.bottom = tile.rect.top
                 self.in_air = False
                 self.double_jump = True
                 self.rect.y = self.rect.y
-            if tile.rect.y < self.rect.y: # Techo
+            if tile.collision_rect.top < self.rect.y and (tile.collision_rect.left > self.rect.x): # Techo
                 self.vel_y = 0
                 self.rect.top = tile.rect.bottom
                 self.rect.y = self.rect.y
