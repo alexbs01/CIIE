@@ -78,12 +78,6 @@ class Pirate(pygame.sprite.Sprite):
             self.vel_y = 10
         dy += self.vel_y
 
-        # Comprobamos colision con el suelo
-        if self.rect.bottom + dy > 4000:
-            dy = 4000 - self.rect.bottom
-            self.in_air = False
-            self.double_jump = True
-
         # Actualizar la posición del jugador
         self.rect.x += dx
         self.rect.y += dy
@@ -92,11 +86,17 @@ class Pirate(pygame.sprite.Sprite):
     
     def check_collision(self, tiles):
         col_tiles = pygame.sprite.spritecollide(self, tiles, False)
-        if col_tiles:
-            self.in_air = False
-            self.double_jump = True
-            self.rect.y = col_tiles[0].rect.y - self.rect.height
-            self.vel_y = 0
+        for tile in col_tiles:
+            if tile.rect.y > self.rect.y: # Suelo
+                self.vel_y = 0
+                self.rect.bottom = tile.rect.top
+                self.in_air = False
+                self.double_jump = True
+                self.rect.y = self.rect.y
+            if tile.rect.y < self.rect.y: # Techo
+                self.vel_y = 0
+                self.rect.top = tile.rect.bottom
+                self.rect.y = self.rect.y
 
     # Actualizar la animación
     def update_animation(self):
