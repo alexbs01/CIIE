@@ -51,20 +51,27 @@ class Pirate(pygame.sprite.Sprite):
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
-    def move(self, move_left, move_right):
+    def move(self, move_left, move_right, tiles):
         # Resetear variables de movimiento
         dx = 0
         dy = 0
+        col_tiles = pygame.sprite.spritecollide(self, tiles, False)
         # Asignar movimiento izquierdo y derecho
         if move_left:
             dx -= self.speed
             self.flip = True
             self.direction = -1
+            for tile in col_tiles:
+                if tile.rect.x < self.rect.x:
+                    dx = 0
 
         if move_right:
             dx += self.speed
             self.flip = False
             self.direction = 1
+            for tile in col_tiles:
+                if tile.rect.x > self.rect.x:
+                    dx = 0
 
         # Salto
         if self.jump == True and self.in_air == False: #self.in_air a False impide doble salto

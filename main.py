@@ -75,7 +75,7 @@ while run:
     else:
         player.update_action(0, tiles) #0 -> animacion idle
 
-    player.move(move_left, move_right)
+    player.move(move_left, move_right, tiles)
 
     # haz que el enemigo se mueva mas rapido que el jugador
     enemy.move(move_left, move_right)
