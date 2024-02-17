@@ -1,8 +1,7 @@
 import pygame
 import os
 
-import Tile
-import main
+
 
 # Variables de entorno
 GRAVITY = 0.75
@@ -171,28 +170,31 @@ class Pirate(pygame.sprite.Sprite):
 ############
 
 class CollectBox(pygame.sprite.Sprite):
-    def __init__(self, item_type, x, y, scale):
+    def __init__(self, item_type, x, y, scale, player=None):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
         self.image = item_boxes[self.item_type]
-        # Me gustaria poner las imagenes en una escala mas grande
         self.image = pygame.transform.scale(self.image,
                                             (int(self.image.get_width() * scale), int(self.image.get_height() * scale)))
         self.rect = self.image.get_rect()
-        self.rect.midtop = (x + TILE_SIZE // 2, y + (TILE_SIZE - self.image.get_height()))
+        self.rect.midtop = (x + TILE_SIZE //  2, y + (TILE_SIZE - self.image.get_height()))
+        self.player = player
 
     def update(self):
         # Confirmar que el pirata coge el item
-        if pygame.sprite.collide_rect(self, main.player):
+        if pygame.sprite.collide_rect(self, self.player):
             if self.item_type == 'Health':
-                if main.player.health < 100:
-                    main.player.health += 25
+                if self.player.health <  100:
+                    self.player.health +=  25
+                    if self.player.health >  100:
+                        self.player.health = 100
             elif self.item_type == 'Key':
                 print('Has cogido una llave')
-            # Permitir pasar de nivel o abrir la puerta, hay que mirarlo
-            elif self.item_type == 'Berries':  # pensar bien que hacer con este
+            elif self.item_type == 'Berries':
                 print('Has cogido una moneda')
-                if main.player.health < 100:
-                    main.player.health += 5
+                if self.player.health <  100:
+                    self.player.health +=  5
+                    if self.player.health >  100:
+                        self.player.health = 100
 
             self.kill()

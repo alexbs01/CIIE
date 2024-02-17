@@ -34,14 +34,14 @@ font = pygame.font.SysFont('Futura', 30)
 # Grupos de Sprites
 item_boxes_Group = pygame.sprite.Group()
 
-# Crear items
-item_box = pirate.CollectBox('Health', 100, 550, 1.25)
-item_boxes_Group.add(item_box)
-item_box = pirate.CollectBox('Key', 250, 550, 1)
-item_boxes_Group.add(item_box)
-item_box = pirate.CollectBox('Berries', 350, 550, 1.25)
+item_box = pirate.CollectBox('Health',  100,  550,  1.25, player)
 item_boxes_Group.add(item_box)
 
+item_box = pirate.CollectBox('Key',  200,  550,  1.25, player)
+item_boxes_Group.add(item_box)
+
+item_box = pirate.CollectBox('Berries',  300,  550,  1.25, player)
+item_boxes_Group.add(item_box)
 
 
 
