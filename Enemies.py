@@ -111,3 +111,4 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.update_animation()
             self.draw()
 
+

@@ -31,6 +31,20 @@ print(tiles)
 
 font = pygame.font.SysFont('Futura', 30)
 
+# Grupos de Sprites
+item_boxes_Group = pygame.sprite.Group()
+
+# Crear items
+item_box = pirate.CollectBox('Health', 100, 550, 1.25)
+item_boxes_Group.add(item_box)
+item_box = pirate.CollectBox('Key', 250, 550, 1)
+item_boxes_Group.add(item_box)
+item_box = pirate.CollectBox('Berries', 350, 550, 1.25)
+item_boxes_Group.add(item_box)
+
+
+
+
 # dibujar en segundo plano
 def draw_bg():
     screen.fill(BG)
@@ -67,6 +81,10 @@ while run:
 
     # Muestra enemigo
     enemy.draw()
+
+    # dibujar items y pintarlos
+    item_boxes_Group.update()
+    item_boxes_Group.draw(screen)
 
     for tile in tiles:
         tile.update()
