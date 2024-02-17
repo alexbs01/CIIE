@@ -2,19 +2,17 @@ import pygame
 
 import Enemies
 import pirate
-import settings
+from settings import *
 from Tile import Tile
 import LevelGenerator
+from Ui import Ui
 
 pygame.init()
+pygame.font.init()
 
 # Establecer el reloj del juego y FPS
 clock = pygame.time.Clock()
 FPS = 60
-
-# Definir dimensiones de la pantalla
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 
 # Crear la pantalla
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -24,26 +22,30 @@ pygame.display.set_caption("Impel Down - Ivankov Adventure")
 player = pirate.Pirate('pirate', 200, 200, 1, 4)
 enemy = Enemies.CucumberEnemy('enemy', 400, 370, 1, 4)
 
-level1 = LevelGenerator.LevelGenerator('PruebasYEditor\level1_data.csv')
-#print(level1.load_level())
+level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
+print(level1.load_level())
 level1.load_level()
 # Crear suelo
 tiles = level1.create_level()
 print(tiles)
 
-# define colours
-BG = (144, 201, 120)
-WHITE = (255, 255, 255)
-RED = (200, 25, 25)
-GREEN = (144, 201, 120)
-LINE = (255,0,0)
-
+font = pygame.font.SysFont('Futura', 30)
 
 # dibujar en segundo plano
 def draw_bg():
     screen.fill(BG)
     pygame.draw.line(screen, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
+    
+    # Muestra barra de salud
+    health_observer.update_health(player.health)
+    ui.draw_text('Vida',font,WHITE,30,25)
 
+# Creamos instancia Ui para guardar la pantalla 
+ui = Ui()
+
+# Creamos observador de salud
+health_observer = Ui.HealthObserver(30,45, ui.display_surface, player.health, player.health)
+player.register(health_observer) 
 
 # Variables de movimiento
 move_left = False
@@ -62,7 +64,10 @@ while run:
 
     # Dibujar jugador
     player.draw()
+
+    # Muestra enemigo
     enemy.draw()
+
     for tile in tiles:
         tile.update()
     # Actualiza la accion del jugador
@@ -100,6 +105,10 @@ while run:
                 player.attack = True
             if event.type == pygame.K_ESCAPE:
                 run = False
+            if event.key == pygame.K_h:
+                print(player.health)
+                # Actualizara la barra de salud mediante el patron observador
+                player.get_Hit(10)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:

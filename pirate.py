@@ -19,6 +19,8 @@ class Pirate(pygame.sprite.Sprite):
         self.in_air = True # Para saber si el player ya ha saltado
         self.vel_y = 0 # Controla cuanto salta el player
         self.attack = False
+        self.health = 100
+        self.observers = []
         
         self.animation_list = [] #Lista de listas
         self.frame_index = 0
@@ -133,5 +135,24 @@ class Pirate(pygame.sprite.Sprite):
             # Actualizamos los nuevos valores
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
+            
+    
+############ PATRON OBSERVADOR
+            
+    # Funcion de daño
+    def get_Hit(self, damage):
+        self.health -= damage
+        self.notify_observers()
+
+    # Registra el observador en la lista
+    def register(self, observer):
+        self.observers.append(observer)
+
+    # Notifica a los observadores de los cambios
+    def notify_observers(self):
+        for observer in self.observers:
+            observer.update_health(self.health)
+
+############
 
 
