@@ -2,6 +2,7 @@ import pygame
 
 import Enemies
 import pirate
+import Collectables
 from settings import *
 from Tile import Tile
 import LevelGenerator
@@ -18,9 +19,9 @@ FPS = 60
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
-# Crear un jugador
+# Creamos jugador y enemigo
 player = pirate.Pirate('pirate', 200, 200, 1, 4)
-enemy = Enemies.CucumberEnemy('enemy', 400, 370, 1, 4)
+enemy = Enemies.CucumberEnemy('enemy', 600, 400, 1, 4)
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
 print(level1.load_level())
@@ -34,13 +35,14 @@ font = pygame.font.SysFont('Futura', 30)
 # Grupos de Sprites
 item_boxes_Group = pygame.sprite.Group()
 
-item_box = pirate.CollectBox('Health',  100,  550,  1.25, player)
+# Creamos objetos recogibles
+item_box = Collectables.Collectables('Health',  100,  550,  1.25, player)
 item_boxes_Group.add(item_box)
 
-item_box = pirate.CollectBox('Key',  200,  550,  1.25, player)
+item_box = Collectables.Collectables('Key',  200,  550,  1.25, player)
 item_boxes_Group.add(item_box)
 
-item_box = pirate.CollectBox('Berries',  300,  550,  1.25, player)
+item_box = Collectables.Collectables('Berries',  300,  550,  1.25, player)
 item_boxes_Group.add(item_box)
 
 
@@ -104,6 +106,13 @@ while run:
     enemy.move(move_left, move_right)
     enemy.update_animation()
 
+
+    if pygame.sprite.collide_rect(enemy, player) and not enemy.collision_occurred:
+        player.get_Hit(10)  # Reducir la salud del pirata si hay colisión
+        player.move_back()   # Hacer que el pirata se mueva hacia atrás
+        #enemy.collision_occurred = False  # Establecer la bandera de colisión
+
+        
 
     # Actualizar la pantalla
     for event in pygame.event.get():

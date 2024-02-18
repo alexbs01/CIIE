@@ -2,9 +2,7 @@ import os
 
 import pygame
 
-import pirate
-
-GRAVITY = 0.75
+from settings import *
 
 class CucumberEnemy(pygame.sprite.Sprite):
 
@@ -19,6 +17,8 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.in_air = True
             self.vel_y = 0
             self.attack = False
+            self.health = 50
+            self.collision_occurred = False
 
             self.animation_list = []
             self.frame_index = 0
@@ -111,4 +111,8 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.update_animation()
             self.draw()
 
+    # Funcion de daño
+        def get_Hit(self, damage):
+            self.health -= damage
+            print("Vida enemigo:"+self.health)
 

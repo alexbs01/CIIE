@@ -1,11 +1,16 @@
 import pygame
 
+# Variables de entorno
+
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
+
+GRAVITY = 0.75
+TILE_SIZE = 40
 
 # define colours
 BG = (144, 201, 120)

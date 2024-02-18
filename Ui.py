@@ -28,9 +28,14 @@ class Ui:
 
             # Update con la nueva vida
             self.health = new_health
+
             pygame.draw.rect(self.display_surface, BLACK, (self.x - 2, self.y - 2, 154, 24))
             pygame.draw.rect(self.display_surface, RED, (self.x, self.y, 150, 20))
 
-            # Calculo vida linea verde
-            ratio = self.health / self.max_health
-            pygame.draw.rect(self.display_surface, GREEN, (self.x, self.y, 150 * ratio, 20))
+            if self.health != 0:
+                # Calculo vida linea verde
+                ratio = self.health / self.max_health
+                pygame.draw.rect(self.display_surface, GREEN, (self.x, self.y, 150 * ratio, 20))
+
+
+
