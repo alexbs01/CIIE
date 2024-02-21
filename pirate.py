@@ -50,35 +50,35 @@ class Pirate(pygame.sprite.Sprite):
     def draw(self):
         from main import screen
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
+        
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4,
                                           self.rect.centery - self.rect.height / 2, self.rect.width / 2,
                                           self.rect.height)
+        
+        
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
     def move(self, move_left, move_right, tiles):
         # Resetear variables de movimiento
         dx = 0
         dy = 0
-
+        col_tiles = pygame.sprite.spritecollide(self, tiles, False)
+        print(col_tiles)
         if move_left:
             dx -= self.speed
             self.flip = True
             self.direction = -1
-            for tile in tiles:
-                if self.collision_rect.colliderect(tile.collision_rect):
-                    if tile.collision_rect.x < self.collision_rect.x:
-                        dx = 0
-                        break  # Salir del bucle tan pronto como se detecte una colisión
+            for tile in col_tiles:
+                if tile.collision_rect.x < self.collision_rect.x:
+                    dx = 0
 
         if move_right:
             dx += self.speed
             self.flip = False
             self.direction = 1
-            for tile in tiles:
-                if self.collision_rect.colliderect(tile.collision_rect):
-                    if tile.collision_rect.x > self.collision_rect.x:
-                        dx = 0
-                        break  # Salir del bucle tan pronto como se detecte una colisión
+            for tile in col_tiles:
+                if tile.collision_rect.x > self.collision_rect.x:
+                    dx = 0
 
 
         # Salto
@@ -95,7 +95,7 @@ class Pirate(pygame.sprite.Sprite):
 
         # Actualizar la posición del jugador
         self.rect.x += dx
-        self.rect.y += dy
+        self.rect.y += dy - 1
 
     def check_collision(self, tiles):
         col_tiles = []
@@ -104,7 +104,7 @@ class Pirate(pygame.sprite.Sprite):
                 col_tiles.append(tile)
 
         for tile in col_tiles:
-            if tile.collision_rect.bottom > self.rect.y and (tile.collision_rect.left > self.rect.x):  # Suelo
+            if tile.collision_rect.bottom > self.rect.y:  # Suelo
                 self.vel_y = 0
                 self.rect.bottom = tile.rect.top
                 self.in_air = False
@@ -132,6 +132,10 @@ class Pirate(pygame.sprite.Sprite):
         # Si la animación ha terminado, reiniciar
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
+        # Actualizar la imagen del jugador
+            
+            
+        
 
     # Actualiza la accion 
     def update_action(self, new_action, tiles):
