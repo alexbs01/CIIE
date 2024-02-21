@@ -107,7 +107,7 @@ while run:
     enemy.update_animation()
 
 
-    if pygame.sprite.collide_rect(enemy, player) and not enemy.collision_occurred:
+    if player.collision_rect.colliderect(enemy.collision_rect) and not enemy.collision_occurred:
         player.get_Hit(10)  # Reducir la salud del pirata si hay colisión
         player.move_back()   # Hacer que el pirata se mueva hacia atrás
         #enemy.collision_occurred = False  # Establecer la bandera de colisión
