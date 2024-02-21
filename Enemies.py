@@ -1,20 +1,19 @@
 import os
-
 import pygame
-
+import random
 from settings import SCREEN_WIDTH
-
 
 class CucumberEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y, speed, resource_manager):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
-        self.direction =   1
+        self.direction =  1
         self.resource_manager = resource_manager
         self.animation_list = []
-        self.frame_index =   0
-        self.action =   0
+        self.frame_index =  0
+        self.action =  0
         self.update_time = pygame.time.get_ticks()
+        self.last_attack_time =  0
 
         # Tipos de animaciones
         animation_types = ['Idle', 'Run', 'Attack']
@@ -40,25 +39,36 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
         else:
             self.image = None
-            self.rect = pygame.Rect(x, y,   0,   0)
+            self.rect = pygame.Rect(x, y,  0,  0)
 
         self.rect.x = x
         self.rect.y = y
         self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
-    # Resto de los métodos de la clase CucumberEnemy...
-
     def move(self):
+        # Cambiar de dirección aleatoriamente
+        if random.randint(0,  100) <  10:  #  10% de probabilidad de cambiar de dirección
+            self.direction *= -1
+
+        # Moverse
         self.rect.x += self.speed * self.direction
         if self.rect.x <  0 or self.rect.x + self.rect.width > SCREEN_WIDTH:
             self.direction *= -1
+        # Actualizar rectángulo de colisión
+        self.collision_rect.x = self.rect.x
+
+
+
 
     def attack(self, pirate):
-        if self.collision_rect.colliderect(pirate.collision_rect):
-            pirate.get_Hit(10)  # Asume que el daño es  10
+        # Ataque aleatorio basado en el tiempo
+        if random.randint(0,  100) <  5 and pygame.time.get_ticks() - self.last_attack_time >  2000:  #  5% de probabilidad de atacar y cada  2 segundos
+            if self.collision_rect.colliderect(pirate.collision_rect):
+                pirate.get_Hit(5)  # Ahora el daño es  5
+                self.last_attack_time = pygame.time.get_ticks()
 
     def update_animation(self):
-        ANIMATION_COOLDOWN =  100
+        ANIMATION_COOLDOWN =  60
         if self.action ==  2:  # Si la acción es de ataque reducimos cooldown entre frames
             ANIMATION_COOLDOWN =  10
 
