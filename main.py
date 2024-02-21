@@ -3,6 +3,7 @@ import pygame
 import Enemies
 import pirate
 import Collectables
+from ResourceManager import ResourceManager
 from settings import *
 from Tile import Tile
 import LevelGenerator
@@ -19,8 +20,11 @@ FPS = 60
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
+# En tu juego principal
+resource_manager = ResourceManager()
+
 # Creamos jugador y enemigo
-player = pirate.Pirate('pirate', 200, 200, 1, 4)
+player = pirate.Pirate('pirate', 200, 200, 1, 4, resource_manager)
 enemy = Enemies.CucumberEnemy('enemy', 600, 400, 1, 4)
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')

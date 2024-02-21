@@ -2,42 +2,38 @@ import pygame
 import os
 from settings import *
 
-# Clase pirata
 class Pirate(pygame.sprite.Sprite):
-    # Constructor
-    def __init__(self, char_type, x, y, scale, speed):
+    def __init__(self, char_type, x, y, scale, speed, resource_manager):
         pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
         self.speed = speed
-        self.direction = 1
+        self.direction =  1
         self.flip = False
         self.jump = False
         self.double_jump = True
-        self.in_air = True  # Para saber si el player ya ha saltado
-        self.vel_y = 0  # Controla cuanto salta el player
+        self.in_air = True
+        self.vel_y =  0
         self.attack = False
-        self.health = 100
+        self.health =  100
         self.observers = []
 
-        self.animation_list = []  # Lista de listas
-        self.frame_index = 0
-        self.action = 0  # Cada animacion trenda un int accion asociado
+        self.animation_list = []
+        self.frame_index =  0
+        self.action =  0
         self.update_time = pygame.time.get_ticks()
+        self.resource_manager = resource_manager
 
-        # Tipos de animaciones
         animation_types = ['Idle', 'Run', 'Jump', 'Attack']
 
-        # Bucle que comprueba que animacion hacer
         for animation in animation_types:
-            temp_list = []  # Reseteamos lista temporal
-
-            # Contamos n de ficheros en la carpeta
+            temp_list = []
             n_frames = len(os.listdir(f'assets/player/{animation}'))
             for i in range(n_frames):
-                img = pygame.image.load(f'assets/player/{animation}/{i}.png')
+                img_path = f'assets/player/{animation}/{i}.png'
+                img = self.resource_manager.load_image(img_path, img_path)
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
-            self.animation_list.append(temp_list)  # Guardamos en la lista de listas el contenido de la lista temporal
+            self.animation_list.append(temp_list)
 
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
