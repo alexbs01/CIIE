@@ -25,7 +25,8 @@ resource_manager = ResourceManager()
 
 # Creamos jugador y enemigo
 player = pirate.Pirate('pirate', 200, 200, 1, 4, resource_manager)
-enemy = Enemies.CucumberEnemy('enemy', 600, 400, 1, 4)
+enemy = Enemies.CucumberEnemy(600, 520, 1, resource_manager)
+
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
 print(level1.load_level())
@@ -86,7 +87,13 @@ while run:
     player.draw()
 
     # Muestra enemigo
-    enemy.draw()
+    enemy.draw(screen)
+
+    # Mover enemigo
+    enemy.move()
+
+    # Verificar si el enemigo está atacando al pirata
+    enemy.attack(player)
 
     # dibujar items y pintarlos
     item_boxes_Group.update()
@@ -107,7 +114,7 @@ while run:
     player.move(move_left, move_right, tiles)
 
     # haz que el enemigo se mueva mas rapido que el jugador
-    enemy.move(move_left, move_right)
+    enemy.move()
     enemy.update_animation()
 
 
@@ -115,8 +122,6 @@ while run:
         player.get_Hit(10)  # Reducir la salud del pirata si hay colisión
         player.move_back()   # Hacer que el pirata se mueva hacia atrás
         #enemy.collision_occurred = False  # Establecer la bandera de colisión
-
-        
 
     # Actualizar la pantalla
     for event in pygame.event.get():
