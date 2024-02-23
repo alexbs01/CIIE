@@ -6,6 +6,7 @@ import Collectables
 from ResourceManager import ResourceManager
 from settings import *
 from Tile import Tile
+from World import World
 import LevelGenerator
 from Ui import Ui
 
@@ -27,13 +28,13 @@ resource_manager = ResourceManager()
 player = pirate.Pirate('pirate', 200, 200, 1, 4, resource_manager)
 enemy = Enemies.CucumberEnemy(600, 520, 1, resource_manager)
 
+world = World()
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
-print(level1.load_level())
-level1.load_level()
-# Crear suelo
-tiles = level1.create_level()
+tiles = level1.load_level()
 print(tiles)
+# Crear suelo
+map = world.process_data(tiles)
 
 font = pygame.font.SysFont('Futura', 30)
 
@@ -72,6 +73,9 @@ player.register(health_observer)
 move_left = False
 move_right = False
 
+screen_scroll = 0
+bg_scroll = 0
+
 # Bucle principal del juego
 run = True
 while run:
@@ -79,7 +83,7 @@ while run:
     # Establecer la velocidad del juego
     clock.tick(FPS)
     draw_bg()
-
+    
     # Realiza las animaciones
     player.update_animation()
 
@@ -99,26 +103,28 @@ while run:
     item_boxes_Group.update()
     item_boxes_Group.draw(screen)
 
-    for tile in tiles:
-        tile.update()
+    screen_scroll = player.move(move_left, move_right, world, bg_scroll)
+    bg_scroll -= screen_scroll
+
+    world.draw(screen, screen_scroll)
+
     # Actualiza la accion del jugador
     if player.attack:
-        player.update_action(3, tiles) #3 -> animacion ataque
+        player.update_action(3) #3 -> animacion ataque
     elif player.in_air:
-        player.update_action(2, tiles) #2 -> animacion jump
+        player.update_action(2) #2 -> animacion jump
     elif move_left or move_right:
-        player.update_action(1, tiles) #1 -> animacion run
+        player.update_action(1) #1 -> animacion run
     else:
-        player.update_action(0, tiles) #0 -> animacion idle
+        player.update_action(0) #0 -> animacion idle
 
-    player.move(move_left, move_right, tiles)
 
     # haz que el enemigo se mueva mas rapido que el jugador
     enemy.move()
     enemy.update_animation()
 
 
-    if player.collision_rect.colliderect(enemy.collision_rect) and not enemy.collision_occurred:
+    if player.collision_rect.colliderect(enemy.collision_rect):
         player.get_Hit(10)  # Reducir la salud del pirata si hay colisión
         player.move_back()   # Hacer que el pirata se mueva hacia atrás
         #enemy.collision_occurred = False  # Establecer la bandera de colisión

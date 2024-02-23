@@ -39,8 +39,8 @@ class Pirate(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.rect.width = self.image.get_width()
-        self.rect.height = self.image.get_height()
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
 
     # Dibujar el pirata en la pantalla
@@ -55,27 +55,23 @@ class Pirate(pygame.sprite.Sprite):
         
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
-    def move(self, move_left, move_right, tiles):
+    def move(self, move_left, move_right, world, bg_scroll):
+
+        screen_scroll = 0
         # Resetear variables de movimiento
         dx = 0
         dy = 0
-        col_tiles = pygame.sprite.spritecollide(self, tiles, False)
-        print(col_tiles)
+
         if move_left:
             dx -= self.speed
             self.flip = True
             self.direction = -1
-            for tile in col_tiles:
-                if tile.collision_rect.x < self.collision_rect.x:
-                    dx = 0
+
 
         if move_right:
             dx += self.speed
             self.flip = False
             self.direction = 1
-            for tile in col_tiles:
-                if tile.collision_rect.x > self.collision_rect.x:
-                    dx = 0
 
 
         # Salto
@@ -92,27 +88,43 @@ class Pirate(pygame.sprite.Sprite):
             self.vel_y = 10
         dy += self.vel_y
 
+        # Comprobamos las colisiones del pirata
+        dx,dy = self.check_collision(dx, dy, world.obstacle_list)
+
+        # Mira que no pueda pasar mas alla de la pantalla
+        if self.collision_rect.left + dx < 0 or self.collision_rect.right + dx > SCREEN_WIDTH:
+            dx = 0
+        
+
         # Actualizar la posición del jugador
         self.rect.x += dx
-        self.rect.y += dy - 1
+        self.rect.y += dy
 
-    def check_collision(self, tiles):
-        col_tiles = []
-        for tile in tiles:
-            if self.collision_rect.colliderect(tile.collision_rect):
-                col_tiles.append(tile)
+        # Hace el scroll de la pantalla
+        if (self.collision_rect.right > SCREEN_WIDTH - SCREEN_THRESH and\
+             bg_scroll < (world.level_length * TILE_SIZE) - SCREEN_WIDTH)\
+              or (self.collision_rect.left < SCREEN_THRESH and bg_scroll > abs(dx)):
+            
+            self.rect.x -= dx
+            screen_scroll = -dx
 
-        for tile in col_tiles:
-            if tile.collision_rect.bottom > self.rect.y:  # Suelo
-                self.vel_y = 0
-                self.rect.bottom = tile.rect.top
-                self.in_air = False
-                self.jumps = 0
-                self.rect.y = self.rect.y
-            if tile.collision_rect.top < self.rect.y and (tile.collision_rect.left > self.rect.x):  # Techo
-                self.vel_y = 0
-                self.rect.top = tile.rect.bottom
-                self.rect.y = self.rect.y
+        return screen_scroll
+    
+
+    def check_collision(self, dx, dy, obstacle_list):
+        for tile in obstacle_list:
+            if tile[1].colliderect(self.collision_rect.x + dx, self.collision_rect.y, self.collision_rect.width, self.collision_rect.height):
+                dx = 0
+            if tile[1].colliderect(self.collision_rect.x, self.collision_rect.y + dy, self.collision_rect.width, self.collision_rect.height):
+                if self.vel_y < 0:
+                    self.vel_y = 0
+                    dy = tile[1].bottom - self.collision_rect.top
+                elif self.vel_y >= 0:
+                    self.vel_y = 0
+                    self.in_air = False
+                    dy = tile[1].top - self.collision_rect.bottom
+        
+        return dx,dy
 
 
     # Actualizar la animación
@@ -137,9 +149,8 @@ class Pirate(pygame.sprite.Sprite):
         
 
     # Actualiza la accion 
-    def update_action(self, new_action, tiles):
+    def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior
-        self.check_collision(tiles)
         if new_action != self.action:
             self.action = new_action
             # Actualizamos los nuevos valores
