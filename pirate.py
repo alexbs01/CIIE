@@ -10,7 +10,8 @@ class Pirate(pygame.sprite.Sprite):
         self.direction =  1
         self.flip = False
         self.jump = False
-        self.double_jump = True
+        self.max_jumps = 2
+        self.jumps = 0
         self.in_air = True
         self.vel_y =  0
         self.attack = False
@@ -78,10 +79,12 @@ class Pirate(pygame.sprite.Sprite):
 
 
         # Salto
-        if self.jump == True and self.in_air == False:  # self.in_air a False impide doble salto
+        if self.jumps < self.max_jumps and self.jump:  # self.in_air a False impide doble salto
+            self.in_air == False
             self.vel_y = -11
             self.jump = False
             self.in_air = True
+            self.jumps += 1
 
         # Aplicamos gravedad
         self.vel_y += GRAVITY
@@ -104,7 +107,7 @@ class Pirate(pygame.sprite.Sprite):
                 self.vel_y = 0
                 self.rect.bottom = tile.rect.top
                 self.in_air = False
-                self.double_jump = True
+                self.jumps = 0
                 self.rect.y = self.rect.y
             if tile.collision_rect.top < self.rect.y and (tile.collision_rect.left > self.rect.x):  # Techo
                 self.vel_y = 0
