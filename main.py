@@ -26,7 +26,7 @@ resource_manager = ResourceManager()
 
 # Creamos jugador y enemigo
 player = pirate.Pirate('pirate', 200, 200, 1, 4, resource_manager)
-enemy = Enemies.CucumberEnemy(600, 520, 1, resource_manager)
+enemy = Enemies.CucumberEnemy(800, 540, 1, resource_manager)
 
 world = World()
 
@@ -79,13 +79,12 @@ bg_scroll = 0
 # Bucle principal del juego
 run = True
 while run:
-
     # Establecer la velocidad del juego
     clock.tick(FPS)
     draw_bg()
-    
+
     # Realiza las animaciones
-    player.update_animation()
+    player.update(screen_scroll)
 
     # Dibujar jugador
     player.draw()
@@ -97,10 +96,10 @@ while run:
     enemy.move()
 
     # Verificar si el enemigo está atacando al pirata
-    enemy.attack(player)
+    #enemy.attack(player)
 
     # dibujar items y pintarlos
-    item_boxes_Group.update()
+    item_boxes_Group.update(screen_scroll)
     item_boxes_Group.draw(screen)
 
     screen_scroll = player.move(move_left, move_right, world, bg_scroll)
@@ -110,32 +109,27 @@ while run:
 
     # Actualiza la accion del jugador
     if player.attack:
-        player.update_action(3) #3 -> animacion ataque
+        player.update_action(3)  # 3 -> animacion ataque
+        # Realizar ataque si el jugador está sobre el enemigo y presiona la tecla de espacio
+        if player.collision_rect.colliderect(enemy.collision_rect):
+            enemy.get_Hit(35)  # Reducir la salud del enemigo en 35
     elif player.in_air:
-        player.update_action(2) #2 -> animacion jump
+        player.update_action(2)  # 2 -> animacion jump
     elif move_left or move_right:
-        player.update_action(1) #1 -> animacion run
+        player.update_action(1)  # 1 -> animacion run
     else:
-        player.update_action(0) #0 -> animacion idle
-
+        player.update_action(0)  # 0 -> animacion idle
 
     # haz que el enemigo se mueva mas rapido que el jugador
     enemy.move()
-    enemy.update_animation()
-
-
-    if player.collision_rect.colliderect(enemy.collision_rect):
-        player.get_Hit(10)  # Reducir la salud del pirata si hay colisión
-        player.move_back()   # Hacer que el pirata se mueva hacia atrás
-        #enemy.collision_occurred = False  # Establecer la bandera de colisión
+    enemy.update(screen_scroll)
 
     # Actualizar la pantalla
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    # Presionar teclas para mover al jugador
-
+        # Presionar teclas para mover al jugador
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 move_left = True

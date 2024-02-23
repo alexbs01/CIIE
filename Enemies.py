@@ -3,17 +3,20 @@ import pygame
 import random
 from settings import SCREEN_WIDTH
 
+
 class CucumberEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y, speed, resource_manager):
         pygame.sprite.Sprite.__init__(self)
+        self.observers = []
+        self.health = 50
         self.speed = speed
-        self.direction =  1
+        self.direction = 1
         self.resource_manager = resource_manager
         self.animation_list = []
-        self.frame_index =  0
-        self.action =  0
+        self.frame_index = 0
+        self.action = 0
         self.update_time = pygame.time.get_ticks()
-        self.last_attack_time =  0
+        self.last_attack_time = 0
 
         # Tipos de animaciones
         animation_types = ['Idle', 'Run', 'Attack']
@@ -39,49 +42,64 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
         else:
             self.image = None
-            self.rect = pygame.Rect(x, y,  0,  0)
+            self.rect = pygame.Rect(x, y, 0, 0)
 
         self.rect.x = x
         self.rect.y = y
         self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
     def move(self):
-        # Cambiar de dirección aleatoriamente
-        if random.randint(0,  100) <  10:  #  10% de probabilidad de cambiar de dirección
-            self.direction *= -1
-
-        # Moverse
-        self.rect.x += self.speed * self.direction
-        if self.rect.x <  0 or self.rect.x + self.rect.width > SCREEN_WIDTH:
-            self.direction *= -1
-        # Actualizar rectángulo de colisión
-        self.collision_rect.x = self.rect.x
-
-
-
+        pass
 
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
-        if random.randint(0,  100) <  5 and pygame.time.get_ticks() - self.last_attack_time >  2000:  #  5% de probabilidad de atacar y cada  2 segundos
+        if random.randint(0,
+                          100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
             if self.collision_rect.colliderect(pirate.collision_rect):
                 pirate.get_Hit(5)  # Ahora el daño es  5
                 self.last_attack_time = pygame.time.get_ticks()
 
     def update_animation(self):
-        ANIMATION_COOLDOWN =  60
-        if self.action ==  2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN =  10
+        ANIMATION_COOLDOWN = 60
+        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
+            ANIMATION_COOLDOWN = 10
 
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
         # Actualizar la animación
         if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
             self.update_time = pygame.time.get_ticks()
-            self.frame_index +=  1
+            self.frame_index += 1
         # Si la animación ha terminado, reiniciar
         if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index =  0
+            self.frame_index = 0
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        pygame.draw.rect(screen, (255,  0,  0), self.collision_rect,  2)
+        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
+
+    def update(self, screen_scroll):
+        self.rect.x += screen_scroll
+        self.update_animation()
+        self.check_alive()
+
+    def get_Hit(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+        self.notify_observers()
+        print(self.health)
+
+    def check_alive(self):
+        if self.health == 0:
+            self.kill()
+
+    def update_health(self, health):
+        self.health = health
+
+    def register(self, observer):
+        self.observers.append(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer.update_health(self.health)

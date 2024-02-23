@@ -1,3 +1,5 @@
+from random import random
+
 import pygame
 import os
 from settings import *
@@ -127,6 +129,10 @@ class Pirate(pygame.sprite.Sprite):
         
         return dx,dy
 
+    def update(self, screen_scroll):
+        self.update_animation()
+        self.rect.x += screen_scroll
+        self.rect.x -= screen_scroll
 
     # Actualizar la animación
     def update_animation(self):
@@ -145,9 +151,7 @@ class Pirate(pygame.sprite.Sprite):
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
         # Actualizar la imagen del jugador
-            
-            
-        
+
 
     # Actualiza la accion 
     def update_action(self, new_action):
@@ -178,7 +182,12 @@ class Pirate(pygame.sprite.Sprite):
 
 
 ############
-            
+    def attack(self, enemy):
+        # Ataque aleatorio basado en el tiempo
+        if random.randint(0, 100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:
+            if self.collision_rect.colliderect(enemy.collision_rect):
+                enemy.get_Hit(35)
+        print("Ataque")
 
     def move_back(self, distance=20):
         # Mover hacia atrás

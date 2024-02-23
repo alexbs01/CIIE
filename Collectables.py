@@ -23,7 +23,8 @@ class Collectables(pygame.sprite.Sprite):
         self.rect.midtop = (x + TILE_SIZE //  2, y + (TILE_SIZE - self.image.get_height()))
         self.player = player
 
-    def update(self):
+    def update(self,screen_scroll):
+        self.rect.x += screen_scroll
         # Confirmar que el pirata coge el item
         if pygame.sprite.collide_rect(self, self.player):
             if self.item_type == 'Health':
