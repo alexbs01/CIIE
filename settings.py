@@ -10,7 +10,13 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 
 GRAVITY = 0.75
-TILE_SIZE = 40
+
+ROWS = 20 # Filas mapa 1
+COLS = 150 # Columnas mapa 1
+
+SCREEN_THRESH = 200 # Distancia a la que puede llegar el player antes de que la pantalla se mueva
+TILE_SIZE = SCREEN_HEIGHT // ROWS
+
 
 # define colours
 BG = (144, 201, 120)
