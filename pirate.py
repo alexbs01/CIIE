@@ -122,6 +122,7 @@ class Pirate(pygame.sprite.Sprite):
                 elif self.vel_y >= 0:
                     self.vel_y = 0
                     self.in_air = False
+                    self.jumps = 0
                     dy = tile[1].top - self.collision_rect.bottom
         
         return dx,dy
