@@ -16,6 +16,8 @@ class Tile(pygame.sprite.Sprite):
         # Dibujar la imagen del tile
         self.display.blit(self.image, self.rect)
 
+
+
         # Dibujar el rectángulo de colisión (en color rojo)
         pygame.draw.rect(self.display, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 

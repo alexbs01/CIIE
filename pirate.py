@@ -114,7 +114,7 @@ class Pirate(pygame.sprite.Sprite):
             screen_scroll = 0
 
         return screen_scroll
-    
+
 
     def check_collision(self, dx, dy, obstacle_list):
         for tile in obstacle_list:
@@ -129,7 +129,6 @@ class Pirate(pygame.sprite.Sprite):
                     self.in_air = False
                     self.jumps = 0
                     dy = tile[1].top - self.collision_rect.bottom
-        
         return dx,dy
 
     def update(self, screen_scroll):

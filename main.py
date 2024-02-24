@@ -127,7 +127,7 @@ while run:
     enemy.draw(screen)
 
     # Verificar si el enemigo está atacando al pirata
-    #enemy.attack(player)
+    #enemy.attack(player)ddw
 
     # dibujar items y pintarlos
     item_boxes_Group.update(screen_scroll)
