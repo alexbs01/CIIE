@@ -73,11 +73,13 @@ def draw_bg():
 
 def reset_level(player, screen_scroll):
     # Reinicia la posición del jugador considerando el scroll
-    player.rect.x = initial_player_x + screen_scroll
-    player.rect.y = initial_player_y
+    player.rect.x = initial_player_x - screen_scroll
+    player.rect.y = initial_player_y - screen_scroll
+    print(screen_scroll)
+
     # Reinicia la salud del jugador
     player.health = 100
-    # Carga nuevamente los datos del nivel
+    # Carga nuevamente los datos del nivel, esto cuando tengamos mas ponemos una variable
     with open(f'./PruebasYEditor/level1_data.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         world_data = []
@@ -88,7 +90,6 @@ def reset_level(player, screen_scroll):
             world_data.append(world_row)
     world = World()
     world.process_data(world_data)
-
 
 
 # Creamos instancia Ui para guardar la pantalla 
@@ -106,7 +107,7 @@ move_right = False
 
 screen_scroll = 0
 bg_scroll = 0
-
+SumaTotalScrenScroll = 0
 
 
 # Bucle principal del juego
@@ -137,8 +138,10 @@ while run:
 
     world.draw(screen, screen_scroll)
 
+    SumaTotalScrenScroll += screen_scroll
     if player.health <= 0:
-        reset_level(player, screen_scroll)
+        reset_level(player, SumaTotalScrenScroll)
+
 
     # Actualiza la accion del jugador
     if player.attack:
