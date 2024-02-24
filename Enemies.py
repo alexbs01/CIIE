@@ -7,6 +7,9 @@ from settings import SCREEN_WIDTH
 class CucumberEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y, speed, resource_manager):
         pygame.sprite.Sprite.__init__(self)
+        self.move_direction = 1
+        self.original_x = x
+        self.original_y = y
         self.observers = []
         self.health = 100
         self.speed = speed
@@ -17,6 +20,10 @@ class CucumberEnemy(pygame.sprite.Sprite):
         self.action = 0
         self.update_time = pygame.time.get_ticks()
         self.last_attack_time = 0
+
+        self.move_distance = 20  # Número de píxeles para moverse aleatoriamente
+        self.random_move_speed = 0.5  # Velocidad de movimiento aleatorio más lenta
+
 
         # Tipos de animaciones
         animation_types = ['Idle', 'Run', 'Attack','Hit', 'DeathGround']
@@ -49,15 +56,33 @@ class CucumberEnemy(pygame.sprite.Sprite):
         self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
     def move(self):
-        pass
+        if self.health > 0:
+            if random.randint(0, 100) < 10:
+                self.move_direction *= -1
+            self.rect.x += self.move_direction * self.speed
+            # Actualizar la animación que se gire a la izquierda o derecha
+            if self.move_direction == 1:
+                self.update_action(1)
+            else:
+                self.update_action(1)
 
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
         if random.randint(0,
                           100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
             if self.collision_rect.colliderect(pirate.collision_rect):
-                pirate.get_Hit(5)  # Ahora el daño es  5
+                pirate.get_Hit(15)  # Ahora el daño es  15
                 self.last_attack_time = pygame.time.get_ticks()
+
+    # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
+
+    def ai (self, pirate):
+        if self.health > 0:
+            # Si el enemigo esta cerca del pirata, atacar
+            if self.collision_rect.colliderect(pirate.collision_rect):
+                self.attack(pirate)
+            else:
+                self.move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -84,15 +109,22 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.update_time = pygame.time.get_ticks()
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
+
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
                                           self.rect.centery - self.rect.height // 4 , self.rect.width / 2,
                                           self.rect.height)
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
 
+        if self.move_direction == 1:
+            flipped_image = pygame.transform.flip(self.image, True, False)
+            screen.blit(flipped_image, self.rect)
+        else:
+            screen.blit(self.image, self.rect)
+
 
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
+        self.collision_rect.x += screen_scroll
         self.update_animation()
         #self.check_alive()
 

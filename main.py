@@ -96,8 +96,7 @@ while run:
     # Muestra enemigo
     enemy.draw(screen)
 
-    # Mover enemigo
-    enemy.move()
+
 
     # Verificar si el enemigo está atacando al pirata
     #enemy.attack(player)
@@ -130,7 +129,7 @@ while run:
         player.update_action(0)  # 0 -> animacion idle
 
     # haz que el enemigo se mueva mas rapido que el jugador
-    enemy.move()
+    enemy.ai(player)
     enemy.update(screen_scroll)
 
     # Actualizar la pantalla
