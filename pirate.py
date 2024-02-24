@@ -19,6 +19,7 @@ class Pirate(pygame.sprite.Sprite):
         self.attack = False
         self.health =  100
         self.observers = []
+        self.ataque = 20
 
         self.animation_list = []
         self.frame_index =  0
@@ -163,6 +164,14 @@ class Pirate(pygame.sprite.Sprite):
             self.update_time = pygame.time.get_ticks()
 
     ############ PATRON OBSERVADOR
+
+    def attack(self, enemy):
+        # quiero que el ataque tenga un cooldown y que cada ataque haga un daño de 20
+        if self.collision_rect.colliderect(enemy.collision_rect):
+            enemy.get_Hit(self.ataque)
+            print("Ataque")
+
+
 
     # Funcion de daño
     def get_Hit(self, damage):

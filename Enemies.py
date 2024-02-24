@@ -8,7 +8,7 @@ class CucumberEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y, speed, resource_manager):
         pygame.sprite.Sprite.__init__(self)
         self.observers = []
-        self.health = 50
+        self.health = 100
         self.speed = speed
         self.direction = 1
         self.resource_manager = resource_manager
@@ -19,7 +19,7 @@ class CucumberEnemy(pygame.sprite.Sprite):
         self.last_attack_time = 0
 
         # Tipos de animaciones
-        animation_types = ['Idle', 'Run', 'Attack']
+        animation_types = ['Idle', 'Run', 'Attack','Hit']
 
         # Bucle que comprueba que animacion hacer
         for animation in animation_types:
@@ -74,25 +74,45 @@ class CucumberEnemy(pygame.sprite.Sprite):
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
 
+    def update_action(self, new_action):
+        # Comprueba si la acción actual es diferente a la anterior
+        if new_action != self.action:
+            self.action = new_action
+            # Actualizamos los nuevos valores
+            self.frame_index = 0
+            self.update_time = pygame.time.get_ticks()
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
+                                          self.rect.centery - self.rect.height // 4 , self.rect.width / 2,
+                                          self.rect.height)
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
+
 
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
         self.update_animation()
-        self.check_alive()
+        #self.check_alive()
 
     def get_Hit(self, damage):
         self.health -= damage
         if self.health < 0:
             self.health = 0
+        if self.health == 0:
+            # Quiero que el sprite del enemigo desaparezca
+            self.kill()
         self.notify_observers()
+        self.move_back()
         print(self.health)
 
-    def check_alive(self):
-        if self.health == 0:
-            self.kill()
+    def move_back(self, distance=20):
+        self.rect.x += (self.direction * distance)
+        self.direction *= -1
+    def kill(self): # Mirar como quitarlo de verdad, aqui solo lo escondo
+        self.rect.x = SCREEN_WIDTH + 100
+        self.rect.y = SCREEN_WIDTH + 100
+
 
     def update_health(self, health):
         self.health = health

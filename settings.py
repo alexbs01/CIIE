@@ -5,6 +5,10 @@ import pygame
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
+ATAQUE = 20
+ATAQUE_COOLDOWN = 500
+
+
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)

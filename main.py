@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 import pygame
 
 import Enemies
@@ -65,6 +67,8 @@ def draw_bg():
 # Creamos instancia Ui para guardar la pantalla 
 ui = Ui()
 
+last_attack_time = pygame.time.get_ticks()
+
 # Creamos observador de salud
 health_observer = Ui.HealthObserver(30,45, ui.display_surface, player.health, player.health)
 player.register(health_observer) 
@@ -110,9 +114,12 @@ while run:
     # Actualiza la accion del jugador
     if player.attack:
         player.update_action(3)  # 3 -> animacion ataque
-        # Realizar ataque si el jugador está sobre el enemigo y presiona la tecla de espacio
-        if player.collision_rect.colliderect(enemy.collision_rect):
-            enemy.get_Hit(35)  # Reducir la salud del enemigo en 35
+        if player.rect.colliderect(enemy.rect):
+            current_time = pygame.time.get_ticks()
+            if current_time - last_attack_time > ATAQUE_COOLDOWN:
+                last_attack_time = current_time
+                enemy.get_Hit(ATAQUE)
+                enemy.update_action(3)
     elif player.in_air:
         player.update_action(2)  # 2 -> animacion jump
     elif move_left or move_right:
