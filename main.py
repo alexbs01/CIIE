@@ -71,11 +71,11 @@ def draw_bg():
     health_observer.update_health(player.health)
     ui.draw_text('Vida',font,WHITE,30,25)
 
-def reset_level(player, screen_scroll):
+def reset_level(player):
     # Reinicia la posición del jugador considerando el scroll
-    player.rect.x = initial_player_x - screen_scroll
-    player.rect.y = initial_player_y - screen_scroll
-    print(screen_scroll)
+    player.rect.x = initial_player_x
+    player.rect.y = initial_player_y
+
 
     # Reinicia la salud del jugador
     player.health = 100
@@ -138,10 +138,10 @@ while run:
 
     world.draw(screen, screen_scroll)
 
-    SumaTotalScrenScroll += screen_scroll
-    if player.health <= 0:
-        reset_level(player, SumaTotalScrenScroll)
+    SumaTotalScrenScroll -= screen_scroll
 
+    if player.health <= 0:
+        reset_level(player)
 
     # Actualiza la accion del jugador
     if player.attack:
