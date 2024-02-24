@@ -53,7 +53,7 @@ item_boxes_Group.add(item_box)
 item_box = Collectables.Collectables('Berries',  300,  550,  1.25, player)
 item_boxes_Group.add(item_box)
 
-item_box = Collectables.Collectables('Boots',  800,  550,  2, player)
+item_box = Collectables.Collectables('Boots',  900,  570,  2.5, player)
 item_boxes_Group.add(item_box)
 
 
