@@ -181,6 +181,8 @@ class Pirate(pygame.sprite.Sprite):
         if self.health < 0:
             self.health = 0
         self.notify_observers()
+        print("Daño")
+
 
     # Registra el observador en la lista
     def register(self, observer):

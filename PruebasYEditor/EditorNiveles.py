@@ -1,6 +1,7 @@
 import pygame
-import button
 import csv
+
+from PruebasYEditor import button
 
 # Inicializar Pygame
 pygame.init()

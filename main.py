@@ -1,3 +1,4 @@
+import csv
 from asyncio import sleep
 
 import pygame
@@ -26,8 +27,12 @@ pygame.display.set_caption("Impel Down - Ivankov Adventure")
 # En tu juego principal
 resource_manager = ResourceManager()
 
+# Guarda la posición inicial del pirata
+initial_player_x = 200
+initial_player_y = 200
+
 # Creamos jugador y enemigo
-player = pirate.Pirate('pirate', 200, 200, 1, 4, resource_manager)
+player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 4, resource_manager)
 enemy = Enemies.CucumberEnemy(800, 540, 1, resource_manager)
 
 world = World()
@@ -66,6 +71,26 @@ def draw_bg():
     health_observer.update_health(player.health)
     ui.draw_text('Vida',font,WHITE,30,25)
 
+def reset_level(player, screen_scroll):
+    # Reinicia la posición del jugador considerando el scroll
+    player.rect.x = initial_player_x + screen_scroll
+    player.rect.y = initial_player_y
+    # Reinicia la salud del jugador
+    player.health = 100
+    # Carga nuevamente los datos del nivel
+    with open(f'./PruebasYEditor/level1_data.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        world_data = []
+        for x, row in enumerate(reader):
+            world_row = []
+            for y, tile in enumerate(row):
+                world_row.append(int(tile))
+            world_data.append(world_row)
+    world = World()
+    world.process_data(world_data)
+
+
+
 # Creamos instancia Ui para guardar la pantalla 
 ui = Ui()
 
@@ -81,6 +106,8 @@ move_right = False
 
 screen_scroll = 0
 bg_scroll = 0
+
+
 
 # Bucle principal del juego
 run = True
@@ -98,8 +125,6 @@ while run:
     # Muestra enemigo
     enemy.draw(screen)
 
-
-
     # Verificar si el enemigo está atacando al pirata
     #enemy.attack(player)
 
@@ -111,6 +136,9 @@ while run:
     bg_scroll -= screen_scroll
 
     world.draw(screen, screen_scroll)
+
+    if player.health <= 0:
+        reset_level(player, screen_scroll)
 
     # Actualiza la accion del jugador
     if player.attack:
@@ -168,3 +196,4 @@ while run:
 
 # Salir del juego
 pygame.quit()
+
