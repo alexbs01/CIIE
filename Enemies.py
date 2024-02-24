@@ -19,7 +19,7 @@ class CucumberEnemy(pygame.sprite.Sprite):
         self.last_attack_time = 0
 
         # Tipos de animaciones
-        animation_types = ['Idle', 'Run', 'Attack','Hit']
+        animation_types = ['Idle', 'Run', 'Attack','Hit', 'DeathGround']
 
         # Bucle que comprueba que animacion hacer
         for animation in animation_types:
@@ -63,7 +63,8 @@ class CucumberEnemy(pygame.sprite.Sprite):
         ANIMATION_COOLDOWN = 60
         if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
             ANIMATION_COOLDOWN = 10
-
+        if self.action == 4:  # Si la acción es de muerte, no se mueve
+            ANIMATION_COOLDOWN = 500
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
         # Actualizar la animación
@@ -101,14 +102,15 @@ class CucumberEnemy(pygame.sprite.Sprite):
             self.health = 0
         if self.health == 0:
             # Quiero que el sprite del enemigo desaparezca
-            self.kill()
+            self.update_action(4)
         self.notify_observers()
         self.move_back()
         print(self.health)
 
     def move_back(self, distance=20):
-        self.rect.x += (self.direction * distance)
-        self.direction *= -1
+        if self.health > 0:
+            self.rect.x += (self.direction * distance)
+            self.direction *= -1
     def kill(self): # Mirar como quitarlo de verdad, aqui solo lo escondo
         self.rect.x = SCREEN_WIDTH + 100
         self.rect.y = SCREEN_WIDTH + 100

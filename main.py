@@ -120,6 +120,8 @@ while run:
                 last_attack_time = current_time
                 enemy.get_Hit(ATAQUE)
                 enemy.update_action(3)
+            if enemy.health == 0:
+                enemy.update_action(4)
     elif player.in_air:
         player.update_action(2)  # 2 -> animacion jump
     elif move_left or move_right:
