@@ -60,7 +60,7 @@ item_boxes_Group.add(item_box)
 # dibujar en segundo plano
 def draw_bg():
     screen.fill(BG)
-    pygame.draw.line(screen, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
+    #pygame.draw.line(screen, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
     
     # Muestra barra de salud
     health_observer.update_health(player.health)

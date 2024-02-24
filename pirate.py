@@ -104,12 +104,14 @@ class Pirate(pygame.sprite.Sprite):
         self.rect.y += dy
 
         # Hace el scroll de la pantalla
-        if (self.collision_rect.right > SCREEN_WIDTH - SCREEN_THRESH and\
-             bg_scroll < (world.level_length * TILE_SIZE) - SCREEN_WIDTH)\
-              or (self.collision_rect.left < SCREEN_THRESH and bg_scroll > abs(dx)):
-            
+        if self.rect.right > SCREEN_WIDTH - SCREEN_THRESH and bg_scroll < (150 * TILE_SIZE) - SCREEN_WIDTH:
             self.rect.x -= dx
             screen_scroll = -dx
+        elif self.rect.left < SCREEN_THRESH and bg_scroll > abs(dx):
+            self.rect.x -= dx
+            screen_scroll = -dx
+        else:
+            screen_scroll = 0
 
         return screen_scroll
     
