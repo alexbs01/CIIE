@@ -12,7 +12,7 @@ class Pirate(pygame.sprite.Sprite):
         self.direction =  1
         self.flip = False
         self.jump = False
-        self.max_jumps = 2
+        self.max_jumps = 1
         self.jumps = 0
         self.in_air = True
         self.vel_y =  0
