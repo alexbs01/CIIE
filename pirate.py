@@ -47,8 +47,8 @@ class Pirate(pygame.sprite.Sprite):
 
 
     # Dibujar el pirata en la pantalla
-    def draw(self):
-        from main import screen
+    def draw(self, screen):
+
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
         
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4,

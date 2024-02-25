@@ -73,6 +73,7 @@ class Enemy:
                 if self.collision_rect.colliderect(pirate.collision_rect):
                     pirate.get_Hit(15)  # Ahora el daño es  15
                     self.last_attack_time = pygame.time.get_ticks()
+                    self.update_action(2)
 
         # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
 
@@ -208,3 +209,5 @@ class Enemy:
                 if self.frame_index >= len(self.animation_list):
                     self.frame_index = 0
                 self.image = self.animation_list[self.frame_index]
+
+
