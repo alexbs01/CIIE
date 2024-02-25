@@ -158,13 +158,30 @@ class Enemy:
                 observer.update_health(self.health)
 
     class Spike(pygame.sprite.Sprite):
-        # Clase para los pinchos
         def __init__(self, x, y, resource_manager):
             pygame.sprite.Sprite.__init__(self)
             self.resource_manager = resource_manager
-            self.image = resource_manager.load_image("spikes", "./assets/enemies/spikes/spikes.png")
-            # Cargar la imagen de los pinchos (spikes.png) desde el directorio correspondiente
-            self.rect = self.image.get_rect()
+            self.animation_list = []
+            self.frame_index = 0
+            self.update_time = pygame.time.get_ticks()
+
+            # Cargar imágenes de los spikes
+            for i in range(4):  # Iterar desde  0 hasta  3
+                img_path = f'assets/enemies/spikes/{i}.png'
+                img = pygame.image.load(img_path)  # Cargar la imagen directamente
+                if img is not None:
+                    self.animation_list.append(img)
+                else:
+                    print(f"No se pudo cargar la imagen: {img_path}")
+
+            # Asegurarse de que la imagen se ha cargado correctamente
+            if self.animation_list:
+                self.image = self.animation_list[self.frame_index]
+                self.rect = self.image.get_rect()
+            else:
+                self.image = None
+                self.rect = pygame.Rect(x, y, 0, 0)
+
             self.rect.x = x
             self.rect.y = y
             self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
@@ -180,5 +197,14 @@ class Enemy:
         def update(self, screen_scroll):
             self.rect.x += screen_scroll
             self.collision_rect.x += screen_scroll
+            self.update_animation()
 
-
+        def update_animation(self):
+            ANIMATION_SPEED = 100  # Velocidad de cambio de imagen en milisegundos
+            # Actualizar la animación
+            if pygame.time.get_ticks() - self.update_time > ANIMATION_SPEED:
+                self.update_time = pygame.time.get_ticks()
+                self.frame_index += 1
+                if self.frame_index >= len(self.animation_list):
+                    self.frame_index = 0
+                self.image = self.animation_list[self.frame_index]
