@@ -23,6 +23,7 @@ pygame.font.init()
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Impel Down - Ivankov Adventure")
 
+
 # Establecer el reloj del juego y FPS
 clock = pygame.time.Clock()
 FPS = 60
@@ -72,7 +73,9 @@ def main():
 
         # Muestra barra de salud
         health_observer.update_health(player.health)
-        ui.draw_text('Vida', font, WHITE, 30, 25)
+        title_font = pygame.font.Font("assets/inmortal.ttf", 25)
+
+        ui.draw_text('Vida', title_font, WHITE, 50, 15)
 
     # def reset_level(player):
     #     # Reinicia la posición del jugador considerando el scroll
@@ -143,6 +146,7 @@ def main():
         world.draw(SCREEN, screen_scroll)
 
         SumaTotalScrenScroll -= screen_scroll
+
 
         if player.health <= 0:
             main()
