@@ -34,7 +34,7 @@ initial_player_y = 200
 # Creamos jugador y enemigo
 player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 4, resource_manager)
 enemy = Enemies.Enemy.CucumberEnemy(1000, 540, 1, resource_manager)
-spikes = Enemies.Enemy.Spike(700, 545, resource_manager)
+spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
 world = World()
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
@@ -108,6 +108,7 @@ move_right = False
 screen_scroll = 0
 bg_scroll = 0
 SumaTotalScrenScroll = 0
+last_contact_time = 0
 
 
 # Bucle principal del juego
@@ -168,6 +169,12 @@ while run:
     enemy.ai(player)
     enemy.update(screen_scroll)
     spikes.update(screen_scroll)
+
+    if player.rect.colliderect(spikes.rect):
+        current_time = pygame.time.get_ticks()
+        if current_time - last_contact_time > 1000:
+            last_contact_time = current_time
+            player.get_Hit(40)
 
     # Actualizar la pantalla
     for event in pygame.event.get():
