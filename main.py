@@ -33,8 +33,8 @@ initial_player_y = 200
 
 # Creamos jugador y enemigo
 player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 4, resource_manager)
-enemy = Enemies.CucumberEnemy(800, 540, 1, resource_manager)
-
+enemy = Enemies.Enemy.CucumberEnemy(1000, 540, 1, resource_manager)
+spikes = Enemies.Enemy.Spike(700, 545, resource_manager)
 world = World()
 
 level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
@@ -126,6 +126,9 @@ while run:
     # Muestra enemigo
     enemy.draw(screen)
 
+    # Muestra pinchos
+    spikes.draw(screen)
+
     # Verificar si el enemigo está atacando al pirata
     #enemy.attack(player)ddw
 
@@ -164,6 +167,7 @@ while run:
     # haz que el enemigo se mueva mas rapido que el jugador
     enemy.ai(player)
     enemy.update(screen_scroll)
+    spikes.update(screen_scroll)
 
     # Actualizar la pantalla
     for event in pygame.event.get():

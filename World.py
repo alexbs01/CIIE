@@ -21,7 +21,7 @@ class World():
 
                     tile_data = (img, rect) 
                     # Guardamos en una lista los tiles que vayan a ser obstaculos
-                    if tile >= 0 and tile <= 8 or tile >= 21 and tile <= 24: #las imagenes 0-8 y 21-23
+                    if tile >= 0 and tile <= 8 or tile >= 21 and tile <= 23: #las imagenes 0-8 y 21-23
                         self.obstacle_list.append(tile_data)
 
         return self.obstacle_list
