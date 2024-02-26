@@ -25,15 +25,16 @@ def main_menu():
 
         MOUSE_POSITION = pygame.mouse.get_pos()
 
-        MENU_TITLE_TEXT = get_font(50).render("MAIN MENU", True, "#b68f40")
+        MENU_TITLE_TEXT = get_font(50).render("MAIN MENU", True, (182, 143, 64))
+
         MENU_TITLE_RECT = MENU_TITLE_TEXT.get_rect(center=(400, 50))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), position=(400, 250),
-                             text_input="PLAY", font=get_font(50), base_color="#d7fcd4", hovering_color="White")
+                             text_input="PLAY", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), position=(400, 400),
-                                text_input="OPTIONS", font=get_font(50), base_color="#d7fcd4", hovering_color="White")
+                                text_input="OPTIONS", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), position=(400, 550),
-                             text_input="QUIT", font=get_font(50), base_color="#d7fcd4", hovering_color="White")
+                             text_input="QUIT", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
 
         SCREEN.blit(MENU_TITLE_TEXT, MENU_TITLE_RECT)
 
@@ -49,7 +50,11 @@ def main_menu():
                 if PLAY_BUTTON.check_for_input(MOUSE_POSITION):
                     game_started = True  # Indica que se debe iniciar el juego
                     break  # Sal del bucle del menú
-                # El resto del código para manejar otros botones...
+                elif OPTIONS_BUTTON.check_for_input(MOUSE_POSITION): # Entra al submenu opciones
+                    print("Menu opciones")
+                elif QUIT_BUTTON.check_for_input(MOUSE_POSITION): # Sale del juego
+                    pygame.quit()
+                    sys.exit()
 
         if game_started:
             break  # Sal del bucle del menú si se debe iniciar el juego

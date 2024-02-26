@@ -38,4 +38,18 @@ class Ui:
                 pygame.draw.rect(self.display_surface, GREEN, (self.x, self.y, 150 * ratio, 20))
 
 
+    class PointsObserver:
 
+            def __init__(self,points, max_points):
+                self.points = points
+                self.max_points = max_points
+
+
+            def update_points(self, new_points):
+
+                # Update con la cantidad de puntos
+                if self.points + new_points !=0:
+                    self.points += new_points
+                else:
+                    self.points = 0
+            

@@ -45,10 +45,10 @@ def main():
     level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
     tiles = level1.load_level()
     print(tiles)
-    # Crear suelo
-    map = world.process_data(tiles)
 
-    font = pygame.font.SysFont('Futura', 30)
+    # Dibuja el mapa
+    world.process_data(tiles)
+
 
     # Grupos de Sprites
     item_boxes_Group = pygame.sprite.Group()
@@ -71,11 +71,15 @@ def main():
         SCREEN.fill(BG)
         # pygame.draw.line(SCREEN, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
 
-        # Muestra barra de salud
+        # Controla el scroll de los tiles
+        world.draw(SCREEN, screen_scroll)
+
+        # Muestra barra de salud por encima de los tiles
         health_observer.update_health(player.health)
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
 
         ui.draw_text('Vida', title_font, WHITE, 50, 15)
+        ui.draw_text('Berries: '+str(player.points), title_font, WHITE, 50, 80)
 
     # def reset_level(player):
     #     # Reinicia la posición del jugador considerando el scroll
@@ -124,14 +128,14 @@ def main():
         # Realiza las animaciones
         player.update(screen_scroll)
 
-        # Dibujar jugador
-        player.draw(SCREEN)
-
         # Muestra enemigo
         enemy.draw(SCREEN)
 
         # Muestra pinchos
         spikes.draw(SCREEN)
+
+        # Dibujar jugador
+        player.draw(SCREEN)
 
         # Verificar si el enemigo está atacando al pirata
         # enemy.attack(player)ddw
@@ -142,8 +146,6 @@ def main():
 
         screen_scroll = player.move(move_left, move_right, world, bg_scroll)
         bg_scroll -= screen_scroll
-
-        world.draw(SCREEN, screen_scroll)
 
         SumaTotalScrenScroll -= screen_scroll
 
@@ -162,6 +164,7 @@ def main():
                     enemy.update_action(3)
                 if enemy.health == 0:
                     enemy.update_action(4)
+
         elif player.in_air:
             player.update_action(2)  # 2 -> animacion jump
         elif move_left or move_right:
@@ -197,10 +200,6 @@ def main():
                     player.attack = True
                 if event.type == pygame.K_ESCAPE:
                     run = False
-                if event.key == pygame.K_h:
-                    print(player.health)
-                    # Actualizara la barra de salud mediante el patron observador
-                    player.get_Hit(10)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
@@ -214,6 +213,7 @@ def main():
 
     # Salir del juego
     pygame.quit()
+
 
 
 if __name__ == "__main__":

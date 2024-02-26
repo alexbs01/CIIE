@@ -20,6 +20,7 @@ class Pirate(pygame.sprite.Sprite):
         self.health =  100
         self.observers = []
         self.ataque = 20
+        self.points = 0
 
         self.animation_list = []
         self.frame_index =  0
@@ -169,7 +170,7 @@ class Pirate(pygame.sprite.Sprite):
     def attack(self, enemy):
         # quiero que el ataque tenga un cooldown y que cada ataque haga un daño de 20
         if self.collision_rect.colliderect(enemy.collision_rect):
-            enemy.get_Hit(self.ataque)
+            enemy.get_Hit(self.ataque + self.points)
             print("Ataque")
 
 
