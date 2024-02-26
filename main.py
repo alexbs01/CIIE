@@ -37,7 +37,7 @@ def main():
     initial_player_y = 200
 
     # Creamos jugador y enemigo
-    player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 4, resource_manager)
+    player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
     enemy = Enemies.Enemy.CucumberEnemy(1000, 540, 1, resource_manager)
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
@@ -54,13 +54,13 @@ def main():
     item_boxes_Group = pygame.sprite.Group()
 
     # Creamos objetos recogibles
-    item_box = Collectables.Collectables('Health', 100, 550, 1.25, player)
+    item_box = Collectables.Collectables('Health', 1300, 550, 1.25, player)
     item_boxes_Group.add(item_box)
 
-    item_box = Collectables.Collectables('Key', 200, 550, 1.25, player)
+    item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
     item_boxes_Group.add(item_box)
 
-    item_box = Collectables.Collectables('Berries', 300, 550, 1.25, player)
+    item_box = Collectables.Collectables('Berries', 1000, 550, 1.25, player)
     item_boxes_Group.add(item_box)
 
     item_box = Collectables.Collectables('Boots', 900, 570, 2.5, player)

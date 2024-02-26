@@ -10,7 +10,10 @@ SCREEN_SIZE = (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
 SCREEN = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Menu")
 
-BACKGROUND_IMAGE = pygame.image.load("assets/2523.jpg")
+# Cargar la imagen de fondo y escalarla al tamaño deseado
+background_image = pygame.image.load("assets/2523.jpg")
+background_image = pygame.transform.scale(background_image, (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
+
 game_started = False
 
 
@@ -21,7 +24,7 @@ def get_font(size):  # Devuelve la fuente Press-Start-2P en el tamaño deseado
 def main_menu():
     global game_started
     while True:
-        SCREEN.blit(BACKGROUND_IMAGE, (0, 0))
+        SCREEN.blit(background_image, (0, 0))
 
         MOUSE_POSITION = pygame.mouse.get_pos()
 
