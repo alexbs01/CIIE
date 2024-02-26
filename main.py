@@ -19,16 +19,24 @@ from Ui import Ui
 pygame.init()
 pygame.font.init()
 
-
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Impel Down - Ivankov Adventure")
-
 
 # Establecer el reloj del juego y FPS
 clock = pygame.time.Clock()
 FPS = 60
 
+# Cargar el sonido de fondo
+musica = pygame.mixer.Sound("./assets/Music/pirates.mp3")
+musica.set_volume(0.5)
+
+# Cargar el sonido de la espada
+espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
+
 def main():
+    # Reproducir el sonido de fondo en un bucle continuo
+    musica.play(-1)  # El argumento -1 indica que el sonido se reproduce en un bucle infinito
+
     # En tu juego principal
     resource_manager = ResourceManager()
 
@@ -48,7 +56,6 @@ def main():
 
     # Dibuja el mapa
     world.process_data(tiles)
-
 
     # Grupos de Sprites
     item_boxes_Group = pygame.sprite.Group()
@@ -80,25 +87,6 @@ def main():
 
         ui.draw_text('Vida', title_font, WHITE, 50, 15)
         ui.draw_text('Berries: '+str(player.points), title_font, WHITE, 50, 80)
-
-    # def reset_level(player):
-    #     # Reinicia la posición del jugador considerando el scroll
-    #     player.rect.x = initial_player_x
-    #     player.rect.y = initial_player_y
-    #
-    #     # Reinicia la salud del jugador
-    #     player.health = 100
-    #     # Carga nuevamente los datos del nivel, esto cuando tengamos mas ponemos una variable
-    #     with open(f'./PruebasYEditor/level1_data.csv', newline='') as csvfile:
-    #         reader = csv.reader(csvfile, delimiter=',')
-    #         world_data = []
-    #         for x, row in enumerate(reader):
-    #             world_row = []
-    #             for y, tile in enumerate(row):
-    #                 world_row.append(int(tile))
-    #             world_data.append(world_row)
-    #     world = World()
-    #     world.process_data(world_data)
 
     # Creamos instancia Ui para guardar la pantalla
     ui = Ui()
@@ -149,7 +137,6 @@ def main():
 
         SumaTotalScrenScroll -= screen_scroll
 
-
         if player.health <= 0:
             main()
 
@@ -162,6 +149,8 @@ def main():
                     last_attack_time = current_time
                     enemy.get_Hit(ATAQUE)
                     enemy.update_action(3)
+                    # Reproducir sonido de la espada al atacar
+                    espada.play()
                 if enemy.health == 0:
                     enemy.update_action(4)
 
@@ -211,14 +200,13 @@ def main():
 
         pygame.display.update()
 
+    # Detener la reproducción del sonido de fondo al salir del juego
+    musica.stop()
+
     # Salir del juego
     pygame.quit()
-
-
 
 if __name__ == "__main__":
     main_menu()
     if menu.game_started:
         main()
-
-

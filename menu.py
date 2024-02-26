@@ -11,7 +11,7 @@ SCREEN = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Menu")
 
 # Cargar la imagen de fondo y escalarla al tamaño deseado
-background_image = pygame.image.load("assets/2523.jpg")
+background_image = pygame.image.load("assets/menu/2523.jpg")
 background_image = pygame.transform.scale(background_image, (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
 
 game_started = False
@@ -32,11 +32,11 @@ def main_menu():
 
         MENU_TITLE_RECT = MENU_TITLE_TEXT.get_rect(center=(400, 50))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), position=(400, 250),
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/menu/Play Rect.png"), position=(400, 250),
                              text_input="PLAY", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
-        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), position=(400, 400),
+        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/menu/Options Rect.png"), position=(400, 400),
                                 text_input="OPTIONS", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), position=(400, 550),
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/menu/Quit Rect.png"), position=(400, 550),
                              text_input="QUIT", font=get_font(50), base_color = (182, 143, 64), hovering_color=settings.WHITE)
 
         SCREEN.blit(MENU_TITLE_TEXT, MENU_TITLE_RECT)
