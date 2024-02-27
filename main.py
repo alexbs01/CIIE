@@ -42,7 +42,7 @@ def main():
 
     # Guarda la posición inicial del pirata
     initial_player_x = 200
-    initial_player_y = 200
+    initial_player_y = 400
 
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
@@ -50,8 +50,8 @@ def main():
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
 
-    level1 = LevelGenerator.LevelGenerator(r'PruebasYEditor/level1_data.csv')
-    tiles = level1.load_level()
+    level0 = LevelGenerator.LevelGenerator(r'levels\\level0_data.csv')
+    tiles = level0.load_level()
     print(tiles)
 
     # Dibuja el mapa
