@@ -1,7 +1,7 @@
 import pygame
 import csv
 
-from PruebasYEditor import button
+from button import Button
 
 # Inicializar Pygame
 pygame.init()
@@ -34,16 +34,16 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-dungeon_img = pygame.image.load('../Imagenes/Background/dungeon3.png').convert_alpha()
+dungeon_img = pygame.image.load('assets\Background.png').convert_alpha()
 # store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'../Imagenes/tiles/{x}.png').convert_alpha()
+    img = pygame.image.load(f'assets\\tiles\{x}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
-save_img = pygame.image.load('../Imagenes/save_btn.png').convert_alpha()
-load_img = pygame.image.load('../Imagenes/load_btn.png').convert_alpha()
+save_img = pygame.image.load('assets\save_btn.png').convert_alpha()
+load_img = pygame.image.load('assets\menu\load_btn.png').convert_alpha()
 # Definir colores
 GREEN = (144, 201, 120)
 WHITE = (255, 255, 255)
@@ -86,14 +86,14 @@ def draw_world():
 
 
 ## Crear botones
-save_button = button.Button(SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT + LOWER_MARGIN - 50, save_img, 1)
-load_button = button.Button(SCREEN_WIDTH // 2 + 200, SCREEN_HEIGHT + LOWER_MARGIN - 50, load_img, 1)
+save_button = Button(SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT + LOWER_MARGIN - 50, save_img, 1)
+load_button = Button(SCREEN_WIDTH // 2 + 200, SCREEN_HEIGHT + LOWER_MARGIN - 50, load_img, 1)
 
 button_list = []
 button_col = 0
 button_row = 0
 for i in range(len(img_list)):
-    tile_button = button.Button(SCREEN_WIDTH + (50 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
+    tile_button = Button(SCREEN_WIDTH + (50 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
     button_list.append(tile_button)
     button_col += 1
     if button_col == 5:
