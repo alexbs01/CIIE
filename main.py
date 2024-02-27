@@ -52,17 +52,23 @@ def main():
 
     level0 = LevelGenerator.LevelGenerator(r'levels\\level0_data.csv')
     tiles = level0.load_level()
-    print(tiles)
+    
 
     # Dibuja el mapa
     world.process_data(tiles)
 
     # Grupos de Sprites
     item_boxes_Group = pygame.sprite.Group()
-
+    
     # Creamos objetos recogibles
-    item_box = Collectables.Collectables('Health', 1300, 550, 1.25, player)
-    item_boxes_Group.add(item_box)
+    for row_index, row in enumerate(tiles):
+        for col_index, column in enumerate(row):
+            if column == 19:
+                print("Row Index:", row_index)
+                print("Column Index:", col_index)
+                item_box = Collectables.Collectables('Health', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
+                item_boxes_Group.add(item_box)
+    
 
     item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
     item_boxes_Group.add(item_box)

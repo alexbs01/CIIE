@@ -1,7 +1,6 @@
 import pygame
 from settings import *
 
-
 class World():
 
     def __init__(self):
@@ -30,7 +29,6 @@ class World():
         for tile in self.obstacle_list:
             tile[1].x += screen_scroll
             screen.blit(tile[0], tile[1])   
-         
     
 
 
