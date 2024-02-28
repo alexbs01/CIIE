@@ -76,6 +76,12 @@ def main():
             elif column == 20:
                 spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 spikes_group.add(spike)
+            elif column == 21:
+                enemy = Enemies.Enemy.WhaleEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
+                                                    resource_manager)
+                enemy_group.add(enemy)
+
+
 
     # item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
     # item_boxes_Group.add(item_box)
@@ -105,8 +111,6 @@ def main():
         # width = dungeon_img.get_width()
         # for x in range(4):
         #     SCREEN.blit(dungeon_img, ((x * width) - bg_scroll, 0))
-
-
 
     # Creamos instancia Ui para guardar la pantalla
     ui = Ui()

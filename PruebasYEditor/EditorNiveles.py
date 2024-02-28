@@ -24,7 +24,7 @@ ROWS = 20
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
-TILE_TYPES = 23
+TILE_TYPES = 24
 
 level = 1
 current_tile = 0
