@@ -21,10 +21,11 @@ pygame.font.init()
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Impel Down - Ivankov Adventure")
+# load images
+#dungeon_img = pygame.image.load('./assets/Background/dungeon3.png').convert_alpha()
 
 # Establecer el reloj del juego y FPS
 clock = pygame.time.Clock()
-FPS = 60
 
 # Cargar el sonido de fondo
 musica = pygame.mixer.Sound("./assets/Music/pirates.mp3")
@@ -32,6 +33,7 @@ musica.set_volume(0.5)
 
 # Cargar el sonido de la espada
 espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
+
 
 def main():
     # Reproducir el sonido de fondo en un bucle continuo
@@ -46,12 +48,11 @@ def main():
 
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
-    #spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
+    spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
 
     level0 = LevelGenerator.LevelGenerator(r'levels\\level1_data.csv')
     tiles = level0.load_level()
-    
 
     # Dibuja el mapa
     world.process_data(tiles)
@@ -60,20 +61,21 @@ def main():
     item_boxes_Group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
     spikes_group = pygame.sprite.Group()
-    
+
     # Creamos objetos recogibles
     for row_index, row in enumerate(tiles):
         for col_index, column in enumerate(row):
             if column == 19:
-                item_box = Collectables.Collectables('Health', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
+                item_box = Collectables.Collectables('Health', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25,
+                                                     player)
                 item_boxes_Group.add(item_box)
             elif column == 16:
-                enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1, resource_manager)
+                enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
+                                                    resource_manager)
                 enemy_group.add(enemy)
             elif column == 20:
                 spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 spikes_group.add(spike)
-    
 
     # item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
     # item_boxes_Group.add(item_box)
@@ -97,7 +99,14 @@ def main():
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
 
         ui.draw_text('Vida', title_font, WHITE, 50, 15)
-        ui.draw_text('Berries: '+str(player.points), title_font, WHITE, 50, 80)
+        ui.draw_text('Berries: ' + str(player.points), title_font, WHITE, 50, 80)
+
+        # # Mostrar imagen dungeon
+        # width = dungeon_img.get_width()
+        # for x in range(4):
+        #     SCREEN.blit(dungeon_img, ((x * width) - bg_scroll, 0))
+
+
 
     # Creamos instancia Ui para guardar la pantalla
     ui = Ui()
@@ -128,10 +137,10 @@ def main():
         player.update(screen_scroll)
 
         # Muestra enemigo
-        #enemy.draw(SCREEN)
+        # enemy.draw(SCREEN)
 
         # Muestra pinchos
-        #spikes.draw(SCREEN)
+        # spikes.draw(SCREEN)
 
         # Dibujar jugador
         player.draw(SCREEN)
@@ -180,8 +189,8 @@ def main():
         # haz que el enemigo se mueva mas rapido que el jugador
         for enemy in enemy_group:
             enemy.ai(player)
-        #enemy_group.update(screen_scroll)
-        #spikes.update(screen_scroll)
+        # enemy_group.update(screen_scroll)
+        # spikes.update(screen_scroll)
 
         for spikes in spikes_group:
             if player.rect.colliderect(spikes.rect):
@@ -223,6 +232,7 @@ def main():
 
     # Salir del juego
     pygame.quit()
+
 
 if __name__ == "__main__":
     main_menu()
