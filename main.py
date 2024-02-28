@@ -46,7 +46,6 @@ def main():
 
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
-    enemy = Enemies.Enemy.CucumberEnemy(1000, 540, 1, resource_manager)
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
 
@@ -59,15 +58,21 @@ def main():
 
     # Grupos de Sprites
     item_boxes_Group = pygame.sprite.Group()
+    enemy_group = pygame.sprite.Group()
+    spikes_group = pygame.sprite.Group()
     
     # Creamos objetos recogibles
     for row_index, row in enumerate(tiles):
         for col_index, column in enumerate(row):
             if column == 19:
-                print("Row Index:", row_index)
-                print("Column Index:", col_index)
                 item_box = Collectables.Collectables('Health', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
                 item_boxes_Group.add(item_box)
+            elif column == 16:
+                enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1, resource_manager)
+                enemy_group.add(enemy)
+            elif column == 20:
+                spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
+                spikes_group.add(spike)
     
 
     item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
@@ -123,10 +128,10 @@ def main():
         player.update(screen_scroll)
 
         # Muestra enemigo
-        enemy.draw(SCREEN)
+        #enemy.draw(SCREEN)
 
         # Muestra pinchos
-        spikes.draw(SCREEN)
+        #spikes.draw(SCREEN)
 
         # Dibujar jugador
         player.draw(SCREEN)
@@ -137,6 +142,10 @@ def main():
         # dibujar items y pintarlos
         item_boxes_Group.update(screen_scroll)
         item_boxes_Group.draw(SCREEN)
+        enemy_group.update(screen_scroll)
+        enemy_group.draw(SCREEN)
+        spikes_group.update(screen_scroll)
+        spikes_group.draw(SCREEN)
 
         screen_scroll = player.move(move_left, move_right, world, bg_scroll)
         bg_scroll -= screen_scroll
@@ -149,16 +158,17 @@ def main():
         # Actualiza la accion del jugador
         if player.attack:
             player.update_action(3)  # 3 -> animacion ataque
-            if player.rect.colliderect(enemy.rect):
-                current_time = pygame.time.get_ticks()
-                if current_time - last_attack_time > ATAQUE_COOLDOWN:
-                    last_attack_time = current_time
-                    enemy.get_Hit(ATAQUE)
-                    enemy.update_action(3)
-                    # Reproducir sonido de la espada al atacar
-                    espada.play()
-                if enemy.health == 0:
-                    enemy.update_action(4)
+            for enemy in enemy_group:
+                if player.rect.colliderect(enemy.rect):
+                    current_time = pygame.time.get_ticks()
+                    if current_time - last_attack_time > ATAQUE_COOLDOWN:
+                        last_attack_time = current_time
+                        enemy.get_Hit(ATAQUE)
+                        enemy.update_action(3)
+                        # Reproducir sonido de la espada al atacar
+                        espada.play()
+                    if enemy.health == 0:
+                        enemy.update_action(4)
 
         elif player.in_air:
             player.update_action(2)  # 2 -> animacion jump
@@ -168,15 +178,17 @@ def main():
             player.update_action(0)  # 0 -> animacion idle
 
         # haz que el enemigo se mueva mas rapido que el jugador
-        enemy.ai(player)
-        enemy.update(screen_scroll)
-        spikes.update(screen_scroll)
+        for enemy in enemy_group:
+            enemy.ai(player)
+        #enemy_group.update(screen_scroll)
+        #spikes.update(screen_scroll)
 
-        if player.rect.colliderect(spikes.rect):
-            current_time = pygame.time.get_ticks()
-            if current_time - last_contact_time > 1000:
-                last_contact_time = current_time
-                player.get_Hit(40)
+        for spikes in spikes_group:
+            if player.rect.colliderect(spikes.rect):
+                current_time = pygame.time.get_ticks()
+                if current_time - last_contact_time > 1:
+                    last_contact_time = current_time
+                    player.get_Hit(8)
 
         # Actualizar la pantalla
         for event in pygame.event.get():
