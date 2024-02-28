@@ -80,6 +80,16 @@ def main():
                 enemy = Enemies.Enemy.WhaleEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
                                                     resource_manager)
                 enemy_group.add(enemy)
+            elif column == 17:
+                item_box = Collectables.Collectables('Berries', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
+                item_boxes_Group.add(item_box)
+            elif column == 18:
+                item_box = Collectables.Collectables('Boots', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 2.3, player)
+                item_boxes_Group.add(item_box)
+            elif column == 14:
+                item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1, player)
+                item_boxes_Group.add(item_box)
+
 
 
 

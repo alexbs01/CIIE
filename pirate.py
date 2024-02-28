@@ -28,7 +28,7 @@ class Pirate(pygame.sprite.Sprite):
         self.update_time = pygame.time.get_ticks()
         self.resource_manager = resource_manager
 
-        animation_types = ['Idle', 'Run', 'Jump', 'Attack']
+        animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
 
         for animation in animation_types:
             temp_list = []
