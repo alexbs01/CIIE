@@ -46,7 +46,7 @@ def main():
 
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
-    spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
+    #spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
 
     level0 = LevelGenerator.LevelGenerator(r'levels\\level1_data.csv')
@@ -75,14 +75,14 @@ def main():
                 spikes_group.add(spike)
     
 
-    item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
-    item_boxes_Group.add(item_box)
-
-    item_box = Collectables.Collectables('Berries', 1000, 550, 1.25, player)
-    item_boxes_Group.add(item_box)
-
-    item_box = Collectables.Collectables('Boots', 900, 570, 2.5, player)
-    item_boxes_Group.add(item_box)
+    # item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
+    # item_boxes_Group.add(item_box)
+    #
+    # item_box = Collectables.Collectables('Berries', 1000, 550, 1.25, player)
+    # item_boxes_Group.add(item_box)
+    #
+    # item_box = Collectables.Collectables('Boots', 900, 570, 2.5, player)
+    # item_boxes_Group.add(item_box)
 
     # dibujar en segundo plano
     def draw_bg():
