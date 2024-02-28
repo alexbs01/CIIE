@@ -34,16 +34,16 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-dungeon_img = pygame.image.load('assets\Background.png').convert_alpha()
+dungeon_img = pygame.image.load('../assets/Background.png').convert_alpha()
 # store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'assets\\tiles\{x}.png').convert_alpha()
+    img = pygame.image.load(f'../assets/tiles/{x}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
-save_img = pygame.image.load('assets\save_btn.png').convert_alpha()
-load_img = pygame.image.load('assets\menu\load_btn.png').convert_alpha()
+save_img = pygame.image.load('../assets/save_btn.png').convert_alpha()
+load_img = pygame.image.load('../assets/menu/load_btn.png').convert_alpha()
 # Definir colores
 GREEN = (144, 201, 120)
 WHITE = (255, 255, 255)
@@ -127,12 +127,12 @@ while run:
 
     # guardar y cargar datos
     if save_button.draw(screen):
-        with open(f'levels\\level{level}_data.csv', 'w', newline='') as csvfile:
+        with open(f'../levels/level{level}_data.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             for row in world_data:
                 writer.writerow(row)
     if load_button.draw(screen):
-        with open(f'levels\\level{level}_data.csv', newline='') as csvfile:
+        with open(f'../levels/level{level}_data.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for x, row in enumerate(reader):
                 for y, tile in enumerate(row):

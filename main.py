@@ -49,7 +49,7 @@ def main():
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World()
 
-    level0 = LevelGenerator.LevelGenerator(r'levels\\level0_data.csv')
+    level0 = LevelGenerator.LevelGenerator(r'levels\\level1_data.csv')
     tiles = level0.load_level()
     
 
