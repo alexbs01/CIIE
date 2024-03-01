@@ -16,6 +16,9 @@ SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 GRAVITY = 0.75
 FPS = 60
 
+# AUDIO
+BACKGROUND_MUSIC_VOLUME = 0.15
+
 ROWS = 20 # Filas mapa 1
 COLS = 150 # Columnas mapa 1
 

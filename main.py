@@ -29,7 +29,7 @@ clock = pygame.time.Clock()
 
 # Cargar el sonido de fondo
 musica = pygame.mixer.Sound("./assets/Music/pirates.mp3")
-musica.set_volume(0.5)
+musica.set_volume(BACKGROUND_MUSIC_VOLUME)
 
 # Cargar el sonido de la espada
 espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
@@ -90,22 +90,9 @@ def main():
                 item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1, player)
                 item_boxes_Group.add(item_box)
 
-
-
-
-    # item_box = Collectables.Collectables('Key', 1200, 550, 1.25, player)
-    # item_boxes_Group.add(item_box)
-    #
-    # item_box = Collectables.Collectables('Berries', 1000, 550, 1.25, player)
-    # item_boxes_Group.add(item_box)
-    #
-    # item_box = Collectables.Collectables('Boots', 900, 570, 2.5, player)
-    # item_boxes_Group.add(item_box)
-
     # dibujar en segundo plano
     def draw_bg():
         SCREEN.fill(BG)
-        # pygame.draw.line(SCREEN, LINE, (0, 400), (SCREEN_WIDTH,400)) #linea rojo -> simula suelo
 
         # Controla el scroll de los tiles
         world.draw(SCREEN, screen_scroll)
