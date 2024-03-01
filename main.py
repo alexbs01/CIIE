@@ -87,7 +87,7 @@ def main():
                 item_box = Collectables.Collectables('Boots', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 2.3, player)
                 item_boxes_Group.add(item_box)
             elif column == 14:
-                item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1, player)
+                item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
                 item_boxes_Group.add(item_box)
 
     # dibujar en segundo plano
