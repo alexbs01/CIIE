@@ -1,13 +1,17 @@
 import pygame
 import csv
-
+import sys
+import os
 from button import Button
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from settings import *
+
 
 # Inicializar Pygame
 pygame.init()
 
 clock = pygame.time.Clock()
-FPS = 60
+fps = FPS
 
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 700
@@ -34,16 +38,16 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-dungeon_img = pygame.image.load('../assets/Background.png').convert_alpha()
+dungeon_img = pygame.image.load(PATH_ASSET_BACKGROUND).convert_alpha()
 # store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'../assets/tiles/{x}.png').convert_alpha()
+    img = pygame.image.load(PATH_ASSETS_TILES / f'{x}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
-save_img = pygame.image.load('../assets/save_btn.png').convert_alpha()
-load_img = pygame.image.load('../assets/menu/load_btn.png').convert_alpha()
+save_img = pygame.image.load(PATH_ASSET_SAVE_BTN).convert_alpha()
+load_img = pygame.image.load(PATH_ASSET_LOAD_BTN).convert_alpha()
 # Definir colores
 GREEN = (144, 201, 120)
 WHITE = (255, 255, 255)
@@ -117,7 +121,7 @@ def draw_grid():
 
 while run:
 
-    clock.tick(FPS)
+    clock.tick(fps)
     # Dibujar el fondo
     draw_bg()
     draw_grid()
@@ -127,12 +131,12 @@ while run:
 
     # guardar y cargar datos
     if save_button.draw(screen):
-        with open(f'../levels/level{level}_data.csv', 'w', newline='') as csvfile:
+        with open(PATH_LEVEL / f'level{level}_data.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             for row in world_data:
                 writer.writerow(row)
     if load_button.draw(screen):
-        with open(f'../levels/level{level}_data.csv', newline='') as csvfile:
+        with open(PATH_LEVEL / f'level{level}_data.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for x, row in enumerate(reader):
                 for y, tile in enumerate(row):

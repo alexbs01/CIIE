@@ -1,7 +1,14 @@
 import pygame
+from pathlib import Path
+
+# Editor de niveles
+PATH_ASSET_BACKGROUND = Path("assets/Background.png")
+PATH_ASSETS_TILES = Path("assets/tiles")
+PATH_ASSET_SAVE_BTN = Path("assets/save_btn.png")
+PATH_ASSET_LOAD_BTN = Path("assets/menu/load_btn.png")
+PATH_LEVEL = Path("levels")
 
 # Variables de entorno
-
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
