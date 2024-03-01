@@ -1,5 +1,5 @@
 import pygame
-from ResourceManager import ResourceManager
+from world_generation.ResourceManager import ResourceManager
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, display, position_x, position_y, tile, resource_manager):

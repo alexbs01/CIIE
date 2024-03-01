@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from ResourceManager import ResourceManager
+from world_generation.ResourceManager import ResourceManager
 
 class World():
 

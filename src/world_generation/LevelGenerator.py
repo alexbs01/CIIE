@@ -1,5 +1,5 @@
 import pygame
-import Tile
+import world_generation.Tile
 import csv
 from settings import *
 

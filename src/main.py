@@ -6,15 +6,14 @@ import menu
 from menu import main_menu  # Importa la función main_menu desde el archivo menu.py
 from asyncio import sleep
 
-import Enemies
-import pirate
-import Collectables
-from ResourceManager import ResourceManager
+from entities import Enemies
+from entities import pirate
+from items import Collectables as Collectables
+from world_generation.ResourceManager import ResourceManager
 from settings import *
-from Tile import Tile
-from World import World
-import LevelGenerator
-from Ui import Ui
+from world_generation.World import World
+from world_generation.LevelGenerator import LevelGenerator
+from entities.Ui import Ui
 
 pygame.init()
 pygame.font.init()
@@ -51,7 +50,7 @@ def main():
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World(resource_manager)
 
-    level0 = LevelGenerator.LevelGenerator(r'levels\\level1_data.csv')
+    level0 = LevelGenerator(r'levels\\level1_data.csv')
     tiles = level0.load_level()
 
     # Dibuja el mapa
