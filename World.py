@@ -1,10 +1,12 @@
 import pygame
 from settings import *
+from ResourceManager import ResourceManager
 
 class World():
 
-    def __init__(self):
+    def __init__(self, resource_manager):
         self.obstacle_list = []
+        self.resource_manager = resource_manager
 
     def process_data(self, data):
 
@@ -13,7 +15,7 @@ class World():
         for y, row in enumerate(data):
             for x, tile in enumerate(row):
                 if tile >= 0:
-                    img = pygame.image.load("assets/tiles/" + str(tile) + ".png")
+                    img = self.resource_manager.load_image("assets/tiles/" + str(tile) + ".png", "assets/tiles/" + str(tile) + ".png")
                     rect = img.get_rect()
                     rect.x = x * TILE_SIZE
                     rect.y = y * TILE_SIZE

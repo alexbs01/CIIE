@@ -49,7 +49,7 @@ def main():
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
-    world = World()
+    world = World(resource_manager)
 
     level0 = LevelGenerator.LevelGenerator(r'levels\\level1_data.csv')
     tiles = level0.load_level()
