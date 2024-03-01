@@ -34,7 +34,7 @@ TILE_SIZE = SCREEN_HEIGHT // ROWS
 
 
 # define colours
-BG = (144, 201, 120)
+BG = (82, 82, 82)
 WHITE = (255, 255, 255)
 RED = (200, 25, 25)
 GREEN = (0, 255, 0)
