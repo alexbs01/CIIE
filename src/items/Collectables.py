@@ -48,3 +48,6 @@ class Collectables(pygame.sprite.Sprite):
                 self.player.max_jumps +=  1
 
             self.kill()
+    def draw(self, SCREEN):
+        SCREEN.blit(self.image, self.rect)
+        

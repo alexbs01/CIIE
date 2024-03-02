@@ -60,6 +60,7 @@ def main():
     item_boxes_Group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
     spikes_group = pygame.sprite.Group()
+    item_boots = pygame.sprite.Group()
 
     # Creamos objetos recogibles
     for row_index, row in enumerate(tiles):
@@ -72,6 +73,8 @@ def main():
                 enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
                                                     resource_manager)
                 enemy_group.add(enemy)
+                
+                print(enemy_group)
             elif column == 20:
                 spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 spikes_group.add(spike)
@@ -83,8 +86,10 @@ def main():
                 item_box = Collectables.Collectables('Berries', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
                 item_boxes_Group.add(item_box)
             elif column == 18:
-                item_box = Collectables.Collectables('Boots', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 2.3, player)
-                item_boxes_Group.add(item_box)
+                item_bootas = Collectables.Collectables('Boots', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 5.3, player)
+                item_boots.add(item_bootas)    
+                print(col_index)
+                print(row_index)
             elif column == 14:
                 item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
                 item_boxes_Group.add(item_box)
@@ -125,6 +130,9 @@ def main():
     bg_scroll = 0
     SumaTotalScrenScroll = 0
     last_contact_time = 0
+    whale_dead = False
+    
+
 
     # Bucle principal del juego
     run = True
@@ -132,12 +140,11 @@ def main():
         # Establecer la velocidad del juego
         clock.tick(FPS)
         draw_bg()
-
         # Realiza las animaciones
         player.update(screen_scroll)
 
         # Muestra enemigo
-        # enemy.draw(SCREEN)
+        #enemy.draw(SCREEN)
 
         # Muestra pinchos
         # spikes.draw(SCREEN)
@@ -150,19 +157,28 @@ def main():
 
         # dibujar items y pintarlos
         item_boxes_Group.update(screen_scroll)
-        item_boxes_Group.draw(SCREEN)
         enemy_group.update(screen_scroll)
-        enemy_group.draw(SCREEN)
+        item_boxes_Group.draw(SCREEN)
         spikes_group.update(screen_scroll)
         spikes_group.draw(SCREEN)
+
+        if not whale_dead:
+            for enemy in enemy_group:
+                if isinstance(enemy, Enemies.Enemy.WhaleEnemy) and enemy.health <= 0:
+                    # Cambia la bandera y agrega las botas al item_boxes_Group
+                    whale_dead = True
+                    item_boots.draw(SCREEN)
+                    item_boots.add(item_boots)
+
+        for enemy in enemy_group:
+            enemy.draw(SCREEN)
 
         screen_scroll = player.move(move_left, move_right, world, bg_scroll)
         bg_scroll -= screen_scroll
 
         SumaTotalScrenScroll -= screen_scroll
 
-        if player.health <= 0:
-            main()
+        
 
         # Actualiza la accion del jugador
         if player.attack:
@@ -172,7 +188,7 @@ def main():
                     current_time = pygame.time.get_ticks()
                     if current_time - last_attack_time > ATAQUE_COOLDOWN:
                         last_attack_time = current_time
-                        enemy.get_Hit(ATAQUE)
+                        enemy.get_Hit(ATAQUE+(player.points*10))
                         enemy.update_action(3)
                         # Reproducir sonido de la espada al atacar
                         espada.play()
@@ -224,11 +240,11 @@ def main():
                     move_right = False
                 if event.key == pygame.K_SPACE:
                     player.attack = False
+        if player.health <= 0:
+            musica.stop()
+            main()
 
         pygame.display.update()
-
-    # Detener la reproducción del sonido de fondo al salir del juego
-    musica.stop()
 
     # Salir del juego
     pygame.quit()

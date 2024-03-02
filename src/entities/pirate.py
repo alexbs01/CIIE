@@ -57,7 +57,7 @@ class Pirate(pygame.sprite.Sprite):
                                           self.rect.height)
         
         
-        #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
+        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
     def move(self, move_left, move_right, world, bg_scroll):
 
@@ -136,6 +136,7 @@ class Pirate(pygame.sprite.Sprite):
         self.update_animation()
         self.rect.x += screen_scroll
         self.rect.x -= screen_scroll
+        
 
     # Actualizar la animación
     def update_animation(self):
@@ -173,7 +174,7 @@ class Pirate(pygame.sprite.Sprite):
             enemy.get_Hit(self.ataque + self.points)
             print(self.ataque + self.points)
             print("Ataque")
-
+            print(self.points)
 
 
     # Funcion de daño
@@ -194,14 +195,6 @@ class Pirate(pygame.sprite.Sprite):
         for observer in self.observers:
             observer.update_health(self.health)
 
-
-############
-    def attack(self, enemy):
-        # Ataque aleatorio basado en el tiempo
-        if random.randint(0, 100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:
-            if self.collision_rect.colliderect(enemy.collision_rect):
-                enemy.get_Hit(35)
-        print("Ataque")
 
     def move_back(self, distance=20):
         # Mover hacia atrás

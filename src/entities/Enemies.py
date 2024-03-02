@@ -8,9 +8,10 @@ class Enemy:
     class CucumberEnemy(pygame.sprite.Sprite):
         def __init__(self, x, y, speed, resource_manager):
             pygame.sprite.Sprite.__init__(self)
-            self.move_direction = 1
             self.original_x = x
             self.original_y = y
+            self.step_count = 0
+            self.max_steps = 120
             self.observers = []
             self.health = 100
             self.speed = speed
@@ -55,16 +56,34 @@ class Enemy:
             self.rect.y = y
             self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
+
+
         def move(self):
             if self.health > 0:
-                if random.randint(0, 100) < 10:
-                    self.move_direction *= -1
-                self.rect.x += self.move_direction * self.speed
-                # Actualizar la animación que se gire a la izquierda o derecha
-                if self.move_direction == 1:
+                self.rect.x += self.speed * self.direction
+                self.step_count += abs(self.speed)  # Actualizar el contador de pasos
+
+                # Verificar si el enemigo ha alcanzado el límite de pasos
+                if self.step_count >= self.max_steps:
+                    # Cambiar la dirección del movimiento
+                    self.direction *= -1
+                    # Reiniciar el contador de pasos
+                    self.step_count = 0
+
+                # Actualizar la animación según la dirección del movimiento
+                if self.direction == 1:
                     self.update_action(1)
                 else:
                     self.update_action(1)
+                     
+        def ai(self, pirate):
+            if self.health > 0:
+                # Si el enemigo esta colisionando con el pirata, atacar
+                if self.collision_rect.colliderect(pirate.collision_rect):
+                    self.attack(pirate)
+                # Si el enemigo no esta cerca del pirata, moverse
+                else:
+                    self.move()   
 
         def attack(self, pirate):
             # Ataque aleatorio basado en el tiempo
@@ -75,15 +94,7 @@ class Enemy:
                     self.last_attack_time = pygame.time.get_ticks()
                     self.update_action(2)
 
-        # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
-
-        def ai(self, pirate):
-            if self.health > 0:
-                # Si el enemigo esta cerca del pirata, atacar
-                if self.collision_rect.colliderect(pirate.collision_rect):
-                    self.attack(pirate)
-                else:
-                    self.move()
+                
 
         def update_animation(self):
             ANIMATION_COOLDOWN = 60
@@ -114,9 +125,10 @@ class Enemy:
             self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
                                               self.rect.centery - self.rect.height // 4, self.rect.width / 2,
                                               self.rect.height)
-            pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
+            #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2) 
+            #print('pintar')
 
-            if self.move_direction == 1:
+            if self.direction == 1:
                 flipped_image = pygame.transform.flip(self.image, True, False)
                 screen.blit(flipped_image, self.rect)
             else:
@@ -213,11 +225,13 @@ class Enemy:
     class WhaleEnemy(pygame.sprite.Sprite):
         def __init__(self, x, y, speed, resource_manager):
             pygame.sprite.Sprite.__init__(self)
-            self.move_direction = 1
+            self.direction = 1
             self.original_x = x
             self.original_y = y
             self.observers = []
-            self.health = 100
+            self.health = 250
+            self.step_count = 0
+            self.max_steps = 120
             self.speed = speed
             self.direction = 1
             self.resource_manager = resource_manager
@@ -262,11 +276,19 @@ class Enemy:
 
         def move(self):
             if self.health > 0:
-                if random.randint(0, 100) < 10:
-                    self.move_direction *= -1
-                self.rect.x += self.move_direction * self.speed
-                # Actualizar la animación que se gire a la izquierda o derecha
-                if self.move_direction == 1:
+                self.collision_rect.x += self.speed * self.direction
+                self.rect.x += self.speed * self.direction
+                self.step_count += abs(self.speed)  # Actualizar el contador de pasos
+
+                # Verificar si el enemigo ha alcanzado el límite de pasos
+                if self.step_count >= self.max_steps:
+                    # Cambiar la dirección del movimiento
+                    self.direction *= -1
+                    # Reiniciar el contador de pasos
+                    self.step_count = 0
+
+                # Actualizar la animación según la dirección del movimiento
+                if self.direction == 1:
                     self.update_action(1)
                 else:
                     self.update_action(1)
@@ -321,7 +343,7 @@ class Enemy:
                                               self.rect.height)
             pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
 
-            if self.move_direction == 1:
+            if self.direction == 1:
                 flipped_image = pygame.transform.flip(self.image, True, False)
                 screen.blit(flipped_image, self.rect)
             else:
@@ -331,6 +353,7 @@ class Enemy:
             self.rect.x += screen_scroll
             self.collision_rect.x += screen_scroll
             self.update_animation()
+            
             # self.check_alive()
 
         def get_Hit(self, damage):
