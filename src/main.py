@@ -86,10 +86,8 @@ def main():
                 item_box = Collectables.Collectables('Berries', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
                 item_boxes_Group.add(item_box)
             elif column == 18:
-                item_bootas = Collectables.Collectables('Boots', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 5.3, player)
-                item_boots.add(item_bootas)    
-                print(col_index)
-                print(row_index)
+                item_bootas = Collectables.Collectables('Boots', col_index * 3 * TILE_WIDTH, row_index * TILE_HEIGHT, 5.3, player)
+                item_boots.add(item_bootas) 
             elif column == 14:
                 item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
                 item_boxes_Group.add(item_box)
@@ -162,13 +160,19 @@ def main():
         spikes_group.update(screen_scroll)
         spikes_group.draw(SCREEN)
 
-        if not whale_dead:
+
+        if not whale_dead:              
             for enemy in enemy_group:
                 if isinstance(enemy, Enemies.Enemy.WhaleEnemy) and enemy.health <= 0:
                     # Cambia la bandera y agrega las botas al item_boxes_Group
                     whale_dead = True
+                    boota = item_boots.sprites().index(item_boots.sprites()[0])
+                    boota.rect.y = item_bootas.rect.midtop  // 3
+                    item_boots.update(screen_scroll)                  
                     item_boots.draw(SCREEN)
-                    item_boots.add(item_boots)
+                    
+                    
+                    
 
         for enemy in enemy_group:
             enemy.draw(SCREEN)
