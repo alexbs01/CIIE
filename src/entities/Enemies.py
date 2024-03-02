@@ -55,16 +55,18 @@ class Enemy:
             self.rect.y = y
             self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
-        def move(self):
-            if self.health > 0:
-                if random.randint(0, 100) < 10:
-                    self.move_direction *= -1
-                self.rect.x += self.move_direction * self.speed
-                # Actualizar la animación que se gire a la izquierda o derecha
-                if self.move_direction == 1:
-                    self.update_action(1)
-                else:
-                    self.update_action(1)
+        def move(self, pirate):
+            if abs(self.rect.x - pirate.rect.x) < 300:
+                if self.health > 0:
+                    if random.randint(0, 500) < 10:
+                        self.move_direction *= -1
+                    self.rect.x += self.move_direction * self.speed
+                    # Actualizar la animación que se gire a la izquierda o derecha
+                    if self.move_direction == 1:
+                        self.update_action(1)
+                    else:
+                        self.update_action(1)
+                    self.collision_rect.x += self.move_direction * self.speed
 
         def attack(self, pirate):
             # Ataque aleatorio basado en el tiempo
@@ -83,7 +85,7 @@ class Enemy:
                 if self.collision_rect.colliderect(pirate.collision_rect):
                     self.attack(pirate)
                 else:
-                    self.move()
+                    self.move(pirate)
 
         def update_animation(self):
             ANIMATION_COOLDOWN = 60
