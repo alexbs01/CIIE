@@ -229,7 +229,7 @@ class Enemy:
             self.original_x = x
             self.original_y = y
             self.observers = []
-            self.health = 250
+            self.health = 10
             self.step_count = 0
             self.max_steps = 120
             self.speed = speed
