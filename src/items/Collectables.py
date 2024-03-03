@@ -35,6 +35,7 @@ class Collectables(pygame.sprite.Sprite):
                     if self.player.health >  100:
                         self.player.health = 100
             elif self.item_type == 'Key':
+                self.player.got_key = True
                 print('Has cogido una llave')
             elif self.item_type == 'Berries':
                 print('Has cogido una moneda')

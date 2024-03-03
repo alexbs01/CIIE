@@ -9,6 +9,7 @@ from asyncio import sleep
 from entities import Enemies
 from entities import pirate
 from items import Collectables as Collectables
+from items import Door as Door
 from world_generation.ResourceManager import ResourceManager
 from settings import *
 from world_generation.World import World
@@ -61,6 +62,7 @@ def main():
     enemy_group = pygame.sprite.Group()
     spikes_group = pygame.sprite.Group()
     item_boots = pygame.sprite.Group()
+    item_door = pygame.sprite.Group()
 
     # Creamos objetos recogibles
     for row_index, row in enumerate(tiles):
@@ -91,6 +93,9 @@ def main():
             elif column == 14:
                 item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
                 item_boxes_Group.add(item_box)
+            elif column == 24:
+                door = Door.Door(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
+                item_door.add(door)
 
     # dibujar en segundo plano
     def draw_bg():
@@ -147,6 +152,10 @@ def main():
         # Muestra pinchos
         # spikes.draw(SCREEN)
 
+        # Se dibuja antes del jugador para que este se vea por delante de la puerta
+        item_door.update(screen_scroll)
+        item_door.draw(SCREEN)
+
         # Dibujar jugador
         player.draw(SCREEN)
 
@@ -182,7 +191,7 @@ def main():
 
         
 
-        # Actualiza la accion del jugador
+        # Actualiza la accion del jugador y enemigos
         if player.attack:
             player.update_action(3)  # 3 -> animacion ataque
             for enemy in enemy_group:
@@ -217,6 +226,13 @@ def main():
                     last_contact_time = current_time
                     player.get_Hit(8)
 
+        for door in item_door:
+            if player.rect.colliderect(door.rect) and player.got_key == True:
+                door.update_action(1)
+                player.got_key = False
+            else:
+                door.update_action(0)
+
         # Actualizar la pantalla
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -242,6 +258,7 @@ def main():
                     move_right = False
                 if event.key == pygame.K_SPACE:
                     player.attack = False
+
         if player.health <= 0:
             musica.stop()
             main()
