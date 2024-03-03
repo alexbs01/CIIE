@@ -136,7 +136,6 @@ def main():
     whale_dead = False
     
 
-
     # Bucle principal del juego
     run = True
     while run:
@@ -155,6 +154,9 @@ def main():
         # Se dibuja antes del jugador para que este se vea por delante de la puerta
         item_door.update(screen_scroll)
         item_door.draw(SCREEN)
+        # quiero ver el collision rect de la puerta
+        for door in item_door:
+            pygame.draw.rect(SCREEN, (255, 0, 0), door.collision_rect, 2)
 
         # Dibujar jugador
         player.draw(SCREEN)
@@ -226,12 +228,16 @@ def main():
                     last_contact_time = current_time
                     player.get_Hit(8)
 
+
         for door in item_door:
-            if player.rect.colliderect(door.rect) and player.got_key == True:
-                door.update_action(1)
+            if player.rect.colliderect(door.rect) and player.got_key:
+                door.set_open()  # Establece la puerta como abierta
                 player.got_key = False
-            else:
-                door.update_action(0)
+            elif not door.is_open():
+                door.set_closed()  # Establece la puerta como cerrada
+
+
+        
 
         # Actualizar la pantalla
         for event in pygame.event.get():
@@ -248,7 +254,7 @@ def main():
                     player.jump = True
                 if event.key == pygame.K_SPACE:
                     player.attack = True
-                if event.type == pygame.K_ESCAPE:
+                if event.type == pygame.K_ESCAPE: # no entiendo este if no seria key 
                     run = False
 
             if event.type == pygame.KEYUP:

@@ -1,6 +1,6 @@
 import os
 import pygame
-from settings import *
+
 
 class Door(pygame.sprite.Sprite):
 
@@ -13,7 +13,7 @@ class Door(pygame.sprite.Sprite):
         self.animation_list = []
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
-
+        self.open = False
  # Tipos de animaciones
         animation_types = ['Closed', 'Opening', 'Closing']
 
@@ -52,11 +52,13 @@ class Door(pygame.sprite.Sprite):
                         self.rect.centery - self.rect.height // 4, self.rect.width / 2,
                         self.rect.height)
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
+        # muestrame el collision rect
 
         screen.blit(self.image, self.rect)
 
+
     def update_animation(self):
-        ANIMATION_COOLDOWN = 250
+        ANIMATION_COOLDOWN = 500
 
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
@@ -64,9 +66,10 @@ class Door(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
             self.update_time = pygame.time.get_ticks()
             self.frame_index += 1
-        # Si la animación ha terminado, reiniciar
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
+            # Si la animación ha terminado, deja el frame_index en el último fotograma
+            if self.frame_index >= len(self.animation_list[self.action]):
+                self.frame_index = len(self.animation_list[self.action]) - 1
+
 
     def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior
@@ -81,6 +84,17 @@ class Door(pygame.sprite.Sprite):
         self.rect.x += screen_scroll
         self.collision_rect.x += screen_scroll
         self.update_animation()
+        
 
 
+    def set_open(self):
+        self.open = True
+        self.update_action(1)  # Abre la puerta
+
+    def set_closed(self):
+        self.open = False
+        self.update_action(0)  # Cierra la puerta
+
+    def is_open(self):
+        return self.open
     
