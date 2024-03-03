@@ -96,6 +96,38 @@ def main():
             elif column == 24:
                 door = Door.Door(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 item_door.add(door)
+    
+    last_move_left = False
+    last_move_right = False
+
+    def paused_game():
+        global last_move_left, last_move_right
+        paused = True
+        pygame.mixer.pause()  # Pausar la música al pausar el juego
+        while paused:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        paused = False
+                    if event.key == pygame.K_a:
+                        last_move_left = True
+                    if event.key == pygame.K_d:
+                        last_move_right = True
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_a:
+                        last_move_left = False
+                    if event.key == pygame.K_d:
+                        last_move_right = False
+            SCREEN.fill(BLACK)
+            title_font = pygame.font.Font("assets/inmortal.ttf", 100)
+            ui.draw_text('Pausa', title_font, WHITE, (SCREEN_WIDTH // 2) - 150, (SCREEN_HEIGHT // 2) - 100)
+            pygame.display.update()
+            clock.tick(15)
+        pygame.mixer.unpause()  # Reanudar la música al reanudar el juego
+
 
     # dibujar en segundo plano
     def draw_bg():
@@ -145,6 +177,8 @@ def main():
         # Realiza las animaciones
         player.update(screen_scroll)
 
+        # Restaurar el estado de movimiento después de salir del bucle de pausa
+        
         # Muestra enemigo
         #enemy.draw(SCREEN)
 
@@ -256,6 +290,8 @@ def main():
                     player.attack = True
                 if event.type == pygame.K_ESCAPE: # no entiendo este if no seria key 
                     run = False
+                if event.key == pygame.K_p:
+                    paused_game()
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
