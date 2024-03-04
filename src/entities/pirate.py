@@ -29,6 +29,7 @@ class Pirate(pygame.sprite.Sprite):
         self.resource_manager = resource_manager
 
         self.got_key = False
+        self.got_sword = False
 
         animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
 

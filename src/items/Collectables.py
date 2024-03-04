@@ -6,12 +6,14 @@ health_box_img = pygame.image.load('assets/items/Health/0.png')
 key_box_img = pygame.image.load('assets/items/Keys/0.png')
 berries_box_img = pygame.image.load('assets/items/gold/0.png')
 boots_box_img = pygame.image.load('assets/items/boots/0.png')
+sword_box_img = pygame.image.load('assets/tiles/11.png') # CAMBIAR POR UNA IMAGEN DE ESPADA MINECRAFT
 
 item_boxes = {
     'Health': health_box_img,
     'Key': key_box_img,
     'Berries': berries_box_img,
-    'Boots': boots_box_img
+    'Boots': boots_box_img,
+    'Sword': sword_box_img
 }
 
 class Collectables(pygame.sprite.Sprite):
@@ -39,14 +41,13 @@ class Collectables(pygame.sprite.Sprite):
                 print('Has cogido una llave')
             elif self.item_type == 'Berries':
                 print('Has cogido una moneda')
-                if self.player.health <  100:
-                    self.player.health +=  5
-                    if self.player.health >  100:
-                        self.player.health = 100
                 self.player.points += 1
             elif self.item_type == 'Boots':
                 print('Has cogido unas botas')
                 self.player.max_jumps +=  1
+            elif self.item_type == 'Sword':
+                print('Has cogido una espada mejor')
+                self.player.got_sword = True
 
             self.kill()
     def draw(self, SCREEN):

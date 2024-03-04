@@ -9,12 +9,12 @@ from asyncio import sleep
 from entities import Enemies
 from entities import pirate
 from items import Collectables as Collectables
-from items import Door as Door
 from world_generation.ResourceManager import ResourceManager
 from settings import *
 from world_generation.World import World
 from world_generation.LevelGenerator import LevelGenerator
 from entities.Ui import Ui
+from items import Interactives as Interactives
 
 pygame.init()
 pygame.font.init()
@@ -63,6 +63,7 @@ def main():
     spikes_group = pygame.sprite.Group()
     item_boots = pygame.sprite.Group()
     item_door = pygame.sprite.Group()
+    item_blocks = pygame.sprite.Group()
 
     # Creamos objetos recogibles
     for row_index, row in enumerate(tiles):
@@ -100,8 +101,15 @@ def main():
                 item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
                 item_boxes_Group.add(item_box)
             elif column == 24:
-                door = Door.Door(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
+                door = Interactives.Interactive_obj.Door(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 item_door.add(door)
+            elif column == 12:
+                block = Interactives.Interactive_obj.Block(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
+                item_blocks.add(block)
+            elif column == 11:
+                item_box = Collectables.Collectables('Sword', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
+                item_boxes_Group.add(item_box)
+
     
     last_move_left = False
     last_move_right = False
@@ -198,6 +206,7 @@ def main():
         for door in item_door:
             pygame.draw.rect(SCREEN, (255, 0, 0), door.collision_rect, 2)
 
+
         # Dibujar jugador
         player.draw(SCREEN)
 
@@ -213,6 +222,8 @@ def main():
         
         item_boots.draw(SCREEN)                
         item_boots.update(screen_scroll)
+
+        item_blocks.update(screen_scroll)
     
         if not whale_dead:              
             for enemy in enemy_group:
@@ -276,7 +287,10 @@ def main():
             elif not door.is_open():
                 door.set_closed()  # Establece la puerta como cerrada
 
-
+        for block in item_blocks:
+            block.draw(SCREEN)
+            if player.got_sword == True and block.collision_rect.colliderect(player.collision_rect):
+                block.do_destroy(SCREEN)
         
 
         # Actualizar la pantalla
