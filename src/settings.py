@@ -9,6 +9,7 @@ PATH_ASSET_LOAD_BTN = Path("assets/menu/load_btn.png")
 PATH_LEVEL = Path("levels")
 PATH_LEVEL_1 = Path("levels/level1_data.csv")
 PATH_LEVEL_2 = Path("levels/level2_data.csv")
+PATH_LEVEL_3 = Path("levels/level3_data.csv")
 
 # Variables de entorno
 TILE_WIDTH = 32

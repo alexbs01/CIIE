@@ -44,14 +44,14 @@ def main():
 
     # Guarda la posición inicial del pirata
     initial_player_x = 200
-    initial_player_y = 400
+    initial_player_y = 600
 
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World(resource_manager)
 
-    level0 = LevelGenerator(PATH_LEVEL_2)
+    level0 = LevelGenerator(PATH_LEVEL_3)
     tiles = level0.load_level()
 
     # Dibuja el mapa
