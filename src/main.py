@@ -51,7 +51,7 @@ def main():
     spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World(resource_manager)
 
-    level0 = LevelGenerator(r'./levels/level1_data.csv')
+    level0 = LevelGenerator(PATH_LEVEL_2)
     tiles = level0.load_level()
 
     # Dibuja el mapa
@@ -75,8 +75,14 @@ def main():
                 enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
                                                     resource_manager)
                 enemy_group.add(enemy)
-                
-                print(enemy_group)
+            elif column == 13:
+                enemy = Enemies.Enemy.Capitan(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
+                                                    resource_manager)
+                enemy_group.add(enemy)
+            elif column == 15:
+                enemy = Enemies.Enemy.badPirate(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
+                                                    resource_manager)
+                enemy_group.add(enemy)
             elif column == 20:
                 spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
                 spikes_group.add(spike)
@@ -131,7 +137,7 @@ def main():
 
     # dibujar en segundo plano
     def draw_bg():
-        SCREEN.fill(BG)
+        SCREEN.fill(BG2)
 
         # Controla el scroll de los tiles
         world.draw(SCREEN, screen_scroll)

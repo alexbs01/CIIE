@@ -17,7 +17,7 @@ fps = FPS
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 540
 LOWER_MARGIN = 100
-SIDE_MARGIN = 300
+SIDE_MARGIN = 400
 
 # Crear la pantalla
 screen = pygame.display.set_mode([SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN])
@@ -28,7 +28,7 @@ ROWS = 20
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
-TILE_TYPES = 25
+TILE_TYPES = len(os.listdir(f'assets/tiles'))
 
 level = 1
 current_tile = 0
@@ -100,7 +100,7 @@ for i in range(len(img_list)):
     tile_button = Button(SCREEN_WIDTH + (50 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
     button_list.append(tile_button)
     button_col += 1
-    if button_col == 5:
+    if button_col == 7:
         button_row += 1
         button_col = 0
 

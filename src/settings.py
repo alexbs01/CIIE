@@ -7,6 +7,8 @@ PATH_ASSETS_TILES = Path("assets/tiles")
 PATH_ASSET_SAVE_BTN = Path("assets/save_btn.png")
 PATH_ASSET_LOAD_BTN = Path("assets/menu/load_btn.png")
 PATH_LEVEL = Path("levels")
+PATH_LEVEL_1 = Path("levels/level1_data.csv")
+PATH_LEVEL_2 = Path("levels/level2_data.csv")
 
 # Variables de entorno
 TILE_WIDTH = 32
@@ -35,6 +37,7 @@ TILE_SIZE = SCREEN_HEIGHT // ROWS
 
 # define colours
 BG = (82, 82, 82)
+BG2 = (24,20,37)
 WHITE = (255, 255, 255)
 RED = (200, 25, 25)
 GREEN = (0, 255, 0)
