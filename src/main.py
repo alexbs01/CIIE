@@ -104,10 +104,10 @@ def main(level_num):
         if level_num == 1:
             # Mostrar imagen dungeon
             dungeon_img = pygame.image.load(PATH_ASSET_BACKGROUND)
-            scaled_image = pygame.transform.scale(dungeon_img, (COLS * TILE_WIDTH, ROWS * TILE_HEIGHT))
-            width = scaled_image.get_width()
-            for x in range(4):
-                SCREEN.blit(scaled_image, ((x * width) - bg_scroll, 0))
+            #scaled_image = pygame.transform.scale(dungeon_img, (COLS * TILE_WIDTH, ROWS * TILE_HEIGHT))
+            #width = scaled_image.get_width()
+            #for x in range(4):
+                #SCREEN.blit(scaled_image, ((x * width) - bg_scroll, 0))
 
         # Controla el scroll de los tiles
         world.draw(SCREEN, screen_scroll)
