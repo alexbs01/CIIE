@@ -34,8 +34,11 @@ musica.set_volume(BACKGROUND_MUSIC_VOLUME)
 # Cargar el sonido de la espada
 espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
 
+# Variable global que usaremos para manipular los niveles del juego
+global level_num
+level_num = 0
 
-def main():
+def main(level_num):
     # Reproducir el sonido de fondo en un bucle continuo
     musica.play(-1)  # El argumento -1 indica que el sonido se reproduce en un bucle infinito
 
@@ -46,70 +49,20 @@ def main():
     initial_player_x = 200
     initial_player_y = 600
 
+    # Implementacion para que el jugador reviva en el nivel que muere
+    if level_num == 0:
+        level_num = INITIAL_LEVEL
+
     # Creamos jugador y enemigo
     player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
-    spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
-    world = World(resource_manager)
+    #spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
+    world = World(resource_manager, player)
 
-    level0 = LevelGenerator(PATH_LEVEL_3)
-    tiles = level0.load_level()
+    level = LevelGenerator(level_num)
+    tiles = level.load_level()
 
     # Dibuja el mapa
     world.process_data(tiles)
-
-    # Grupos de Sprites
-    item_boxes_Group = pygame.sprite.Group()
-    enemy_group = pygame.sprite.Group()
-    spikes_group = pygame.sprite.Group()
-    item_boots = pygame.sprite.Group()
-    item_door = pygame.sprite.Group()
-    item_blocks = pygame.sprite.Group()
-
-    # Creamos objetos recogibles
-    for row_index, row in enumerate(tiles):
-        for col_index, column in enumerate(row):
-            if column == 19:
-                item_box = Collectables.Collectables('Health', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25,
-                                                     player)
-                item_boxes_Group.add(item_box)
-            elif column == 16:
-                enemy = Enemies.Enemy.CucumberEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
-                                                    resource_manager)
-                enemy_group.add(enemy)
-            elif column == 13:
-                enemy = Enemies.Enemy.Capitan(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
-                                                    resource_manager)
-                enemy_group.add(enemy)
-            elif column == 15:
-                enemy = Enemies.Enemy.badPirate(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
-                                                    resource_manager)
-                enemy_group.add(enemy)
-            elif column == 20:
-                spike = Enemies.Enemy.Spike(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
-                spikes_group.add(spike)
-            elif column == 21:
-                enemy = Enemies.Enemy.WhaleEnemy(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1,
-                                                    resource_manager)
-                enemy_group.add(enemy)
-            elif column == 17:
-                item_box = Collectables.Collectables('Berries', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 1.25, player)
-                item_boxes_Group.add(item_box)
-            elif column == 18:
-                item_bota = Collectables.Collectables('Boots', col_index * TILE_WIDTH , row_index * TILE_HEIGHT * 3, 2.25, player)
-                item_boots.add(item_bota) 
-            elif column == 14:
-                item_box = Collectables.Collectables('Key', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
-                item_boxes_Group.add(item_box)
-            elif column == 24:
-                door = Interactives.Interactive_obj.Door(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
-                item_door.add(door)
-            elif column == 12:
-                block = Interactives.Interactive_obj.Block(col_index * TILE_WIDTH, row_index * TILE_HEIGHT, resource_manager)
-                item_blocks.add(block)
-            elif column == 11:
-                item_box = Collectables.Collectables('Sword', col_index * TILE_WIDTH, row_index * TILE_HEIGHT, 0.25, player)
-                item_boxes_Group.add(item_box)
-
     
     last_move_left = False
     last_move_right = False
@@ -147,6 +100,15 @@ def main():
     def draw_bg():
         SCREEN.fill(BG2)
 
+        # ELEGIR UNA IMAGEN DE FONDO ADECUADA
+        if level_num == 1:
+            # Mostrar imagen dungeon
+            dungeon_img = pygame.image.load(PATH_ASSET_BACKGROUND)
+            scaled_image = pygame.transform.scale(dungeon_img, (COLS * TILE_WIDTH, ROWS * TILE_HEIGHT))
+            width = scaled_image.get_width()
+            for x in range(4):
+                SCREEN.blit(scaled_image, ((x * width) - bg_scroll, 0))
+
         # Controla el scroll de los tiles
         world.draw(SCREEN, screen_scroll)
 
@@ -156,11 +118,6 @@ def main():
 
         ui.draw_text('Vida', title_font, WHITE, 50, 15)
         ui.draw_text('Berries: ' + str(player.points), title_font, WHITE, 50, 80)
-
-        # # Mostrar imagen dungeon
-        # width = dungeon_img.get_width()
-        # for x in range(4):
-        #     SCREEN.blit(dungeon_img, ((x * width) - bg_scroll, 0))
 
     # Creamos instancia Ui para guardar la pantalla
     ui = Ui()
@@ -200,10 +157,10 @@ def main():
         # spikes.draw(SCREEN)
 
         # Se dibuja antes del jugador para que este se vea por delante de la puerta
-        item_door.update(screen_scroll)
-        item_door.draw(SCREEN)
+        world.item_door.update(screen_scroll)
+        world.item_door.draw(SCREEN)
         # quiero ver el collision rect de la puerta
-        for door in item_door:
+        for door in world.item_door:
             pygame.draw.rect(SCREEN, (255, 0, 0), door.collision_rect, 2)
 
 
@@ -214,27 +171,27 @@ def main():
         # enemy.attack(player)ddw
 
         # dibujar items y pintarlos
-        item_boxes_Group.update(screen_scroll)
-        enemy_group.update(screen_scroll)
-        item_boxes_Group.draw(SCREEN)
-        spikes_group.update(screen_scroll)
-        spikes_group.draw(SCREEN)
+        world.item_boxes_Group.update(screen_scroll)
+        world.enemy_group.update(screen_scroll)
+        world.item_boxes_Group.draw(SCREEN)
+        world.spikes_group.update(screen_scroll)
+        world.spikes_group.draw(SCREEN)
         
-        item_boots.draw(SCREEN)                
-        item_boots.update(screen_scroll)
+        world.item_boots.draw(SCREEN)                
+        world.item_boots.update(screen_scroll)
 
-        item_blocks.update(screen_scroll)
+        world.item_blocks.update(screen_scroll)
     
         if not whale_dead:              
-            for enemy in enemy_group:
+            for enemy in world.enemy_group:
                 if isinstance(enemy, Enemies.Enemy.WhaleEnemy) and enemy.health <= 0:
                     whale_dead = True
                     ## aparecen las botas
-                    boota = item_boots.sprites()[0]               
+                    boota = world.item_boots.sprites()[0]               
                     boota.rect.midtop = (boota.rect.midtop[0], boota.rect.midtop[1] / 3)
                     
 
-        for enemy in enemy_group:
+        for enemy in world.enemy_group:
             enemy.draw(SCREEN)
 
         screen_scroll = player.move(move_left, move_right, world, bg_scroll)
@@ -247,7 +204,7 @@ def main():
         # Actualiza la accion del jugador y enemigos
         if player.attack:
             player.update_action(3)  # 3 -> animacion ataque
-            for enemy in enemy_group:
+            for enemy in world.enemy_group:
                 if player.rect.colliderect(enemy.rect):
                     current_time = pygame.time.get_ticks()
                     if current_time - last_attack_time > ATAQUE_COOLDOWN:
@@ -267,12 +224,12 @@ def main():
             player.update_action(0)  # 0 -> animacion idle
 
         # haz que el enemigo se mueva mas rapido que el jugador
-        for enemy in enemy_group:
+        for enemy in world.enemy_group:
             enemy.ai(player)
         # enemy_group.update(screen_scroll)
         # spikes.update(screen_scroll)
 
-        for spikes in spikes_group:
+        for spikes in world.spikes_group:
             if player.rect.colliderect(spikes.rect):
                 current_time = pygame.time.get_ticks()
                 if current_time - last_contact_time > 1:
@@ -280,14 +237,7 @@ def main():
                     player.get_Hit(8)
 
 
-        for door in item_door:
-            if player.rect.colliderect(door.rect) and player.got_key:
-                door.set_open()  # Establece la puerta como abierta
-                player.got_key = False
-            elif not door.is_open():
-                door.set_closed()  # Establece la puerta como cerrada
-
-        for block in item_blocks:
+        for block in world.item_blocks:
             block.draw(SCREEN)
             if player.got_sword == True and block.collision_rect.colliderect(player.collision_rect):
                 block.do_destroy(SCREEN)
@@ -321,9 +271,26 @@ def main():
                 if event.key == pygame.K_SPACE:
                     player.attack = False
 
+        
+        for door in world.item_door:
+            if player.rect.colliderect(door.rect) and player.got_key:
+                door.set_open()  # Establece la puerta como abierta
+                if level_num < MAX_LEVELS:
+                    world.reset_world()
+                    level_num += 1
+                    level = LevelGenerator(level_num)
+                    tiles = level.load_level()  
+                    world.process_data(tiles)
+                else:
+                    print("INSERTAR INDICADOR DE QUE SE TERMINO EL JUEGO")
+                    # Pantalla negra con mensaje o algo asi
+            elif not door.is_open():
+                door.set_closed()  # Establece la puerta como cerrada
+
         if player.health <= 0:
             musica.stop()
-            main()
+            # le pasamos level_num a main para que sepa en que nivel murio
+            main(level_num)
 
         pygame.display.update()
 
@@ -334,4 +301,4 @@ def main():
 if __name__ == "__main__":
     main_menu()
     if menu.game_started:
-        main()
+        main(level_num)

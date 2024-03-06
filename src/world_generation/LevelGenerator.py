@@ -1,10 +1,12 @@
 import pygame
 import csv
 from settings import *
+from pathlib import Path
+
 
 class LevelGenerator:
-    def __init__(self, csv):
-        self.csv = csv
+    def __init__(self, level_num):
+        self.csv = Path(f"levels/level{level_num}_data.csv")
         self.tiles = []
     
     def load_level(self):

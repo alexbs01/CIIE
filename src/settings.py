@@ -2,7 +2,7 @@ import pygame
 from pathlib import Path
 
 # Editor de niveles
-PATH_ASSET_BACKGROUND = Path("assets/Background.png")
+PATH_ASSET_BACKGROUND = Path("assets/Background/dungeon.jpeg")
 PATH_ASSETS_TILES = Path("assets/tiles")
 PATH_ASSET_SAVE_BTN = Path("assets/save_btn.png")
 PATH_ASSET_LOAD_BTN = Path("assets/menu/load_btn.png")
@@ -11,6 +11,8 @@ PATH_LEVEL_1 = Path("levels/level1_data.csv")
 PATH_LEVEL_2 = Path("levels/level2_data.csv")
 PATH_LEVEL_3 = Path("levels/level3_data.csv")
 
+INITIAL_LEVEL = 1
+MAX_LEVELS = 3
 # Variables de entorno
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
