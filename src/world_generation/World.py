@@ -27,16 +27,16 @@ class World():
         # Diccionario de Entidades asociadas a su valor de tile
         tile_actions = {
             11: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT, 0.25, self.player)),  # Objeto recogible: Espada
-            12: lambda x, y: (self.item_blocks.add(Interactives.Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
-            13: lambda x, y: self.enemy_group.add(Enemies.Enemy.Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Capitán
             14: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT, 0.25, self.player)),  # Objeto recogible: Llave
-            15: lambda x, y: self.enemy_group.add(Enemies.Enemy.badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Pirata malo
-            16: lambda x, y: self.enemy_group.add(Enemies.Enemy.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Cucumber
             17: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, 1.25, self.player)),  # Objeto recogible: Moneda
             18: lambda x, y: self.item_boots.add(Collectables.Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3, 2.25, self.player)),  # Objeto recogible: Botas
             19: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, 1.25, self.player)),  # Objeto recogible: Salud
+            13: lambda x, y: self.enemy_group.add(Enemies.Enemy.Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Capitán
+            15: lambda x, y: self.enemy_group.add(Enemies.Enemy.badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Pirata malo
+            16: lambda x, y: self.enemy_group.add(Enemies.Enemy.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Cucumber
             20: lambda x, y: self.spikes_group.add(Enemies.Enemy.Spike(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Obstáculo: Pinchos
             21: lambda x, y: self.enemy_group.add(Enemies.Enemy.WhaleEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Ballena
+            12: lambda x, y: (self.item_blocks.add(Interactives.Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
             24: lambda x, y: self.item_door.add(Interactives.Interactive_obj.Door(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Objeto interactivo: Puerta
         }
 

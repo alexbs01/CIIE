@@ -35,12 +35,13 @@ class Interactive_obj():
         def draw(self, screen):
             
             if self.destroy == False:
-                self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
-                            self.rect.centery - self.rect.height // 4, self.rect.width / 2,
-                            self.rect.height)
-                pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
                 # muestrame el collision rect
                 screen.blit(self.image, self.rect)
+                self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 2,
+                            self.rect.centery  - self.rect.height // 2, 
+                            self.rect.width,
+                            self.rect.height)
+                pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
 
         def update(self, screen_scroll):
             self.rect.x += screen_scroll
