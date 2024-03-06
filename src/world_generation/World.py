@@ -67,7 +67,7 @@ class World():
             tile[1].x += screen_scroll
             screen.blit(tile[0], tile[1])   
 
-    def reset_world(self):
+    def reset_world(self, level_num):
         self.item_boxes_Group.empty()
         self.enemy_group.empty()
         self.spikes_group.empty()
@@ -81,7 +81,13 @@ class World():
         self.player.got_key = False
         # CAMBIAR LA X E Y DEL PIRATA AL ENTRAR EN EL NUEVO MAPA
         # tiene que empezar abajo a la derecha sin importar donde abra la puerta
-
+        if level_num == 2:
+        # resetear la posicion del jugador
+            self.player.rect.x = 200
+            self.player.rect.y = 600
+        else:
+            self.player.rect.x = 250
+            self.player.rect.y = 600
 
     
 

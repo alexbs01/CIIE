@@ -276,12 +276,8 @@ def main(level_num):
             if player.rect.colliderect(door.rect) and player.got_key:
                 door.set_open()  # Establece la puerta como abierta
                 if level_num < MAX_LEVELS:
-                    world.reset_world()
                     level_num += 1
-                    if level_num == 3 or level_num == 2:
-                        # resetear la posicion del jugador
-                        player.rect.x = 200
-                        player.rect.y = 600
+                    world.reset_world(level_num)
                     level = LevelGenerator(level_num)
                     tiles = level.load_level()  
                     world.process_data(tiles)
