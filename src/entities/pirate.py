@@ -202,4 +202,26 @@ class Pirate(pygame.sprite.Sprite):
     def move_back(self, distance=20):
         # Mover hacia atrás
         self.rect.x -= distance  # Disminuir la coordenada x para mover hacia atrás
+    
+    # Creame un getter y setter del estado del pirata
+    def get_health(self):
+        return self.health
+
+    def set_health(self, health):
+        self.health = health
+    
+    def get_points(self):
+        return self.points
+
+    def set_points(self, points):
+        self.points = points
+
+    def get_jumps(self):
+        return self.max_jumps
+    
+    def set_jumps(self, jumps):
+        self.max_jumps = jumps
+
+        
+
 
