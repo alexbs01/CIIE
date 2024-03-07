@@ -148,4 +148,8 @@ class Entity(pygame.sprite.Sprite):
         else:
             screen.blit(self.image, self.rect)
 
-    
+    def update_health(self, health):
+        self.health = health
+        
+    def register(self, observer):
+        self.observers.append(observer)
