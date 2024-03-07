@@ -44,11 +44,6 @@ class CucumberEnemy(Entity):
         self.move_back()
         print(self.health)
 
-    def move_back(self, distance=20):
-        if self.health > 0:
-            self.rect.x += (self.direction * distance)
-            self.direction *= -1
-
     def kill(self):  # Mirar como quitarlo de verdad, aqui solo lo escondo
         self.rect.x = SCREEN_WIDTH + 100
         self.rect.y = SCREEN_WIDTH + 100
@@ -86,11 +81,6 @@ class WhaleEnemy(Entity):
         self.notify_observers()
         self.move_back()
         print(self.health)
-
-    def move_back(self, distance=20):
-        if self.health > 0:
-            self.rect.x += (self.direction * distance)
-            self.direction *= -1
 
     def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
         self.rect.x = SCREEN_WIDTH + 100
@@ -134,11 +124,6 @@ class badPirate(Entity):
         self.move_back()
         print(self.health)
 
-    def move_back(self, distance=20):
-        if self.health > 0:
-            self.rect.x += (self.direction * distance)
-            self.direction *= -1
-
     def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
         self.rect.x = SCREEN_WIDTH + 100
         self.rect.y = SCREEN_WIDTH + 100
@@ -180,11 +165,6 @@ class Capitan(Entity):
         self.notify_observers()
         self.move_back()
         print(self.health)
-
-    def move_back(self, distance=20):
-        if self.health > 0:
-            self.rect.x += (self.direction * distance)
-            self.direction *= -1
 
     def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
         self.rect.x = SCREEN_WIDTH + 100

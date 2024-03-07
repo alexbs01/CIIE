@@ -72,6 +72,11 @@ class Entity(pygame.sprite.Sprite):
                 self.update_action(1)
             else:
                 self.update_action(1)
+
+    def move_back(self, distance=20):
+        if self.health > 0:
+            self.rect.x += (self.direction * distance)
+            self.direction *= -1
     
     def ai(self, pirate):
         if self.health > 0:
