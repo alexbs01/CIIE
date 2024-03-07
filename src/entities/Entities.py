@@ -106,3 +106,11 @@ class Entity(pygame.sprite.Sprite):
         # Si la animación ha terminado, reiniciar
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
+    
+    def update_action(self, new_action):
+        # Comprueba si la acción actual es diferente a la anterior
+        if new_action != self.action:
+            self.action = new_action
+            # Actualizamos los nuevos valores
+            self.frame_index = 0
+            self.update_time = pygame.time.get_ticks()

@@ -27,14 +27,6 @@ class CucumberEnemy(Entity):
             else:
                 self.update_action(1)
 
-    def update_action(self, new_action):
-        # Comprueba si la acción actual es diferente a la anterior
-        if new_action != self.action:
-            self.action = new_action
-            # Actualizamos los nuevos valores
-            self.frame_index = 0
-            self.update_time = pygame.time.get_ticks()
-
     def draw(self, screen):
 
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
@@ -90,14 +82,6 @@ class WhaleEnemy(Entity):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
         self.damage = 15
-
-    def update_action(self, new_action):
-        # Comprueba si la acción actual es diferente a la anterior
-        if new_action != self.action:
-            self.action = new_action
-            # Actualizamos los nuevos valores
-            self.frame_index = 0
-            self.update_time = pygame.time.get_ticks()
 
     def draw(self, screen):
 
@@ -157,14 +141,6 @@ class badPirate(Entity):
         self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
-    def update_action(self, new_action):
-        # Comprueba si la acción actual es diferente a la anterior
-        if new_action != self.action:
-            self.action = new_action
-            # Actualizamos los nuevos valores
-            self.frame_index = 0
-            self.update_time = pygame.time.get_ticks()
-
     def draw(self, screen):
 
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
@@ -221,14 +197,6 @@ class Capitan(Entity):
         self.health = 200
         self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
-
-    def update_action(self, new_action):
-        # Comprueba si la acción actual es diferente a la anterior
-        if new_action != self.action:
-            self.action = new_action
-            # Actualizamos los nuevos valores
-            self.frame_index = 0
-            self.update_time = pygame.time.get_ticks()
 
     def draw(self, screen):
 
