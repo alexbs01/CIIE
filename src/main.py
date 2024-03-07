@@ -6,8 +6,8 @@ import menu
 from menu import main_menu  # Importa la función main_menu desde el archivo menu.py
 from asyncio import sleep
 
-from entities import Enemies
 from entities import pirate
+from entities.enemies.enemies import CucumberEnemy, Spike, Capitan, badPirate, WhaleEnemy
 from items import Collectables as Collectables
 from world_generation.ResourceManager import ResourceManager
 from settings import *
@@ -184,7 +184,7 @@ def main(level_num):
     
         if not whale_dead:              
             for enemy in world.enemy_group:
-                if isinstance(enemy, Enemies.Enemy.WhaleEnemy) and enemy.health <= 0:
+                if isinstance(enemy, WhaleEnemy) and enemy.health <= 0:
                     whale_dead = True
                     ## aparecen las botas
                     boota = world.item_boots.sprites()[0]               
