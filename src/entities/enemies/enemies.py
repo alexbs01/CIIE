@@ -10,24 +10,6 @@ class CucumberEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Cucumber')
 
-    def move(self):
-        if self.health > 0:
-            self.rect.x += self.speed * self.direction
-            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
-
-            # Verificar si el enemigo ha alcanzado el límite de pasos
-            if self.step_count >= self.max_steps:
-                # Cambiar la dirección del movimiento
-                self.direction *= -1
-                # Reiniciar el contador de pasos
-                self.step_count = 0
-
-            # Actualizar la animación según la dirección del movimiento
-            if self.direction == 1:
-                self.update_action(1)
-            else:
-                self.update_action(1)
-                    
     def ai(self, pirate):
         if self.health > 0:
             # Si el enemigo esta colisionando con el pirata, atacar
@@ -35,7 +17,7 @@ class CucumberEnemy(Entity):
                 self.attack(pirate)
             # Si el enemigo no esta cerca del pirata, moverse
             else:
-                self.move()   
+                super().move()   
 
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo

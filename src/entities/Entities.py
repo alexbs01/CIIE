@@ -51,3 +51,21 @@ class Entity(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
+        
+    def move(self):
+        if self.health > 0:
+            self.rect.x += self.speed * self.direction
+            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
+
+            # Verificar si el enemigo ha alcanzado el límite de pasos
+            if self.step_count >= self.max_steps:
+                # Cambiar la dirección del movimiento
+                self.direction *= -1
+                # Reiniciar el contador de pasos
+                self.step_count = 0
+
+            # Actualizar la animación según la dirección del movimiento
+            if self.direction == 1:
+                self.update_action(1)
+            else:
+                self.update_action(1)
