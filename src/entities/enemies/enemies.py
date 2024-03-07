@@ -27,22 +27,6 @@ class CucumberEnemy(Entity):
             else:
                 self.update_action(1)
 
-    def update_animation(self):
-        ANIMATION_COOLDOWN = 60
-        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
-        if self.action == 4:  # Si la acción es de muerte, no se mueve
-            ANIMATION_COOLDOWN = 500
-        # Actualizar imagen de la animación dependiendo del frame
-        self.image = self.animation_list[self.action][self.frame_index]
-        # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
-            self.update_time = pygame.time.get_ticks()
-            self.frame_index += 1
-        # Si la animación ha terminado, reiniciar
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-
     def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior
         if new_action != self.action:
@@ -159,22 +143,6 @@ class WhaleEnemy(Entity):
         self.health = 20
         self.damage = 15
 
-    def update_animation(self):
-        ANIMATION_COOLDOWN = 60
-        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
-        if self.action == 4:  # Si la acción es de muerte, no se mueve
-            ANIMATION_COOLDOWN = 500
-        # Actualizar imagen de la animación dependiendo del frame
-        self.image = self.animation_list[self.action][self.frame_index]
-        # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
-            self.update_time = pygame.time.get_ticks()
-            self.frame_index += 1
-        # Si la animación ha terminado, reiniciar
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-
     def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior
         if new_action != self.action:
@@ -241,22 +209,6 @@ class badPirate(Entity):
         self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
-    def update_animation(self):
-        ANIMATION_COOLDOWN = 60
-        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
-        if self.action == 4:  # Si la acción es de muerte, no se mueve
-            ANIMATION_COOLDOWN = 500
-        # Actualizar imagen de la animación dependiendo del frame
-        self.image = self.animation_list[self.action][self.frame_index]
-        # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
-            self.update_time = pygame.time.get_ticks()
-            self.frame_index += 1
-        # Si la animación ha terminado, reiniciar
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-
     def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior
         if new_action != self.action:
@@ -321,22 +273,6 @@ class Capitan(Entity):
         self.health = 200
         self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
-
-    def update_animation(self):
-        ANIMATION_COOLDOWN = 60
-        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
-        if self.action == 4:  # Si la acción es de muerte, no se mueve
-            ANIMATION_COOLDOWN = 500
-        # Actualizar imagen de la animación dependiendo del frame
-        self.image = self.animation_list[self.action][self.frame_index]
-        # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
-            self.update_time = pygame.time.get_ticks()
-            self.frame_index += 1
-        # Si la animación ha terminado, reiniciar
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
 
     def update_action(self, new_action):
         # Comprueba si la acción actual es diferente a la anterior

@@ -90,3 +90,19 @@ class Entity(pygame.sprite.Sprite):
                 pirate.get_Hit(damage)
                 self.last_attack_time = pygame.time.get_ticks()
                 self.update_action(2)
+    
+    def update_animation(self):
+        ANIMATION_COOLDOWN = 60
+        if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
+            ANIMATION_COOLDOWN = 10
+        if self.action == 4:  # Si la acción es de muerte, no se mueve
+            ANIMATION_COOLDOWN = 500
+        # Actualizar imagen de la animación dependiendo del frame
+        self.image = self.animation_list[self.action][self.frame_index]
+        # Actualizar la animación
+        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index += 1
+        # Si la animación ha terminado, reiniciar
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.frame_index = 0
