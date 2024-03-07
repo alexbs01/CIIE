@@ -7,7 +7,7 @@ from entities.Entities import Entity
 class CucumberEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Cucumber')
-        self.damage = 70
+        self.damage = 15
 
     def move(self):
         if self.health > 0:
@@ -157,17 +157,7 @@ class WhaleEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
-
-    def attack(self, pirate):
-        # Ataque aleatorio basado en el tiempo
-        if random.randint(0,
-                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                pirate.get_Hit(15)  # Ahora el daño es  15
-                self.last_attack_time = pygame.time.get_ticks()
-                self.update_action(2)
-
-    # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
+        self.damage = 15
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -248,19 +238,8 @@ class badPirate(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Bad_Pirate', first_image_number=1)
         self.health = 150
+        self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
-
-    def attack(self, pirate):
-        # Ataque aleatorio basado en el tiempo
-        if random.randint(0,
-                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                pirate.get_Hit(20)  # Ahora el daño es  15
-                self.last_attack_time = pygame.time.get_ticks()
-                self.update_action(2)
-
-    # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
-
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -340,18 +319,8 @@ class Capitan(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Capitan', first_image_number=1)
         self.health = 200
+        self.damage = 20
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
-
-    def attack(self, pirate):
-        # Ataque aleatorio basado en el tiempo
-        if random.randint(0,
-                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                pirate.get_Hit(20)  # Ahora el daño es  15
-                self.last_attack_time = pygame.time.get_ticks()
-                self.update_action(2)
-
-    # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
