@@ -27,20 +27,6 @@ class CucumberEnemy(Entity):
             else:
                 self.update_action(1)
 
-    def draw(self, screen):
-
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
-                                            self.rect.centery - self.rect.height // 4, self.rect.width / 2,
-                                            self.rect.height)
-        #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2) 
-        #print('pintar')
-
-        if self.direction == 1:
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            screen.blit(flipped_image, self.rect)
-        else:
-            screen.blit(self.image, self.rect)
-
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
         self.collision_rect.x += screen_scroll
@@ -82,19 +68,6 @@ class WhaleEnemy(Entity):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
         self.damage = 15
-
-    def draw(self, screen):
-
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
-                                            self.rect.centery - self.rect.height // 4, self.rect.width / 2,
-                                            self.rect.height)
-        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
-
-        if self.direction == 1:
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            screen.blit(flipped_image, self.rect)
-        else:
-            screen.blit(self.image, self.rect)
 
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
@@ -142,17 +115,7 @@ class badPirate(Entity):
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):
-
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
-                                            self.rect.centery - self.rect.height // 4, self.rect.width / 2,
-                                            self.rect.height)
-        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
-
-        if self.direction == -1:
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            screen.blit(flipped_image, self.rect)
-        else:
-            screen.blit(self.image, self.rect)
+        return super().draw(screen, self.direction)
 
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
@@ -199,17 +162,7 @@ class Capitan(Entity):
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):
-
-        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
-                                            self.rect.centery - self.rect.height // 4, self.rect.width / 2,
-                                            self.rect.height)
-        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
-
-        if self.direction == -1:
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            screen.blit(flipped_image, self.rect)
-        else:
-            screen.blit(self.image, self.rect)
+        return super().draw(screen, self.direction)
 
     def update(self, screen_scroll):
         self.rect.x += screen_scroll
