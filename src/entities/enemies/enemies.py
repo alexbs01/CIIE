@@ -10,6 +10,24 @@ class CucumberEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Cucumber')
 
+    def move(self):
+        if self.health > 0:
+            self.rect.x += self.speed * self.direction
+            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
+
+            # Verificar si el enemigo ha alcanzado el límite de pasos
+            if self.step_count >= self.max_steps:
+                # Cambiar la dirección del movimiento
+                self.direction *= -1
+                # Reiniciar el contador de pasos
+                self.step_count = 0
+
+            # Actualizar la animación según la dirección del movimiento
+            if self.direction == 1:
+                self.update_action(1)
+            else:
+                self.update_action(1)
+    
     def ai(self, pirate):
         if self.health > 0:
             # Si el enemigo esta colisionando con el pirata, atacar
@@ -17,7 +35,7 @@ class CucumberEnemy(Entity):
                 self.attack(pirate)
             # Si el enemigo no esta cerca del pirata, moverse
             else:
-                super().move()   
+                self.move()   
 
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
@@ -161,24 +179,7 @@ class WhaleEnemy(Entity):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
 
-    def move(self):
-        if self.health > 0:
-            self.collision_rect.x += self.speed * self.direction
-            self.rect.x += self.speed * self.direction
-            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
-
-            # Verificar si el enemigo ha alcanzado el límite de pasos
-            if self.step_count >= self.max_steps:
-                # Cambiar la dirección del movimiento
-                self.direction *= -1
-                # Reiniciar el contador de pasos
-                self.step_count = 0
-
-            # Actualizar la animación según la dirección del movimiento
-            if self.direction == 1:
-                self.update_action(1)
-            else:
-                self.update_action(1)
+    
 
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
@@ -197,7 +198,7 @@ class WhaleEnemy(Entity):
             if self.collision_rect.colliderect(pirate.collision_rect):
                 self.attack(pirate)
             else:
-                self.move()
+                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -280,25 +281,6 @@ class badPirate(Entity):
         self.health = 150
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
-    def move(self):
-        if self.health > 0:
-            self.collision_rect.x += self.speed * self.direction
-            self.rect.x += self.speed * self.direction
-            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
-
-            # Verificar si el enemigo ha alcanzado el límite de pasos
-            if self.step_count >= self.max_steps:
-                # Cambiar la dirección del movimiento
-                self.direction *= -1
-                # Reiniciar el contador de pasos
-                self.step_count = 0
-
-            # Actualizar la animación según la dirección del movimiento
-            if self.direction == -1:
-                self.update_action(1)
-            else:
-                self.update_action(1)
-
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
         if random.randint(0,
@@ -316,7 +298,7 @@ class badPirate(Entity):
             if self.collision_rect.colliderect(pirate.collision_rect):
                 self.attack(pirate)
             else:
-                self.move()
+                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -398,25 +380,6 @@ class Capitan(Entity):
         self.health = 200
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
-    def move(self):
-        if self.health > 0:
-            self.collision_rect.x += self.speed * self.direction
-            self.rect.x += self.speed * self.direction
-            self.step_count += abs(self.speed)  # Actualizar el contador de pasos
-
-            # Verificar si el enemigo ha alcanzado el límite de pasos
-            if self.step_count >= self.max_steps:
-                # Cambiar la dirección del movimiento
-                self.direction *= -1
-                # Reiniciar el contador de pasos
-                self.step_count = 0
-
-            # Actualizar la animación según la dirección del movimiento
-            if self.direction == -1:
-                self.update_action(1)
-            else:
-                self.update_action(1)
-
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
         if random.randint(0,
@@ -434,7 +397,7 @@ class Capitan(Entity):
             if self.collision_rect.colliderect(pirate.collision_rect):
                 self.attack(pirate)
             else:
-                self.move()
+                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60

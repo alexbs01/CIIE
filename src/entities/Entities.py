@@ -54,6 +54,7 @@ class Entity(pygame.sprite.Sprite):
         
     def move(self):
         if self.health > 0:
+            self.collision_rect.x += self.speed * self.direction
             self.rect.x += self.speed * self.direction
             self.step_count += abs(self.speed)  # Actualizar el contador de pasos
 
