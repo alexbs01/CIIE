@@ -27,28 +27,11 @@ class CucumberEnemy(Entity):
             else:
                 self.update_action(1)
 
-    def update(self, screen_scroll):
-        self.rect.x += screen_scroll
-        self.collision_rect.x += screen_scroll
-        self.update_animation()
-        # self.check_alive()
-
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
-
 class WhaleEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
         self.damage = 15
-
-    def update(self, screen_scroll):
-        self.rect.x += screen_scroll
-        self.collision_rect.x += screen_scroll
-        self.update_animation()
-        
-        # self.check_alive()
 
 class badPirate(Entity):
     
@@ -61,11 +44,6 @@ class badPirate(Entity):
     def draw(self, screen):
         return super().draw(screen, self.direction)
 
-    def update(self, screen_scroll):
-        self.rect.x += screen_scroll
-        self.collision_rect.x += screen_scroll
-        self.update_animation()
-
 class Capitan(Entity):
     
     def __init__(self, x, y, speed, resource_manager):
@@ -76,11 +54,6 @@ class Capitan(Entity):
 
     def draw(self, screen):
         return super().draw(screen, self.direction)
-
-    def update(self, screen_scroll):
-        self.rect.x += screen_scroll
-        self.collision_rect.x += screen_scroll
-        self.update_animation()
 
 class Spike(pygame.sprite.Sprite):
     def __init__(self, x, y, resource_manager):

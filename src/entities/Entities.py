@@ -153,3 +153,9 @@ class Entity(pygame.sprite.Sprite):
         
     def register(self, observer):
         self.observers.append(observer)
+    
+    def update(self, screen_scroll):
+        self.rect.x += screen_scroll
+        self.collision_rect.x += screen_scroll
+        self.update_animation()
+        # self.check_alive()
