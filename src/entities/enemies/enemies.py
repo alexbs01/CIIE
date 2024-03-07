@@ -179,8 +179,6 @@ class WhaleEnemy(Entity):
         super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
         self.health = 20
 
-    
-
     def attack(self, pirate):
         # Ataque aleatorio basado en el tiempo
         if random.randint(0,
@@ -191,14 +189,6 @@ class WhaleEnemy(Entity):
                 self.update_action(2)
 
     # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
-
-    def ai(self, pirate):
-        if self.health > 0:
-            # Si el enemigo esta cerca del pirata, atacar
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                self.attack(pirate)
-            else:
-                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -292,13 +282,6 @@ class badPirate(Entity):
 
     # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
 
-    def ai(self, pirate):
-        if self.health > 0:
-            # Si el enemigo esta cerca del pirata, atacar
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                self.attack(pirate)
-            else:
-                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
@@ -390,14 +373,6 @@ class Capitan(Entity):
                 self.update_action(2)
 
     # quiero hacer una ia que mueva al enemigo 10 pixeles a la derecha y 10 a la izquierda, y establecer un ranngo de observacion de 100
-
-    def ai(self, pirate):
-        if self.health > 0:
-            # Si el enemigo esta cerca del pirata, atacar
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                self.attack(pirate)
-            else:
-                super().move()
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60

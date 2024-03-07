@@ -70,3 +70,12 @@ class Entity(pygame.sprite.Sprite):
                 self.update_action(1)
             else:
                 self.update_action(1)
+    
+    def ai(self, pirate):
+        if self.health > 0:
+            # Si el enemigo esta colisionando con el pirata, atacar
+            if self.collision_rect.colliderect(pirate.collision_rect):
+                self.attack(pirate)
+            # Si el enemigo no esta cerca del pirata, moverse
+            else:
+                self.move()
