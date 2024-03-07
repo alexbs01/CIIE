@@ -2,7 +2,7 @@ import pygame
 import os
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed, resource_manager, enemy): # Cucumber
+    def __init__(self, x, y, speed, resource_manager, enemy, first_image_number=0): # Cucumber
         pygame.sprite.Sprite.__init__(self)
         self.original_x = x
         self.original_y = y
@@ -31,7 +31,7 @@ class Entity(pygame.sprite.Sprite):
 
             # Contamos n de ficheros en la carpeta
             n_frames = len(os.listdir(f'assets/enemies/{enemy}/{animation}'))
-            for i in range(n_frames):
+            for i in range(first_image_number, n_frames):
                 img_path = f'assets/enemies/{enemy}/{animation}/{i}.png'
                 img = self.resource_manager.load_image(img_path, img_path)
                 if img is not None:  # Asegurarse de que la imagen se ha cargado correctamente
