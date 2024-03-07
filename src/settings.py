@@ -30,6 +30,7 @@ FPS = 60
 
 # AUDIO
 BACKGROUND_MUSIC_VOLUME = 0.05
+EFFECTS_VOLUME = 0.1
 
 ROWS = 20 # Filas mapa 1
 COLS = 150 # Columnas mapa 1

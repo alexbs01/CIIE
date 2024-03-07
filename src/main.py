@@ -33,6 +33,7 @@ musica.set_volume(BACKGROUND_MUSIC_VOLUME)
 
 # Cargar el sonido de la espada
 espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
+espada.set_volume(EFFECTS_VOLUME)
 
 # Variable global que usaremos para manipular los niveles del juego
 global level_num
