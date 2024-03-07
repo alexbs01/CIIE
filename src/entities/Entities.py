@@ -86,6 +86,21 @@ class Entity(pygame.sprite.Sprite):
             # Si el enemigo no esta cerca del pirata, moverse
             else:
                 self.move()
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer.update_health(self.health)
+
+    def get_Hit(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+        if self.health == 0:
+            # Quiero que el sprite del enemigo desaparezca
+            self.update_action(4)
+        self.notify_observers()
+        self.move_back()
+        print(self.health)
     
     def attack(self, pirate, damage):
         # Ataque aleatorio basado en el tiempo
@@ -132,3 +147,5 @@ class Entity(pygame.sprite.Sprite):
             screen.blit(flipped_image, self.rect)
         else:
             screen.blit(self.image, self.rect)
+
+    

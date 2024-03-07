@@ -33,21 +33,6 @@ class CucumberEnemy(Entity):
         self.update_animation()
         # self.check_alive()
 
-    def get_Hit(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
-        if self.health == 0:
-            # Quiero que el sprite del enemigo desaparezca
-            self.update_action(4)
-        self.notify_observers()
-        self.move_back()
-        print(self.health)
-
-    def kill(self):  # Mirar como quitarlo de verdad, aqui solo lo escondo
-        self.rect.x = SCREEN_WIDTH + 100
-        self.rect.y = SCREEN_WIDTH + 100
-
     def update_health(self, health):
         self.health = health
 
@@ -71,30 +56,11 @@ class WhaleEnemy(Entity):
         
         # self.check_alive()
 
-    def get_Hit(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
-        if self.health == 0:
-            # Quiero que el sprite del enemigo desaparezca
-            self.update_action(4)
-        self.notify_observers()
-        self.move_back()
-        print(self.health)
-
-    def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
-        self.rect.x = SCREEN_WIDTH + 100
-        self.rect.y = SCREEN_WIDTH + 100
-
     def update_health(self, health):
         self.health = health
 
     def register(self, observer):
         self.observers.append(observer)
-
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
 
 class badPirate(Entity):
     
@@ -111,32 +77,13 @@ class badPirate(Entity):
         self.rect.x += screen_scroll
         self.collision_rect.x += screen_scroll
         self.update_animation()
-        
 
-    def get_Hit(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
-        if self.health == 0:
-            # Quiero que el sprite del enemigo desaparezca
-            self.update_action(4)
-        self.notify_observers()
-        self.move_back()
-        print(self.health)
-
-    def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
-        self.rect.x = SCREEN_WIDTH + 100
-        self.rect.y = SCREEN_WIDTH + 100
 
     def update_health(self, health):
         self.health = health
 
     def register(self, observer):
         self.observers.append(observer)
-
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
 
 class Capitan(Entity):
     
@@ -153,32 +100,12 @@ class Capitan(Entity):
         self.rect.x += screen_scroll
         self.collision_rect.x += screen_scroll
         self.update_animation()
-        
-
-    def get_Hit(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
-        if self.health == 0:
-            # Quiero que el sprite del enemigo desaparezca
-            self.update_action(4)
-        self.notify_observers()
-        self.move_back()
-        print(self.health)
-
-    def kill(self):  # Mirar cómo quitarlo de verdad, aquí solo lo escondo
-        self.rect.x = SCREEN_WIDTH + 100
-        self.rect.y = SCREEN_WIDTH + 100
 
     def update_health(self, health):
         self.health = health
 
     def register(self, observer):
         self.observers.append(observer)
-
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
 
 class Spike(pygame.sprite.Sprite):
     def __init__(self, x, y, resource_manager):
