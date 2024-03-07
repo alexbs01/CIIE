@@ -142,11 +142,19 @@ class Entity(pygame.sprite.Sprite):
                                             self.rect.height)
         #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2) 
 
-        if self.direction == direction:
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            screen.blit(flipped_image, self.rect)
-        else:
-            screen.blit(self.image, self.rect)
+        if direction == 1:
+            if self.direction == 1:
+                flipped_image = pygame.transform.flip(self.image, True, False)
+                screen.blit(flipped_image, self.rect)
+            else:
+                screen.blit(self.image, self.rect)
+                
+        elif direction == -1:
+            if self.direction == -1:
+                flipped_image = pygame.transform.flip(self.image, True, False)
+                screen.blit(flipped_image, self.rect)
+            else:
+                screen.blit(self.image, self.rect)
 
     def update_health(self, health):
         self.health = health
