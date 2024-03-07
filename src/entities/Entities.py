@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self, x, y, speed, resource_manager, enemy, first_image_number=0): # Cucumber
@@ -10,6 +11,7 @@ class Entity(pygame.sprite.Sprite):
         self.max_steps = 120
         self.observers = []
         self.health = 100
+        self.damage = 10
         self.speed = speed
         self.direction = 1
         self.resource_manager = resource_manager
@@ -75,7 +77,16 @@ class Entity(pygame.sprite.Sprite):
         if self.health > 0:
             # Si el enemigo esta colisionando con el pirata, atacar
             if self.collision_rect.colliderect(pirate.collision_rect):
-                self.attack(pirate)
+                self.attack(pirate, self.damage)
             # Si el enemigo no esta cerca del pirata, moverse
             else:
                 self.move()
+    
+    def attack(self, pirate, damage):
+        # Ataque aleatorio basado en el tiempo
+        if random.randint(0,
+                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
+            if self.collision_rect.colliderect(pirate.collision_rect):
+                pirate.get_Hit(damage)
+                self.last_attack_time = pygame.time.get_ticks()
+                self.update_action(2)

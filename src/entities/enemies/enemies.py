@@ -4,11 +4,10 @@ import random
 from settings import SCREEN_WIDTH
 from entities.Entities import Entity
 
-
-
 class CucumberEnemy(Entity):
     def __init__(self, x, y, speed, resource_manager):
         super().__init__(x, y, speed, resource_manager, 'Cucumber')
+        self.damage = 70
 
     def move(self):
         if self.health > 0:
@@ -27,17 +26,6 @@ class CucumberEnemy(Entity):
                 self.update_action(1)
             else:
                 self.update_action(1)
-                
-    def attack(self, pirate):
-        # Ataque aleatorio basado en el tiempo
-        if random.randint(0,
-                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
-            if self.collision_rect.colliderect(pirate.collision_rect):
-                pirate.get_Hit(15)  # Ahora el daño es  15
-                self.last_attack_time = pygame.time.get_ticks()
-                self.update_action(2)
-
-            
 
     def update_animation(self):
         ANIMATION_COOLDOWN = 60
