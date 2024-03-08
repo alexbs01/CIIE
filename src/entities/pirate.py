@@ -4,6 +4,7 @@ import pygame
 import os
 from settings import *
 from Observer import Observer
+from KeyboardControl import KeyboardControl
 
 class Pirate(pygame.sprite.Sprite, Observer):
     def __init__(self, char_type, x, y, resource_manager):
@@ -32,6 +33,8 @@ class Pirate(pygame.sprite.Sprite, Observer):
 
         self.got_key = False
         self.got_sword = False
+        
+        self.control = KeyboardControl()
 
         animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
 
@@ -50,6 +53,9 @@ class Pirate(pygame.sprite.Sprite, Observer):
         self.rect.center = (x, y)
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4,
+                                          self.rect.centery - self.rect.height / 2, self.rect.width / 2,
+                                          self.rect.height)
 
 
     # Dibujar el pirata en la pantalla
@@ -64,20 +70,23 @@ class Pirate(pygame.sprite.Sprite, Observer):
         
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
-    def move(self, move_left, move_right, world, bg_scroll):
+    def move(self, obstacle_list, bg_scroll):
 
         screen_scroll = 0
         # Resetear variables de movimiento
         dx = 0
         dy = 0
+        
+        keys = pygame.key.get_pressed() 
 
-        if move_left:
+
+        if self.control.left(keys):
             dx -= self.speed
             self.flip = True
             self.direction = -1
 
 
-        if move_right:
+        if self.control.right(keys):
             dx += self.speed
             self.flip = False
             self.direction = 1
@@ -98,7 +107,7 @@ class Pirate(pygame.sprite.Sprite, Observer):
         dy += self.vel_y
 
         # Comprobamos las colisiones del pirata
-        dx,dy = self.check_collision(dx, dy, world.obstacle_list)
+        dx,dy = self.check_collision(dx, dy, obstacle_list)
 
         # Mira que no pueda pasar mas alla de la pantalla
         if self.collision_rect.left + dx < 0 or self.collision_rect.right + dx > SCREEN_WIDTH:
@@ -137,7 +146,8 @@ class Pirate(pygame.sprite.Sprite, Observer):
                     dy = tile[1].top - self.collision_rect.bottom
         return dx,dy
 
-    def update(self, screen_scroll):
+    def update(self, screen_scroll, obstacle_list, bg_scroll):
+        self.move(obstacle_list, bg_scroll)
         self.update_animation()
         self.rect.x += screen_scroll
         self.rect.x -= screen_scroll

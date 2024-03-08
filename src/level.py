@@ -130,21 +130,25 @@ class Level(Escena):
     def draw (self, screen):
 
         screen.fill(BG2)
-        # Controla el scroll de los tiles
-        #world.draw(SCREEN, screen_scroll)
-        self.player.draw(screen)
-        self.item_blocks.draw(screen)
-        self.item_boots.draw(screen)
-        self.item_door.draw(screen)
-        self.enemy_group.draw(screen)
-        self.spikes_group.draw(screen)
-        self.item_boxes_Group.draw(screen)
 
         for tile in self.obstacle_list:
             screen.blit(tile[0], tile[1])
 
         for tile in self.bg_list:
             screen.blit(tile[0], tile[1])
+
+        self.item_blocks.draw(screen)
+        self.item_boots.draw(screen)
+        self.item_door.draw(screen)
+        self.spikes_group.draw(screen)
+        self.item_boxes_Group.draw(screen)
+        # Se pinta en este orden para que el jugador quede por delante de los objetos 
+        # anteriores, pero detras de los enemigos
+
+        self.player.draw(screen)
+        self.enemy_group.draw(screen)
+
+
 
         # Muestra barra de salud por encima de los tiles
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
@@ -161,7 +165,7 @@ class Level(Escena):
             tile[1].x += screen_scroll
 
         # Actualiza el jugador
-        self.player.update(screen_scroll)
+        self.player.update(screen_scroll,self.obstacle_list,0)
         self.enemy_group.update(screen_scroll)
         self.spikes_group.update(screen_scroll)
         self.item_boxes_Group.update(screen_scroll)
