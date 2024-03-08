@@ -20,7 +20,7 @@ class Director():
         
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Game")
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         
         # Pila para almacenar las escenas
         self.stack = []

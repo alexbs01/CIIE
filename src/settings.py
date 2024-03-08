@@ -12,6 +12,10 @@ PATH_LEVEL_2 = Path("levels/level2_data.csv")
 PATH_LEVEL_3 = Path("levels/level3_data.csv")
 
 PATH_BG_MENU = Path("assets/menu/2523.jpg")
+PATH_PLAY_BOTTON = Path("assets/menu/Play Rect.png")
+PATH_CONFIG_BOTTON = Path("assets/menu/Options Rect.png")
+PATH_EXIT_BOTTON = Path("assets/menu/Quit Rect.png")
+
 
 INITIAL_LEVEL = 1
 MAX_LEVELS = 3

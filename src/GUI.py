@@ -33,39 +33,45 @@ class GUI():
             raise NotImplemented("Tiene que implementar el metodo accion.")
         
 
-    class Boton:
-        def __init__(self, pantalla, nombreImagen, posicion):
+    class Boton(ElementoGUI):
+        def __init__(self, pantalla, img, posicion):
             # Se carga la imagen del boton
-            self.imagen = pygame.image.load(nombreImagen)
-            self.imagen = pygame.transform.scale(self.imagen, (20, 20))
-            
+            self.imagen = img
+            self.imagen = pygame.transform.scale(self.imagen, (350, 70))
             # Se llama al método de la clase padre con el rectángulo
-            self.rect = self.imagen.get_rect()
-            self.rect.topleft = posicion
-
-            self.pantalla = pantalla
+            GUI.ElementoGUI.__init__(self, pantalla, self.imagen.get_rect())
+            # Se coloca el rectangulo en su posicion
+            self.establecerPosicion(posicion)
 
         def draw(self, pantalla):
             pantalla.blit(self.imagen, self.rect)
 
         def check_for_input(self, position):
-            if self.rect.collidepoint(position):
-                return True
-            return False
+            return self.rect.collidepoint(position)
 
         def change_color(self, position):
             pass
 
     class BotonJugar(Boton):
         def __init__(self, pantalla):
-            super().__init__(pantalla, 'boton_verde.png', (580, 530))
+            self.img = pygame.image.load(PATH_PLAY_BOTTON)
+            super().__init__(pantalla, self.img, (220, 250))
 
         def accion(self):
             self.pantalla.menu.ejecutarJuego()
 
+    class BotonConfig(Boton):
+        def __init__(self, pantalla):
+            self.img = pygame.image.load(PATH_CONFIG_BOTTON)
+            super().__init__(pantalla, self.img, (220, 400))
+
+        def accion(self):
+            pass
+
     class BotonSalir(Boton):
         def __init__(self, pantalla):
-            super().__init__(pantalla, 'boton_rojo.png', (580, 560))
+            self.img = pygame.image.load(PATH_EXIT_BOTTON)
+            super().__init__(pantalla, self.img, (220, 550))
 
         def accion(self):
             self.pantalla.menu.salirPrograma()
@@ -86,32 +92,34 @@ class GUI():
     class TitleText(TextoGUI):
         def __init__(self, pantalla):
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'MENU', (260, 250))
+            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'MENU', (320, 100))
 
     class TextoJugar(TextoGUI):
         def __init__(self, pantalla):
             # La fuente la debería cargar el estor de recursos
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, (0, 0, 0), 'Play', (400, 250))
+            GUI.TextoGUI.__init__(self, pantalla, font, (0, 0, 0), 'Play', (350, 250))
 
         def accion(self):
             self.pantalla.menu.ejecutarJuego()
-
-    class TextoSalir(TextoGUI):
-        def __init__(self, pantalla):
-            # La fuente la debería cargar el estor de recursos
-            font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Salir', (400, 550))
-
-        def accion(self):
-            self.pantalla.menu.salirPrograma()
 
 
     class ConfigText(TextoGUI):
         def __init__(self, pantalla):
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Configuración', (400, 400))
+            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Configuración', (230, 400))
             
+
+    class TextoSalir(TextoGUI):
+        def __init__(self, pantalla):
+            # La fuente la debería cargar el estor de recursos
+            font = pygame.font.Font("assets/inmortal.ttf", 50)
+            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Salir', (350, 550))
+
+        def accion(self):
+            self.pantalla.menu.salirPrograma()
+
+
     class PantallaGUI:
         def __init__(self, menu):
             self.menu = menu
@@ -119,29 +127,28 @@ class GUI():
             self.image = pygame.image.load(PATH_BG_MENU)
             self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH, SCREEN_HEIGHT))
             # Se tiene una lista de elementos GUI
-            self.elementosGUI = []
+            self.Elementos_GUI = []
 
         def eventos(self, lista_eventos):
 
             for evento in lista_eventos:
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     self.elementoClic = None
-                    for elemento in self.elementosGUI:
+                    for elemento in self.Elementos_GUI:
                         if elemento.posicionEnElemento(evento.pos):
                             self.elementoClic = elemento
 
             if evento.type == pygame.MOUSEBUTTONUP:
-                for elemento in self.elementosGUI:
+                for elemento in self.Elementos_GUI:
                     if elemento.posicionEnElemento(evento.pos):
                         if (elemento == self.elementoClic):
                             elemento.accion()
 
         def draw(self, screen):
-            # Primeiro debúxase a imaxe de fondo
             screen.blit(self.image, self.image.get_rect())
             # Despois debúxanse os botóns
-            #for element in self.GUI_elements:
-            #    element.draw(screen)
+            for element in self.Elementos_GUI:
+                element.draw(screen)
 
     class PantallaInicial(PantallaGUI):
 
@@ -153,10 +160,19 @@ class GUI():
             exit_text = GUI.TextoSalir(self)
             title_text = GUI.TitleText(self)
             config_text = GUI.ConfigText(self)
-            #self.GUI_elements.append(title_text)
-            #self.GUI_elements.append(play_text)
-            #self.GUI_elements.append(config_text)
-            #self.GUI_elements.append(exit_text)
+
+            play_boton = GUI.BotonJugar(self)
+            config_boton = GUI.BotonConfig(self)
+            exit_boton = GUI.BotonSalir(self)
+
+            self.Elementos_GUI.append(play_text)
+            self.Elementos_GUI.append(exit_text)
+            self.Elementos_GUI.append(title_text)
+            self.Elementos_GUI.append(config_text)
+
+            self.Elementos_GUI.append(play_boton)
+            self.Elementos_GUI.append(config_boton)
+            self.Elementos_GUI.append(exit_boton)
 
             #Tamén creamos unha lista cos elementos que queremos que sexan interactivos
             #self.GUI_interactive_elements.append(play_text)
