@@ -41,9 +41,10 @@ class Director():
             
             scene.events(pygame.event.get())
             
+            scene.draw(self.screen)
+
             scene.update(tiempo_pasado)
             
-            scene.draw(self.screen)
             pygame.display.flip()
 
     # Ejecuta la escena que este en la cima de la pila

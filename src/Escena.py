@@ -12,8 +12,8 @@ class Escena:
     def update(self, *args):
         raise NotImplemented("Tiene que implementar el metodo update.")
     
-    def eventos(self, *args):
+    def events(self, *args):
         raise NotImplemented("Tiene que implementar el metodo eventos.")
     
-    def dibujar(self, pantalla):
+    def draw(self, pantalla):
         raise NotImplemented("Tiene que implementar el metodo dibujar.")
