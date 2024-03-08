@@ -39,26 +39,8 @@ class Collectables(pygame.sprite.Sprite):
     def update(self,screen_scroll):
         self.rect.x += screen_scroll
         # Confirmar que el pirata coge el item
-        if pygame.sprite.collide_rect(self, self.player):
-            if self.item_type == 'Health':
-                if self.player.health <  PLAYER_HEALTH:
-                    self.player.health +=  HEALTH_AMOUNT
-                    if self.player.health >  PLAYER_HEALTH:
-                        self.player.health = PLAYER_HEALTH
-            elif self.item_type == 'Key':
-                self.player.got_key = True
-                print('Has cogido una llave')
-            elif self.item_type == 'Berries':
-                print('Has cogido una moneda')
-                self.player.points += POINTS_AMOUNT
-            elif self.item_type == 'Boots':
-                print('Has cogido unas botas')
-                self.player.max_jumps +=  1
-            elif self.item_type == 'Sword':
-                print('Has cogido una espada mejor')
-                self.player.got_sword = True
 
-            self.kill()
+        
     def draw(self, SCREEN):
         SCREEN.blit(self.image, self.rect)
         

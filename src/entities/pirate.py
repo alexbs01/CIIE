@@ -3,8 +3,9 @@ from random import random
 import pygame
 import os
 from settings import *
+from Observer import Observer
 
-class Pirate(pygame.sprite.Sprite):
+class Pirate(pygame.sprite.Sprite, Observer):
     def __init__(self, char_type, x, y, resource_manager):
         pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
@@ -199,6 +200,14 @@ class Pirate(pygame.sprite.Sprite):
         for observer in self.observers:
             observer.update_health(self.health)
 
+    def set_stats_dto(self, dto):
+        if dto is not None:
+            if dto.get_vida() > 0:
+                self.health = dto.get_vida()
+                self.points = dto.get_puntos() 
+            else: # En caso de haber muerto
+                self.vida = self.max_health
+                self.puntos = 0
 
     def move_back(self, distance=20):
         # Mover hacia atrás

@@ -14,6 +14,7 @@ class Ui:
         img = font.render(text, True, text_col)
         self.display_surface.blit(img, (x,y))
 
+    
     class HealthObserver:
 
         def __init__(self,x,y, display_surface, health, max_health):
