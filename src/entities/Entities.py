@@ -20,6 +20,8 @@ class Entity(pygame.sprite.Sprite):
         self.action = 0
         self.update_time = pygame.time.get_ticks()
         self.last_attack_time = 0
+        self.attack_cooldown = 2000
+        self.probability_to_hit = 5
 
         self.move_distance = 20  # Número de píxeles para moverse aleatoriamente
         self.random_move_speed = 0.5  # Velocidad de movimiento aleatorio más lenta
@@ -105,7 +107,7 @@ class Entity(pygame.sprite.Sprite):
     def attack(self, pirate, damage):
         # Ataque aleatorio basado en el tiempo
         if random.randint(0,
-                            100) < 5 and pygame.time.get_ticks() - self.last_attack_time > 2000:  # 5% de probabilidad de atacar y cada  2 segundos
+                            100) < self.probability_to_hit and pygame.time.get_ticks() - self.last_attack_time > self.attack_cooldown:  # 5% de probabilidad de atacar y cada  2 segundos
             if self.collision_rect.colliderect(pirate.collision_rect):
                 pirate.get_Hit(damage)
                 self.last_attack_time = pygame.time.get_ticks()

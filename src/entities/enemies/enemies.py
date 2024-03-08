@@ -7,8 +7,12 @@ from entities.Entities import Entity
 class CucumberEnemy(Entity):
     def __init__(self, x, y, resource_manager):
         super().__init__(x, y, resource_manager, 'Cucumber')
+        self.health = CUCUMBER_HEALTH
         self.damage = CUCUMBER_DAMAGE
         self.speed = CUCUMBER_SPEED
+        self.attack_cooldown = CUCUMBER_ATTACK_COOLDOWN
+        self.probability_to_hit = CUCUMBER_PROBABILITY_TO_HIT
+        
 
     def move(self):
         if self.health > 0:
@@ -34,6 +38,8 @@ class WhaleEnemy(Entity):
         self.health = WHALE_HEALTH
         self.damage = WHALE_DAMAGE
         self.speed = WHALE_SPEED
+        self.attack_cooldown = WHALE_ATTACK_COOLDOWN
+        self.probability_to_hit = WHALE_PROBABILITY_TO_HIT
 
 class badPirate(Entity):
     
@@ -43,6 +49,8 @@ class badPirate(Entity):
         self.damage = BAD_PIRATE_DAMAGE
         self.speed = BAD_PIRATE_SPEED
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
+        self.attack_cooldown = BAD_PIRATE_ATTACK_COOLDOWN
+        self.probability_to_hit = BAD_PIRATE_PROBABILITY_TO_HIT
 
     def draw(self, screen):
         return super().draw(screen, -1)
@@ -54,7 +62,9 @@ class Capitan(Entity):
         self.health = CAPITAN_HEALTH
         self.damage = CAPITAN_DAMAGE
         self.speed = CAPITAN_SPEED
-        self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
+        self.direction = -1
+        self.attack_cooldown = CAPITAN_ATTACK_COOLDOWN
+        self.probability_to_hit = CAPITAN_PROBABILITY_TO_HIT
 
     def draw(self, screen):
         return super().draw(screen, -1)
