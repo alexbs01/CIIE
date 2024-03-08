@@ -42,7 +42,7 @@ class badPirate(Entity):
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):
-        return super().draw(screen, self.direction)
+        return super().draw(screen, -1)
 
 class Capitan(Entity):
     
@@ -53,7 +53,7 @@ class Capitan(Entity):
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):
-        return super().draw(screen, self.direction)
+        return super().draw(screen, -1)
 
 class Spike(pygame.sprite.Sprite):
     def __init__(self, x, y, resource_manager):
