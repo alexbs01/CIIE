@@ -3,6 +3,7 @@ from Escena import Escena
 from GUI import GUI
 from world_generation.ResourceManager import ResourceManager
 from settings import *
+from level import Level1
 
 class Menu2(Escena):
 
@@ -16,6 +17,7 @@ class Menu2(Escena):
 
         # Creamos las pantallas que vamos a tener
         # y las metemos en la lista
+        # en nuestro caso solo tenemos 1
         self.listaPantallas.append(GUI.PantallaInicial(self))
 
         # En que pantalla estamos actualmente
@@ -53,9 +55,12 @@ class Menu2(Escena):
 
     # Boton play del menu
     def ejecutarJuego(self):
-        escena = Escena(self.director)
-        self.director.stack_scene(escena)
+        # Creamos el nivel 1, le pasamos status None porque no tiene datos de otros niveles
+        level = Level1(self.director, None)
 
+        self.director.stack_scene(level)
+
+    # Si al final agregamos menu configuracion sería aqui donde pantallaActual toma otro valor
     # Boton configuración del menu        
     #def mostrarPantallaConfiguracion(self):
         # self.pantallaActual = ...

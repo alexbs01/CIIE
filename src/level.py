@@ -2,16 +2,16 @@ import pygame
 from settings import *
 from Escena import Escena
 from items.Collectables import Collectables
-from entities import *
-from Ui import Ui
+from entities.enemies import enemies
+from entities.Ui import Ui
+from items.Interactives import Interactive_obj
 
 class Level(Escena):
 
-    def __init__(self, director):
+    def __init__(self, director, player_status):
         Escena.__init__(self, director)
         self.obstacle_list = []
         self.bg_list = []
-
        
        # Grupos de Sprites
         self.item_boxes_Group = pygame.sprite.Group()
@@ -22,6 +22,11 @@ class Level(Escena):
         self.item_blocks = pygame.sprite.Group()
 
         self.player = None
+        # CREAR METODO set_status en clase pirate, que reciba un status 
+        # y haga self.health = status.health y self.points = status.points
+        # creo que hay que crear clase status
+        self.player.set_status = player_status
+
 
         #Crea un objecto de tipo UI 
         self.ui = Ui()
@@ -46,13 +51,13 @@ class Level(Escena):
                 17: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, 1.25, self.player)),  # Objeto recogible: Moneda
                 18: lambda x, y: self.item_boots.add(Collectables.Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3, 2.25, self.player)),  # Objeto recogible: Botas
                 19: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, 1.25, self.player)),  # Objeto recogible: Salud
-                13: lambda x, y: self.enemy_group.add(Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Capitán
-                15: lambda x, y: self.enemy_group.add(badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Pirata malo
-                16: lambda x, y: self.enemy_group.add(CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Cucumber
-                20: lambda x, y: self.spikes_group.add(Spike(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Obstáculo: Pinchos
-                21: lambda x, y: self.enemy_group.add(WhaleEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Ballena
-                12: lambda x, y: (self.item_blocks.add(Interactives.Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
-                24: lambda x, y: self.item_door.add(Interactives.Interactive_obj.Door(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Objeto interactivo: Puerta
+                13: lambda x, y: self.enemy_group.add(enemies.Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Capitán
+                15: lambda x, y: self.enemy_group.add(enemies.badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Pirata malo
+                16: lambda x, y: self.enemy_group.add(enemies.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Cucumber
+                20: lambda x, y: self.spikes_group.add(enemies.Spike(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Obstáculo: Pinchos
+                21: lambda x, y: self.enemy_group.add(enemies.WhaleEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.resource_manager)),  # Enemigo: Ballena
+                12: lambda x, y: (self.item_blocks.add(enemies.Interactives.Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
+                24: lambda x, y: self.item_door.add(enemies.Interactives.Interactive_obj.Door(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Objeto interactivo: Puerta
             }
 
 
@@ -83,14 +88,15 @@ class Level(Escena):
                 if event.key == pygame.K_d:
                     move_right = True
                 if event.key == pygame.K_w:
-                    player.jump = True
+                    self.player.jump = True
                 if event.key == pygame.K_SPACE:
-                    player.attack = True
+                    self.player.attack = True
                 if event.type == pygame.K_ESCAPE: # no entiendo este if no seria key 
                     run = False
                 if event.key == pygame.K_p:
-                    pause = Pause(self.director)
-                    self.director.stack_scene(pause)
+                    pass
+                    #pause = Pause(self.director)
+                    #self.director.stack_scene(pause)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
@@ -98,20 +104,21 @@ class Level(Escena):
                 if event.key == pygame.K_d:
                     move_right = False
                 if event.key == pygame.K_SPACE:
-                    player.attack = False
+                    self.player.attack = False
         
-        def draw (self):
+        def draw (self, data):
 
-            SCREEN.fill(BG2)
+            screen.fill(BG2)
             # Controla el scroll de los tiles
             world.draw(SCREEN, screen_scroll)
 
+            process_data(data)
             # Muestra barra de salud por encima de los tiles
-            health_observer.update_health(player.health)
+            health_observer.update_health(self.player.health)
             title_font = pygame.font.Font("assets/inmortal.ttf", 25)
 
-            ui.draw_text('Vida', title_font, WHITE, 50, 15)
-            ui.draw_text('Berries: ' + str(player.points), title_font, WHITE, 50, 80)
+            Ui.draw_text('Vida', title_font, WHITE, 50, 15)
+            Ui.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
 
         def update(self,screen_scroll):
             # Actualiza el jugador
@@ -125,30 +132,69 @@ class Level(Escena):
 
 
 class Level1(Level):
-    def __init__(self, director,getterAndSetter):
-        super().__init__(director)
+    def __init__(self, director, player_status):
+        super().__init__(director, player_status)
 
         self.csv_path1 = PATH_LEVEL_1
         
-        self.getterAndSetter = getterAndSetter
+    def notify(self,player):
+
+        if player.health <= 0:
+            #dead = Final(self.director, 0, self.player.points)
+            self.director.stack_scene(Level1(self.director, self.getterAndSetter))
+            #self.director.stack_scene(dead)
+
+        if player.got_key and Interactive_obj.Door.open:
+            level = Level2(self.director, self.getterAndSetter)
+            self.director.stack_scene(level)
+            
+            
+            # añadirlo a la pila
+    
+
+class Level2(Level):
+
+    def __init__(self, director, player_status):
+        super().__init__(director, player_status)
+
+        self.csv_path1 = PATH_LEVEL_2
 
     def notify(self,player):
 
         if player.health <= 0:
-            dead = Final(self.director, 0, self.player.points)
-            self.director.stack_scene(Level1(self.director, self.getterAndSetter))
-            self.director.stack_scene(dead)
+            #dead = Final(self.director, 0, self.player.points)
+            self.director.stack_scene(Level2(self.director, self.getterAndSetter))
+            #self.director.stack_scene(dead)
 
-        if player.got_key and Door.open:
-            level = Level2(self.director, self.getterAndSetter)
+        if player.got_key and Interactive_obj.Door.open:
+            level = Level3(self.director, self.getterAndSetter)
             self.director.stack_scene(level)
             
             
             # añadirlo a la pila
 
 
+class Level3(Level):
 
-        
+    def __init__(self, director, player_status):
+        super().__init__(director, player_status)
+
+        self.csv_path1 = PATH_LEVEL_3
+
+    def notify(self,player):
+
+        if player.health <= 0:
+            #dead = Final(self.director, 0, self.player.points)
+            self.director.stack_scene(Level3(self.director, self.getterAndSetter))
+            #self.director.stack_scene(dead)
+
+        if player.got_key and Interactive_obj.Door.open:
+            level = Level2(self.director, self.getterAndSetter)
+            self.director.stack_scene(level)
+            
+            
+            # añadirlo a la pila
+
         
 
         
