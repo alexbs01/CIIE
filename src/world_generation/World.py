@@ -26,11 +26,11 @@ class World():
 
         # Diccionario de Entidades asociadas a su valor de tile
         tile_actions = {
-            11: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT, 1.5, self.player)),  # Objeto recogible: Espada
-            14: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT, 0.25, self.player)),  # Objeto recogible: Llave
-            17: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, 1.25, self.player)),  # Objeto recogible: Moneda
-            18: lambda x, y: self.item_boots.add(Collectables.Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3, 2.25, self.player)),  # Objeto recogible: Botas
-            19: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, 1, self.player)),  # Objeto recogible: Salud
+            11: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Espada
+            14: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Llave
+            17: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Moneda
+            18: lambda x, y: self.item_boots.add(Collectables.Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3, self.player)),  # Objeto recogible: Botas
+            19: lambda x, y: self.item_boxes_Group.add(Collectables.Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Salud
             13: lambda x, y: self.enemy_group.add(Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Capitán
             15: lambda x, y: self.enemy_group.add(badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Pirata malo
             16: lambda x, y: self.enemy_group.add(CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Cucumber

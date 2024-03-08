@@ -1,12 +1,12 @@
 import pygame
 from settings import *
 
-# Cargar imagenes
-health_box_img = pygame.image.load('assets/items/Health/0.png')
-key_box_img = pygame.image.load('assets/items/Keys/0.png')
-berries_box_img = pygame.image.load('assets/items/gold/0.png')
-boots_box_img = pygame.image.load('assets/items/boots/0.png')
-sword_box_img = pygame.image.load('assets/items/sword/0.png') # CAMBIAR POR UNA IMAGEN DE ESPADA MINECRAFT
+# Load images
+health_box_img = pygame.image.load(PATH_ASSET_HEALTH)
+key_box_img = pygame.image.load(PATH_ASSET_KEY)
+berries_box_img = pygame.image.load(PATH_ASSET_BERRIES)
+boots_box_img = pygame.image.load(PATH_ASSET_BOOTS)
+sword_box_img = pygame.image.load(PATH_ASSET_SWORD)
 
 item_boxes = {
     'Health': health_box_img,
@@ -16,13 +16,22 @@ item_boxes = {
     'Sword': sword_box_img
 }
 
+item_scales = {
+    'Health': HEALTH_SCALE,
+    'Key': KEY_SCALE,
+    'Berries': BERRIES_SCALE,
+    'Boots': BOOTS_SCALE,
+    'Sword': SWORD_SCALE
+}
+
 class Collectables(pygame.sprite.Sprite):
-    def __init__(self, item_type, x, y, scale, player=None):
+    def __init__(self, item_type, x, y, player=None):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
+        self.scale = item_scales[self.item_type]
         self.image = item_boxes[self.item_type]
         self.image = pygame.transform.scale(self.image,
-                                            (int(self.image.get_width() * scale), int(self.image.get_height() * scale)))
+                                            (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale)))
         self.rect = self.image.get_rect()
         self.rect.midtop = (x + TILE_SIZE //  2, y + (TILE_SIZE - self.image.get_height()))
         self.player = player
@@ -32,16 +41,16 @@ class Collectables(pygame.sprite.Sprite):
         # Confirmar que el pirata coge el item
         if pygame.sprite.collide_rect(self, self.player):
             if self.item_type == 'Health':
-                if self.player.health <  100:
-                    self.player.health +=  25
-                    if self.player.health >  100:
-                        self.player.health = 100
+                if self.player.health <  PLAYER_HEALTH:
+                    self.player.health +=  HEALTH_AMOUNT
+                    if self.player.health >  PLAYER_HEALTH:
+                        self.player.health = PLAYER_HEALTH
             elif self.item_type == 'Key':
                 self.player.got_key = True
                 print('Has cogido una llave')
             elif self.item_type == 'Berries':
                 print('Has cogido una moneda')
-                self.player.points += 1
+                self.player.points += POINTS_AMOUNT
             elif self.item_type == 'Boots':
                 print('Has cogido unas botas')
                 self.player.max_jumps +=  1

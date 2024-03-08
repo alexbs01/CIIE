@@ -52,8 +52,28 @@ CAPITAN_HEALTH = 200
 CAPITAN_DAMAGE = 20
 CAPITAN_SPEED = 1
 
+# COLLECTABLES
+## HEALTH
+PATH_ASSET_HEALTH = Path("assets/items/Health/0.png")
+HEALTH_AMOUNT = 25
+HEALTH_SCALE = 1
 
+## KEY
+PATH_ASSET_KEY = Path("assets/items/Keys/0.png")
+KEY_SCALE = 0.25
 
+## BERRIES
+PATH_ASSET_BERRIES = Path("assets/items/gold/0.png")
+POINTS_AMOUNT = 1
+BERRIES_SCALE = 1.25
+
+## BOOTS
+PATH_ASSET_BOOTS = Path("assets/items/boots/0.png")
+BOOTS_SCALE = 2.25
+
+## SWORD
+PATH_ASSET_SWORD = Path("assets/items/sword/0.png")
+SWORD_SCALE = 1.5
 
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 800
