@@ -5,22 +5,23 @@ import os
 from settings import *
 
 class Pirate(pygame.sprite.Sprite):
-    def __init__(self, char_type, x, y, scale, speed, resource_manager):
+    def __init__(self, char_type, x, y, resource_manager):
         pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
-        self.speed = speed
+        self.speed = PLAYER_SPEED
         self.direction =  1
         self.flip = False
         self.jump = False
-        self.max_jumps = 1
+        self.max_jumps = PLAYER_MAX_JUMPS
         self.jumps = 0
         self.in_air = True
         self.vel_y =  0
         self.attack = False
-        self.health =  100
+        self.health =  PLAYER_HEALTH
         self.observers = []
-        self.damage = 20
+        self.damage = PLAYER_DAMAGE
         self.points = 0
+        self.scale = PLAYER_SCALE
 
         self.animation_list = []
         self.frame_index =  0
@@ -39,7 +40,7 @@ class Pirate(pygame.sprite.Sprite):
             for i in range(n_frames):
                 img_path = f'assets/player/{animation}/{i}.png'
                 img = self.resource_manager.load_image(img_path, img_path)
-                img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
+                img = pygame.transform.scale(img, (int(img.get_width() * self.scale), int(img.get_height() * self.scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list)
 

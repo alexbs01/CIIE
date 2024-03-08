@@ -55,7 +55,7 @@ def main(level_num):
         level_num = INITIAL_LEVEL
 
     # Creamos jugador y enemigo
-    player = pirate.Pirate('pirate', initial_player_x, initial_player_y, 1, 6, resource_manager)
+    player = pirate.Pirate('pirate', initial_player_x, initial_player_y, resource_manager)
     #spikes = Enemies.Enemy.Spike(640, 545, resource_manager)
     world = World(resource_manager, player)
 

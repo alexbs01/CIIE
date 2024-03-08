@@ -1,13 +1,14 @@
 import os
 import pygame
 import random
-from settings import SCREEN_WIDTH
+from settings import *
 from entities.Entities import Entity
 
 class CucumberEnemy(Entity):
-    def __init__(self, x, y, speed, resource_manager):
-        super().__init__(x, y, speed, resource_manager, 'Cucumber')
-        self.damage = 15
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'Cucumber')
+        self.damage = CUCUMBER_DAMAGE
+        self.speed = CUCUMBER_SPEED
 
     def move(self):
         if self.health > 0:
@@ -28,17 +29,19 @@ class CucumberEnemy(Entity):
                 self.update_action(1)
 
 class WhaleEnemy(Entity):
-    def __init__(self, x, y, speed, resource_manager):
-        super().__init__(x, y, speed, resource_manager, 'Whale', first_image_number=1)
-        self.health = 20
-        self.damage = 15
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'Whale', first_image_number=1)
+        self.health = WHALE_HEALTH
+        self.damage = WHALE_DAMAGE
+        self.speed = WHALE_SPEED
 
 class badPirate(Entity):
     
-    def __init__(self, x, y, speed, resource_manager):
-        super().__init__(x, y, speed, resource_manager, 'Bad_Pirate', first_image_number=1)
-        self.health = 150
-        self.damage = 20
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'Bad_Pirate', first_image_number=1)
+        self.health = BAD_PIRATE_HEALTH
+        self.damage = BAD_PIRATE_DAMAGE
+        self.speed = BAD_PIRATE_SPEED
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):
@@ -46,10 +49,11 @@ class badPirate(Entity):
 
 class Capitan(Entity):
     
-    def __init__(self, x, y, speed, resource_manager):
-        super().__init__(x, y, speed, resource_manager, 'Capitan', first_image_number=1)
-        self.health = 200
-        self.damage = 20
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'Capitan', first_image_number=1)
+        self.health = CAPITAN_HEALTH
+        self.damage = CAPITAN_DAMAGE
+        self.speed = CAPITAN_SPEED
         self.direction = -1 # Tiene el sprite invertido entonces empieza con direccion -1
 
     def draw(self, screen):

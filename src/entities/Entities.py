@@ -3,7 +3,7 @@ import os
 import random
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed, resource_manager, enemy, first_image_number=0): # Cucumber
+    def __init__(self, x, y, resource_manager, enemy, first_image_number=0): # Cucumber
         pygame.sprite.Sprite.__init__(self)
         self.original_x = x
         self.original_y = y
@@ -12,7 +12,7 @@ class Entity(pygame.sprite.Sprite):
         self.observers = []
         self.health = 100
         self.damage = 10
-        self.speed = speed
+        self.speed = 1
         self.direction = 1
         self.resource_manager = resource_manager
         self.animation_list = []
