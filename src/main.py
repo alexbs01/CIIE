@@ -210,7 +210,7 @@ def main(level_num):
                     current_time = pygame.time.get_ticks()
                     if current_time - last_attack_time > ATAQUE_COOLDOWN:
                         last_attack_time = current_time
-                        enemy.get_Hit(ATAQUE+(player.points*10))
+                        enemy.get_Hit(player.damage+(player.points*10))
                         enemy.update_action(3)
                         # Reproducir sonido de la espada al atacar
                         espada.play()
