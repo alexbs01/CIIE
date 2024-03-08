@@ -11,6 +11,8 @@ PATH_LEVEL_1 = Path("levels/level1_data.csv")
 PATH_LEVEL_2 = Path("levels/level2_data.csv")
 PATH_LEVEL_3 = Path("levels/level3_data.csv")
 
+PATH_BG_MENU = Path("assets/menu/2523.jpg")
+
 INITIAL_LEVEL = 1
 MAX_LEVELS = 3
 # Variables de entorno
@@ -38,6 +40,7 @@ COLS = 150 # Columnas mapa 1
 SCREEN_THRESH = 200 # Distancia a la que puede llegar el player antes de que la pantalla se mueva
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
+MAX_POINTS = 100 # Máximo de berries que puede juntar
 
 # define colours
 BG = (82, 82, 82)
@@ -47,3 +50,4 @@ RED = (200, 25, 25)
 GREEN = (0, 255, 0)
 LINE = (255,0,0)
 BLACK = (0,0,0)
+COLOR_TEXT_MENU = (182, 143, 64)

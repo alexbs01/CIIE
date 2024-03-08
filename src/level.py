@@ -1,8 +1,12 @@
 import pygame
 from settings import *
 from Escena import Escena
+from items.Collectables import Collectables
 from entities import *
+from Ui import Ui
+
 class Level(Escena):
+
     def __init__(self, director):
         Escena.__init__(self, director)
         self.obstacle_list = []
@@ -21,11 +25,11 @@ class Level(Escena):
 
         #Crea un objecto de tipo UI 
         self.ui = Ui()
-        health_observer = Ui.HealthObserver(30, 45, ui.display_surface, player.health, player.health)
+        health_observer = Ui.HealthObserver(30, 45, self.ui.display_surface, self.player.health, self.player.health)
         self.player.register(health_observer)
 
         # Crea un objeto de tipo UI para las berries
-        berries_observer = Ui.PointsObserver(player.berries, player.max_berries)
+        berries_observer = Ui.PointsObserver(self.player.points, MAX_POINTS)
         self.player.register(berries_observer)
 
         # Crear la musica de fondo  
