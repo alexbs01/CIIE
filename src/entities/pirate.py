@@ -19,7 +19,7 @@ class Pirate(pygame.sprite.Sprite):
         self.attack = False
         self.health =  100
         self.observers = []
-        self.damage = 1
+        self.damage = 20
         self.points = 0
 
         self.animation_list = []

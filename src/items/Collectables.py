@@ -6,7 +6,7 @@ health_box_img = pygame.image.load('assets/items/Health/0.png')
 key_box_img = pygame.image.load('assets/items/Keys/0.png')
 berries_box_img = pygame.image.load('assets/items/gold/0.png')
 boots_box_img = pygame.image.load('assets/items/boots/0.png')
-sword_box_img = pygame.image.load('assets/tiles/11.png') # CAMBIAR POR UNA IMAGEN DE ESPADA MINECRAFT
+sword_box_img = pygame.image.load('assets/items/sword/0.png') # CAMBIAR POR UNA IMAGEN DE ESPADA MINECRAFT
 
 item_boxes = {
     'Health': health_box_img,
