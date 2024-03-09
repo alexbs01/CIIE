@@ -49,8 +49,5 @@ class Control():
     def set_attack(self, key):
         self.attack_key = key
 
-    def set_pause(self, key):
-        self.pause_key = key
-
     def set_select(self, key):
         self.select_key = key

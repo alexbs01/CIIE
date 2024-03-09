@@ -79,7 +79,6 @@ class Pirate(pygame.sprite.Sprite, Observer):
         
         keys = pygame.key.get_pressed() 
 
-
         if self.control.left(keys):
             dx -= self.speed
             self.flip = True
@@ -92,13 +91,18 @@ class Pirate(pygame.sprite.Sprite, Observer):
             self.direction = 1
 
 
+        if self.control.up(keys):
         # Salto
-        if self.jumps < self.max_jumps and self.jump:  # self.in_air a False impide doble salto
-            self.in_air == False
-            self.vel_y = -11
+            self.jump = True
+            if self.jumps < self.max_jumps and self.jump:  # self.in_air a False impide doble salto
+                self.update_action(2)
+                self.in_air == False
+                self.vel_y = -11
+                self.jump = False
+                self.in_air = True
+                self.jumps += 1
+        else:
             self.jump = False
-            self.in_air = True
-            self.jumps += 1
 
         # Aplicamos gravedad
         self.vel_y += GRAVITY
@@ -150,7 +154,10 @@ class Pirate(pygame.sprite.Sprite, Observer):
         self.screen_scroll = self.move(obstacle_list, bg_scroll)
         bg_scroll -= screen_scroll
         
+
         self.update_animation()
+
+
 
         self.rect.x += screen_scroll
         self.rect.x -= screen_scroll

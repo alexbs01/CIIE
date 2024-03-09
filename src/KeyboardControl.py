@@ -12,7 +12,6 @@ class KeyboardControl(Control):
         self.left_key = pygame.K_a
         self.right_key = pygame.K_d
         self.attack_key = pygame.K_SPACE
-        self.pause_key = pygame.K_p
         self.select_key = pygame.K_RETURN
 
     # Estos métodos permiten verificar si una tecla específica está siendo presionada
@@ -31,9 +30,6 @@ class KeyboardControl(Control):
     
     def attack(self, keys):
         return keys[self.attack_key]
-
-    def pause(self, keys):
-        return keys[self.pause_key]
 
     def select(self, keys):
         return keys[self.select_key]
