@@ -147,8 +147,11 @@ class Pirate(pygame.sprite.Sprite, Observer):
         return dx,dy
 
     def update(self, screen_scroll, obstacle_list, bg_scroll):
-        self.move(obstacle_list, bg_scroll)
+        self.screen_scroll = self.move(obstacle_list, bg_scroll)
+        bg_scroll -= screen_scroll
+        
         self.update_animation()
+
         self.rect.x += screen_scroll
         self.rect.x -= screen_scroll
         

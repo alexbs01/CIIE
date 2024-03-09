@@ -8,6 +8,8 @@ from entities.pirate import Pirate
 from items.Interactives import Interactive_obj
 import csv
 from world_generation.ResourceManager import ResourceManager
+from PausaMenu import Pausa
+
 
 class Level(Escena):
 
@@ -98,32 +100,17 @@ class Level(Escena):
 
     def events(self, events_list):
         for event in events_list:
+            if event.type == pygame.KEYDOWN:
+                # Si la tecla es Escape
+                if event.key == pygame.K_ESCAPE:
+                    # Se sale del programa
+                    self.director.quit_program()
+                if event.key == pygame.K_p:
+                    pause = Pausa(self.director)
+                    self.director.stack_scene(pause)
+
             if event.type == pygame.QUIT:
                 self.director.quit_program()
-            # Presionar teclas para mover al jugador
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    move_left = True
-                if event.key == pygame.K_d:
-                    move_right = True
-                if event.key == pygame.K_w:
-                    self.player.jump = True
-                if event.key == pygame.K_SPACE:
-                    self.player.attack = True
-                if event.type == pygame.K_ESCAPE: # no entiendo este if no seria key 
-                    run = False
-                if event.key == pygame.K_p:
-                    pass
-                    #pause = Pause(self.director)
-                    #self.director.stack_scene(pause)
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_a:
-                    move_left = False
-                if event.key == pygame.K_d:
-                    move_right = False
-                if event.key == pygame.K_SPACE:
-                    self.player.attack = False
 
     
     
@@ -156,7 +143,7 @@ class Level(Escena):
         #Ui.draw_text('Vida', title_font, WHITE, 50, 15)
         #Ui.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
 
-    def update(self, time, screen_scroll):
+    def update(self, time, screen_scroll, bg_scroll):
 
         for tile in self.obstacle_list:
             tile[1].x += screen_scroll
@@ -165,7 +152,7 @@ class Level(Escena):
             tile[1].x += screen_scroll
 
         # Actualiza el jugador
-        self.player.update(screen_scroll,self.obstacle_list,0)
+        self.player.update(screen_scroll,self.obstacle_list, bg_scroll)
         self.enemy_group.update(screen_scroll)
         self.spikes_group.update(screen_scroll)
         self.item_boxes_Group.update(screen_scroll)

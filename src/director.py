@@ -22,6 +22,7 @@ class Director():
         pygame.display.set_caption("Game")
         pygame.mouse.set_visible(True)
         self.screen_scroll = 0
+        self.bg_scroll = 0
         
         # Pila para almacenar las escenas
         self.stack = []
@@ -42,7 +43,7 @@ class Director():
             
             scene.events(pygame.event.get())
     
-            scene.update(tiempo_pasado, self.screen_scroll)
+            scene.update(tiempo_pasado, self.screen_scroll, self.bg_scroll)
 
             scene.draw(self.screen)
 
