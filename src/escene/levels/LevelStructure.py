@@ -162,21 +162,21 @@ class Level(Escena):
 
     def update(self, time):
 
+        # Implementa el scroll en los tiles que no son Objetos
         for tile in self.obstacle_list:
             tile[1].x += self.screen_scroll
 
         for tile in self.bg_list:
             tile[1].x += self.screen_scroll
 
-        # Actualiza el jugador
-            
+        # Actualiza las acciones del jugador 
         if self.player.attack:
             self.player.update_action(3)  # 3 -> animacion ataque
             for enemy in self.enemy_group:
                 if self.player.rect.colliderect(enemy.rect):
                     current_time = pygame.time.get_ticks()
-                    if current_time - last_attack_time > ATAQUE_COOLDOWN:
-                        last_attack_time = current_time
+                    if current_time - enemy.last_attack_time > ATAQUE_COOLDOWN:
+                        enemy.last_attack_time = current_time
                         enemy.get_Hit(self.player.damage+(self.player.points*10))
                         enemy.update_action(3)
                         # Reproducir sonido de la espada al atacar
@@ -189,9 +189,18 @@ class Level(Escena):
         elif self.player.move_left or self.player.move_right:
             self.player.update_action(1)  # 1 -> animacion run
         else:
-            self.player.update_action(0)  # 0 -> animacion idle    
+            self.player.update_action(0)  # 0 -> animacion idle 
+
+        # Hacemos que el pirata se mueva       
         self.move()
+
+        # Actualizamos el valor del scroll
         self.bg_scroll -= self.screen_scroll
+
+        # Hacemos que los enemigos ataquen y se muevan
+        for enemy in self.enemy_group:
+            enemy.ai(self.player)
+
         self.player.update(self.screen_scroll, self.bg_scroll)
         self.enemy_group.update(self.screen_scroll)
         self.spikes_group.update(self.screen_scroll)
