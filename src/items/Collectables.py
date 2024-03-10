@@ -55,6 +55,7 @@ class Collectables(pygame.sprite.Sprite):
             elif self.item_type == 'Boots':
                 print('Has cogido unas botas')
                 player.max_jumps +=  1
+                player.got_boots = True
             elif self.item_type == 'Sword':
                 print('Has cogido una espada mejor')
                 player.got_sword = True

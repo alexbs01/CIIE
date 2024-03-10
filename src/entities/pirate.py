@@ -37,6 +37,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
 
         self.got_key = False
         self.got_sword = False
+        self.got_boots = False
         
         self.control = KeyboardControl()
 
@@ -147,10 +148,15 @@ class Pirate(pygame.sprite.Sprite, Subject):
         if dto is not None:
             if dto.get_vida() > 0:
                 self.health = dto.get_vida()
-                self.points = dto.get_puntos() 
+                self.points = dto.get_puntos()
+                self.got_boots = dto.get_boots() 
+                self.got_sword = dto.get_sword()
             else: # En caso de haber muerto
                 self.vida = self.max_health
                 self.puntos = 0
+                self.got_boots = dto.get_boots() 
+                self.got_sword = dto.get_sword()
+
 
     def move_back(self, distance=20):
         # Mover hacia atrás

@@ -124,10 +124,12 @@ class Interactive_obj():
         def set_open(self):
             self.open = True
             self.update_action(1)  # Abre la puerta
+            return self.open
 
         def set_closed(self):
             self.open = False
             self.update_action(0)  # Cierra la puerta
+            return self.open
 
         def is_open(self):
             return self.open

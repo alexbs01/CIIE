@@ -76,6 +76,7 @@ class Spike(pygame.sprite.Sprite):
         self.animation_list = []
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
+        self.last_contact_time = 0
 
         # Cargar imágenes de los spikes
         for i in range(4):  # Iterar desde  0 hasta  3

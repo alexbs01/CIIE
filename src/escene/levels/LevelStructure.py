@@ -52,6 +52,8 @@ class Level(Escena):
         self.player.add_observer(self.health_observer)
         self.player.add_observer(self.points_observer)
 
+        self.whale_dead = False
+
         # Crear la musica de fondo  
 
 
@@ -217,6 +219,21 @@ class Level(Escena):
         for enemy in self.enemy_group:
             enemy.ai(self.player)
 
+        for spikes in self.spikes_group:
+            if self.player.rect.colliderect(spikes.rect):
+                current_time = pygame.time.get_ticks()
+                if current_time - spikes.last_contact_time > 0:
+                    spikes.last_contact_time = current_time
+                    self.player.get_Hit(8)
+
+        if not self.whale_dead:              
+            for enemy in self.enemy_group:
+                if isinstance(enemy, enemies.WhaleEnemy) and enemy.health <= 0:
+                    self.whale_dead = True
+                    ## aparecen las botas
+                    boota = self.item_boots.sprites()[0]               
+                    boota.rect.midtop = (boota.rect.midtop[0], boota.rect.midtop[1] / 3)
+
         self.player.update(self.screen_scroll, self.bg_scroll)
         self.enemy_group.update(self.screen_scroll)
         self.spikes_group.update(self.screen_scroll)
@@ -227,7 +244,7 @@ class Level(Escena):
 
         self.health_observer.notify(self.player.health)
         self.points_observer.notify(self.player.points)
-
+        self.run(self.player)
 
 
     def check_collision(self, dx, dy):
@@ -245,6 +262,10 @@ class Level(Escena):
                     dy = tile[1].top - self.player.collision_rect.bottom
         return dx,dy
     
+
+    def run(self, player):
+        # Este método debe ser implementado en cada subclase de Level
+        pass
 
     def move(self):
 
