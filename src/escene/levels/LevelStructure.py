@@ -19,7 +19,8 @@ class Level(Escena):
 
         self.csv = csv
         self.player = None
-
+        self.screen_scroll = 0
+        self.bg_scroll = 0
         self.resource_manager = ResourceManager()
 
         # Grupos de Sprites
@@ -101,6 +102,14 @@ class Level(Escena):
     def events(self, events_list):
         for event in events_list:
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    self.player.move_left = True
+                if event.key == pygame.K_d:
+                    self.player.move_right = True
+                if event.key == pygame.K_w:
+                    self.player.jump = True
+                if event.key == pygame.K_SPACE:
+                    self.player.attack = True
                 # Si la tecla es Escape
                 if event.key == pygame.K_ESCAPE:
                     # Se sale del programa
@@ -108,6 +117,14 @@ class Level(Escena):
                 if event.key == pygame.K_p:
                     pause = Pausa(self.director)
                     self.director.stack_scene(pause)
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    self.player.move_left = False
+                if event.key == pygame.K_d:
+                    self.player.move_right = False
+                if event.key == pygame.K_SPACE:
+                    self.player.attack = False
 
             if event.type == pygame.QUIT:
                 self.director.quit_program()
@@ -143,19 +160,115 @@ class Level(Escena):
         #Ui.draw_text('Vida', title_font, WHITE, 50, 15)
         #Ui.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
 
-    def update(self, time, screen_scroll, bg_scroll):
+    def update(self, time):
 
         for tile in self.obstacle_list:
-            tile[1].x += screen_scroll
+            tile[1].x += self.screen_scroll
 
         for tile in self.bg_list:
-            tile[1].x += screen_scroll
+            tile[1].x += self.screen_scroll
 
         # Actualiza el jugador
-        self.player.update(screen_scroll,self.obstacle_list, bg_scroll)
-        self.enemy_group.update(screen_scroll)
-        self.spikes_group.update(screen_scroll)
-        self.item_boxes_Group.update(screen_scroll)
-        self.item_boots.update(screen_scroll)
-        self.item_door.update(screen_scroll)
-        self.item_blocks.update(screen_scroll)
+            
+        if self.player.attack:
+            self.player.update_action(3)  # 3 -> animacion ataque
+            for enemy in self.enemy_group:
+                if self.player.rect.colliderect(enemy.rect):
+                    current_time = pygame.time.get_ticks()
+                    if current_time - last_attack_time > ATAQUE_COOLDOWN:
+                        last_attack_time = current_time
+                        enemy.get_Hit(self.player.damage+(self.player.points*10))
+                        enemy.update_action(3)
+                        # Reproducir sonido de la espada al atacar
+                        #espada.play()
+                    if enemy.health == 0:
+                        enemy.update_action(4)
+
+        elif self.player.in_air:
+            self.player.update_action(2)  # 2 -> animacion jump
+        elif self.player.move_left or self.player.move_right:
+            self.player.update_action(1)  # 1 -> animacion run
+        else:
+            self.player.update_action(0)  # 0 -> animacion idle    
+        self.move()
+        self.bg_scroll -= self.screen_scroll
+        self.player.update(self.screen_scroll, self.bg_scroll)
+        self.enemy_group.update(self.screen_scroll)
+        self.spikes_group.update(self.screen_scroll)
+        self.item_boxes_Group.update(self.screen_scroll)
+        self.item_boots.update(self.screen_scroll)
+        self.item_door.update(self.screen_scroll)
+        self.item_blocks.update(self.screen_scroll)
+
+
+    def check_collision(self, dx, dy):
+        for tile in self.obstacle_list:
+            if tile[1].colliderect(self.player.collision_rect.x + dx, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height):
+                dx = 0
+            if tile[1].colliderect(self.player.collision_rect.x, self.player.collision_rect.y + dy, self.player.collision_rect.width, self.player.collision_rect.height):
+                if self.player.vel_y < 0:
+                    self.player.vel_y = 0
+                    dy = tile[1].bottom - self.player.collision_rect.top
+                elif self.player.vel_y >= 0:
+                    self.player.vel_y = 0
+                    self.player.in_air = False
+                    self.player.jumps = 0
+                    dy = tile[1].top - self.player.collision_rect.bottom
+        return dx,dy
+    
+
+    def move(self):
+
+            #screen_scroll = 0
+            # Resetear variables de movimiento
+            dx = 0
+            dy = 0
+
+            if self.player.move_left:
+                dx -= self.player.speed
+                self.player.flip = True
+                self.player.direction = -1
+
+
+            if self.player.move_right:
+                dx += self.player.speed
+                self.player.flip = False
+                self.player.direction = 1
+
+
+            # Salto
+            if self.player.jumps < self.player.max_jumps and self.player.jump:  # self.in_air a False impide doble salto
+                self.player.in_air == False
+                self.player.vel_y = -11
+                self.player.jump = False
+                self.player.in_air = True
+                self.player.jumps += 1
+
+            # Aplicamos gravedad
+            self.player.vel_y += GRAVITY
+            if self.player.vel_y > 10:
+                self.player.vel_y = 10
+            dy += self.player.vel_y
+
+            # Comprobamos las colisiones del pirata
+            dx,dy = self.check_collision(dx, dy)
+
+            # Mira que no pueda pasar mas alla de la pantalla
+            if self.player.collision_rect.left + dx < 0 or self.player.collision_rect.right + dx > SCREEN_WIDTH:
+                dx = 0
+
+
+            # Actualizar la posición del jugador
+            self.player.rect.x += dx
+            self.player.rect.y += dy
+
+            # Hace el scroll de la pantalla                                     # Tamaño del nivel en pixeles
+            if self.player.rect.right > SCREEN_WIDTH - SCREEN_THRESH and self.bg_scroll < (150 * TILE_SIZE) - SCREEN_WIDTH:
+                self.player.rect.x -= dx
+                self.screen_scroll = -dx
+            elif self.player.rect.left < SCREEN_THRESH and self.bg_scroll > abs(dx):
+                self.player.rect.x -= dx
+                self.screen_scroll = -dx
+            else:
+                self.screen_scroll = 0
+

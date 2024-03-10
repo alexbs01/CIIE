@@ -25,6 +25,9 @@ class Pirate(pygame.sprite.Sprite, Observer):
         self.points = 0
         self.scale = PLAYER_SCALE
 
+        self.move_left = False
+        self.move_right = False
+
         self.animation_list = []
         self.frame_index =  0
         self.action =  0
@@ -70,88 +73,8 @@ class Pirate(pygame.sprite.Sprite, Observer):
         
         pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
-    def move(self, obstacle_list, bg_scroll):
 
-        screen_scroll = 0
-        # Resetear variables de movimiento
-        dx = 0
-        dy = 0
-        
-        keys = pygame.key.get_pressed() 
-
-        if self.control.left(keys):
-            dx -= self.speed
-            self.flip = True
-            self.direction = -1
-
-
-        if self.control.right(keys):
-            dx += self.speed
-            self.flip = False
-            self.direction = 1
-
-
-        if self.control.up(keys):
-        # Salto
-            self.jump = True
-            if self.jumps < self.max_jumps and self.jump:  # self.in_air a False impide doble salto
-                self.update_action(2)
-                self.in_air == False
-                self.vel_y = -11
-                self.jump = False
-                self.in_air = True
-                self.jumps += 1
-        else:
-            self.jump = False
-
-        # Aplicamos gravedad
-        self.vel_y += GRAVITY
-        if self.vel_y > 10:
-            self.vel_y = 10
-        dy += self.vel_y
-
-        # Comprobamos las colisiones del pirata
-        dx,dy = self.check_collision(dx, dy, obstacle_list)
-
-        # Mira que no pueda pasar mas alla de la pantalla
-        if self.collision_rect.left + dx < 0 or self.collision_rect.right + dx > SCREEN_WIDTH:
-            dx = 0
-        
-
-        # Actualizar la posición del jugador
-        self.rect.x += dx
-        self.rect.y += dy
-
-        # Hace el scroll de la pantalla                                     # Tamaño del nivel en pixeles
-        if self.rect.right > SCREEN_WIDTH - SCREEN_THRESH and bg_scroll < (150 * TILE_SIZE) - SCREEN_WIDTH:
-            self.rect.x -= dx
-            screen_scroll = -dx
-        elif self.rect.left < SCREEN_THRESH and bg_scroll > abs(dx):
-            self.rect.x -= dx
-            screen_scroll = -dx
-        else:
-            screen_scroll = 0
-
-        return screen_scroll
-
-
-    def check_collision(self, dx, dy, obstacle_list):
-        for tile in obstacle_list:
-            if tile[1].colliderect(self.collision_rect.x + dx, self.collision_rect.y, self.collision_rect.width, self.collision_rect.height):
-                dx = 0
-            if tile[1].colliderect(self.collision_rect.x, self.collision_rect.y + dy, self.collision_rect.width, self.collision_rect.height):
-                if self.vel_y < 0:
-                    self.vel_y = 0
-                    dy = tile[1].bottom - self.collision_rect.top
-                elif self.vel_y >= 0:
-                    self.vel_y = 0
-                    self.in_air = False
-                    self.jumps = 0
-                    dy = tile[1].top - self.collision_rect.bottom
-        return dx,dy
-
-    def update(self, screen_scroll, obstacle_list, bg_scroll):
-        self.screen_scroll = self.move(obstacle_list, bg_scroll)
+    def update(self, screen_scroll, bg_scroll):
         bg_scroll -= screen_scroll
         
 
