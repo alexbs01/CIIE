@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from Escena import Escena
+from escene.Escena import Escena
 from items.Collectables import Collectables
 from entities.enemies import enemies
 from entities.Ui import Ui
@@ -8,7 +8,7 @@ from entities.pirate import Pirate
 from items.Interactives import Interactive_obj
 import csv
 from world_generation.ResourceManager import ResourceManager
-from PausaMenu import Pausa
+from escene.pause.PausaMenu import Pausa
 
 
 class Level(Escena):

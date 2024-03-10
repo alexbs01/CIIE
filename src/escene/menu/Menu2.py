@@ -1,9 +1,9 @@
 import pygame
-from Escena import Escena
+from escene.Escena import Escena
 from GUI import GUI
 from world_generation.ResourceManager import ResourceManager
 from settings import *
-from escene.level.Levels import Level1
+from escene.levels.Levels import Level1
 
 class Menu2(Escena):
 

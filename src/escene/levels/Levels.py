@@ -1,6 +1,6 @@
 
 from settings import *
-from escene.LevelStructure import Level
+from escene.levels.LevelStructure import Level
 from items.Interactives import Interactive_obj
 
 class Level1(Level):

@@ -1,7 +1,7 @@
 import pygame
 import sys
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, WHITE
-from Escena import Escena
+from escene.Escena import Escena
 class Pause(Escena):
     def __init__(self, director):
         Escena.__init__(self, director)

@@ -2,7 +2,7 @@ import sys
 import pygame
 
 from world_generation.ResourceManager import ResourceManager
-from Escena import Escena
+from escene.Escena import Escena
 from pygame.locals import *
 from settings import *
 
