@@ -64,11 +64,11 @@ class Level(Escena):
         # Diccionario de Entidades asociadas a su valor de tile
         tile_actions = {
             23: lambda x, y: self.set_player(Pirate('pirate', x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),
-            11: lambda x, y: self.item_boxes_Group.add(Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Espada
-            14: lambda x, y: self.item_boxes_Group.add(Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Llave
-            17: lambda x, y: self.item_boxes_Group.add(Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Moneda
-            18: lambda x, y: self.item_boots.add(Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3, self.player)),  # Objeto recogible: Botas
-            19: lambda x, y: self.item_boxes_Group.add(Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, self.player)),  # Objeto recogible: Salud
+            11: lambda x, y: self.item_boxes_Group.add(Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Espada
+            14: lambda x, y: self.item_boxes_Group.add(Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Llave
+            17: lambda x, y: self.item_boxes_Group.add(Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Moneda
+            18: lambda x, y: self.item_boots.add(Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3)),  # Objeto recogible: Botas
+            19: lambda x, y: self.item_boxes_Group.add(Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Salud
             13: lambda x, y: self.enemy_group.add(enemies.Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Capitán
             15: lambda x, y: self.enemy_group.add(enemies.badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Pirata malo
             16: lambda x, y: self.enemy_group.add(enemies.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Cucumber
@@ -204,8 +204,8 @@ class Level(Escena):
         self.player.update(self.screen_scroll, self.bg_scroll)
         self.enemy_group.update(self.screen_scroll)
         self.spikes_group.update(self.screen_scroll)
-        self.item_boxes_Group.update(self.screen_scroll)
-        self.item_boots.update(self.screen_scroll)
+        self.item_boxes_Group.update(self.screen_scroll, self.player)
+        self.item_boots.update(self.screen_scroll, self.player)
         self.item_door.update(self.screen_scroll)
         self.item_blocks.update(self.screen_scroll)
 

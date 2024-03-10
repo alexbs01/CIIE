@@ -25,7 +25,7 @@ item_scales = {
 }
 
 class Collectables(pygame.sprite.Sprite):
-    def __init__(self, item_type, x, y, player=None):
+    def __init__(self, item_type, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
         self.scale = item_scales[self.item_type]
@@ -34,11 +34,30 @@ class Collectables(pygame.sprite.Sprite):
                                             (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale)))
         self.rect = self.image.get_rect()
         self.rect.midtop = (x + TILE_SIZE //  2, y + (TILE_SIZE - self.image.get_height()))
-        self.player = player
 
-    def update(self,screen_scroll):
+
+    def update(self,screen_scroll, player):
         self.rect.x += screen_scroll
         # Confirmar que el pirata coge el item
+        if pygame.sprite.collide_rect(self, player):
+            if self.item_type == 'Health':
+                if player.health <  100:
+                    player.health +=  25
+                    if player.health >  100:
+                        player.health = 100
+            elif self.item_type == 'Key':
+                player.got_key = True
+                print('Has cogido una llave')
+            elif self.item_type == 'Berries':
+                print('Has cogido una moneda')
+                player.points += 1
+            elif self.item_type == 'Boots':
+                print('Has cogido unas botas')
+                player.max_jumps +=  1
+            elif self.item_type == 'Sword':
+                print('Has cogido una espada mejor')
+                player.got_sword = True
+            self.kill()
 
         
     def draw(self, SCREEN):
