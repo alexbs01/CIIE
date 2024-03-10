@@ -3,12 +3,13 @@ from random import random
 import pygame
 import os
 from settings import *
-from Observer import Observer
+from Subject import Subject
 from KeyboardControl import KeyboardControl
 
-class Pirate(pygame.sprite.Sprite, Observer):
+class Pirate(pygame.sprite.Sprite, Subject):
     def __init__(self, char_type, x, y, resource_manager):
         pygame.sprite.Sprite.__init__(self)
+        Subject.__init__(self)
         self.char_type = char_type
         self.speed = PLAYER_SPEED
         self.direction =  1
@@ -130,18 +131,17 @@ class Pirate(pygame.sprite.Sprite, Observer):
         self.health -= damage
         if self.health < 0:
             self.health = 0
-        self.notify_observers()
+        self.set_health(self.health)
         print("Daño")
 
 
-    # Registra el observador en la lista
-    def register(self, observer):
-        self.observers.append(observer)
+    def set_health(self, health):
+        self.health = health
+        self.notify_observers(self.health)
 
-    # Notifica a los observadores de los cambios
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
+    def set_points(self, points):
+        self.points = points
+        self.notify_observers(self.points)
 
     def set_stats_dto(self, dto):
         if dto is not None:

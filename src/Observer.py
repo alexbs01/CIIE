@@ -1,12 +1,10 @@
 # Clase para el patron observador
 
 class Observer():
-    def __init__(self):
-        self.observadores = []
+        
+    def __init__(self, display_surface):
+        self.display_surface = display_surface
 
-    def add_observer(self, observer):
-        self.observadores.append(observer)
-
-    def notify_obervers(self):
-        for observer in self.observadores:
-            observer.notify(self)
+    def notify(self, *args):
+        pass
+    

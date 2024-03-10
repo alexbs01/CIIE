@@ -9,6 +9,7 @@ from items.Interactives import Interactive_obj
 import csv
 from world_generation.ResourceManager import ResourceManager
 from escene.pause.PausaMenu import Pausa
+from Observer import Observer
 
 
 class Level(Escena):
@@ -23,6 +24,9 @@ class Level(Escena):
         self.bg_scroll = 0
         self.resource_manager = ResourceManager()
 
+        # Guardamos la superficie superficie
+        self.display_surface = pygame.display.get_surface()
+
         # Grupos de Sprites
         self.item_boxes_Group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
@@ -36,9 +40,17 @@ class Level(Escena):
 
         self.load_level()
 
-        #self.init_observers()
-
         self.player.set_stats_dto(player_status)
+        self.ui_instance = Ui(self.display_surface)
+
+        self.health_observer = None
+        self.points_observer = None
+
+        self.init_observers()
+
+        # Registrar observadores en el jugador
+        self.player.add_observer(self.health_observer)
+        self.player.add_observer(self.points_observer)
 
         # Crear la musica de fondo  
 
@@ -99,6 +111,11 @@ class Level(Escena):
     def set_player(self, player):
         self.player = player
 
+    def init_observers(self):
+        self.health_observer = self.ui_instance.HealthObserver(30, 45, self.display_surface, self.player.health)
+        self.points_observer = self.ui_instance.PointsObserver(self.player.points)
+
+
     def events(self, events_list):
         for event in events_list:
             if event.type == pygame.KEYDOWN:
@@ -152,13 +169,12 @@ class Level(Escena):
         self.player.draw(screen)
         self.enemy_group.draw(screen)
 
-
-
         # Muestra barra de salud por encima de los tiles
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
 
-        #Ui.draw_text('Vida', title_font, WHITE, 50, 15)
-        #Ui.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
+        self.health_observer.notify(self.player.health)
+        self.ui_instance.draw_text('Vida', title_font, WHITE, 50, 15)
+        self.ui_instance.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
 
     def update(self, time):
 
@@ -208,6 +224,10 @@ class Level(Escena):
         self.item_boots.update(self.screen_scroll, self.player)
         self.item_door.update(self.screen_scroll)
         self.item_blocks.update(self.screen_scroll)
+
+        self.health_observer.notify(self.player.health)
+        self.points_observer.notify(self.player.points)
+
 
 
     def check_collision(self, dx, dy):

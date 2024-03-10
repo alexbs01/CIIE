@@ -1,13 +1,15 @@
 import pygame
+from Observer import Observer
+from settings import *
 
 RED = (200, 25, 25)
 GREEN = (0, 255, 0)
 BLACK = (0,0,0)
 
-class Ui:
+class Ui():
     
-    def __init__(self) -> None:
-        self.display_surface = pygame.display.get_surface()
+    def __init__(self, display_surface):
+        self.display_surface = display_surface
 
 
     def draw_text(self,text,font,text_col,x,y):
@@ -15,17 +17,17 @@ class Ui:
         self.display_surface.blit(img, (x,y))
 
     
-    class HealthObserver:
+    class HealthObserver(Observer):
 
-        def __init__(self,x,y, display_surface, health, max_health):
+        def __init__(self,x,y, display_surface, health):
             self.x = x
             self.y = y
-            self.display_surface = display_surface
             self.health = health
-            self.max_health = max_health
+            self.max_health = MAX_HEALTH
+            self.display_surface = display_surface
 
 
-        def update_health(self, new_health):
+        def notify(self, new_health):
 
             # Update con la nueva vida
             self.health = new_health
@@ -39,18 +41,19 @@ class Ui:
                 pygame.draw.rect(self.display_surface, GREEN, (self.x, self.y, 150 * ratio, 20))
 
 
-    class PointsObserver:
+    class PointsObserver(Observer):
 
-            def __init__(self,points, max_points):
+            def __init__(self,points):
                 self.points = points
-                self.max_points = max_points
+                self.max_points = MAX_POINTS
 
 
-            def update_points(self, new_points):
+            def notify(self, new_points):
 
                 # Update con la cantidad de puntos
-                if self.points + new_points !=0:
-                    self.points += new_points
-                else:
-                    self.points = 0
+                if self.points < MAX_POINTS:
+                    if self.points + new_points !=0:
+                        self.points += new_points
+                    else:
+                        self.points = 0
             

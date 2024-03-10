@@ -41,16 +41,17 @@ class Collectables(pygame.sprite.Sprite):
         # Confirmar que el pirata coge el item
         if pygame.sprite.collide_rect(self, player):
             if self.item_type == 'Health':
-                if player.health <  100:
-                    player.health +=  25
-                    if player.health >  100:
-                        player.health = 100
+                if player.health <  MAX_HEALTH:
+                    new_health = player.health + 25
+                    player.set_health(new_health)
+                    if player.health >  MAX_HEALTH:
+                        player.set_health(MAX_HEALTH)
             elif self.item_type == 'Key':
                 player.got_key = True
                 print('Has cogido una llave')
             elif self.item_type == 'Berries':
                 print('Has cogido una moneda')
-                player.points += 1
+                player.set_points(player.points + 1)
             elif self.item_type == 'Boots':
                 print('Has cogido unas botas')
                 player.max_jumps +=  1

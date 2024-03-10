@@ -102,6 +102,7 @@ SCREEN_THRESH = 200 # Distancia a la que puede llegar el player antes de que la 
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
 MAX_POINTS = 100 # Máximo de berries que puede juntar
+MAX_HEALTH = 100
 
 # define colours
 BG = (82, 82, 82)
