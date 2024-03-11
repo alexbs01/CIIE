@@ -3,7 +3,7 @@ import os
 import random
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, resource_manager, enemy, first_image_number=0): # Cucumber
+    def __init__(self, x, y, resource_manager, enemy, first_image_number=0, scale=1): # Cucumber
         pygame.sprite.Sprite.__init__(self)
         self.original_x = x
         self.original_y = y
@@ -22,6 +22,7 @@ class Entity(pygame.sprite.Sprite):
         self.last_attack_time = 0
         self.attack_cooldown = 2000
         self.probability_to_hit = 5
+        self.scale = scale
 
         self.move_distance = 20  # Número de píxeles para moverse aleatoriamente
         self.random_move_speed = 0.5  # Velocidad de movimiento aleatorio más lenta
@@ -38,6 +39,7 @@ class Entity(pygame.sprite.Sprite):
             for i in range(first_image_number, n_frames):
                 img_path = f'assets/enemies/{enemy}/{animation}/{i}.png'
                 img = self.resource_manager.load_image(img_path, img_path)
+                img = pygame.transform.scale(img, (int(img.get_width() * self.scale), int(img.get_height() * self.scale)))
                 if img is not None:  # Asegurarse de que la imagen se ha cargado correctamente
                     temp_list.append(img)
                 else:
