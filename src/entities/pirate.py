@@ -149,12 +149,12 @@ class Pirate(pygame.sprite.Sprite, Subject):
             if dto.get_vida() > 0:
                 self.health = dto.get_vida()
                 self.points = dto.get_puntos()
-                self.got_boots = dto.get_boots() 
+                self.max_jumps = dto.get_jumps() 
                 self.got_sword = dto.get_sword()
             else: # En caso de haber muerto
                 self.vida = self.max_health
                 self.puntos = 0
-                self.got_boots = dto.get_boots() 
+                self.max_jumps = dto.get_jumps() 
                 self.got_sword = dto.get_sword()
 
 
