@@ -3,7 +3,6 @@ from settings import *
 from director import Director
 from escene.menu.Menu2 import Menu2
 
-
 def main():
 
     # Inicializamos la libreria de pygame

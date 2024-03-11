@@ -12,7 +12,7 @@ class Interactive_obj():
             self.y = y
             self.resource_manager = resource_manager
             self.health = 1
-            self.destroy = False
+            self.visible = True
 
             img_path = f'assets/tiles/12.png'
             img = self.resource_manager.load_image(img_path, img_path)
@@ -27,14 +27,13 @@ class Interactive_obj():
             self.rect.y = y
             self.collision_rect = self.image.get_rect()
             
-        def do_destroy(self, screen):
-            screen.fill(BG2, self.collision_rect)
-            self.destroy = True
+        def do_destroy(self):
+            self.visible = False
             print("destruido")
 
         def draw(self, screen):
             
-            if self.destroy == False:
+            if self.visible == True:
                 # muestrame el collision rect
                 screen.blit(self.image, self.rect)
                 self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 2,
@@ -42,6 +41,9 @@ class Interactive_obj():
                             self.rect.width,
                             self.rect.height)
                 pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
+            
+
+
 
         def update(self, screen_scroll):
             self.rect.x += screen_scroll

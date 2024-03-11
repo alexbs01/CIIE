@@ -94,7 +94,7 @@ class Level(Escena):
             21: lambda x, y: self.enemy_group.add(enemies.WhaleEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Ballena
             49: lambda x, y: self.enemy_group.add(enemies.Marine(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Jefe de marines
             50: lambda x, y: self.enemy_group.add(enemies.MarineBoss(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Jefe de marines
-            12: lambda x, y: (self.item_blocks.add(Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
+            12: lambda x, y: (self.item_blocks.add(Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect, tile_id))),  # Bloque interactivo
             24: lambda x, y: self.item_door.add(Interactive_obj.Door(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Objeto interactivo: Puerta
         }
 
@@ -105,15 +105,15 @@ class Level(Escena):
                     img_path = "assets/tiles/" + str(tile) + ".png"
                     img = pygame.image.load(img_path)
                     rect = img.get_rect(topleft=(x * TILE_SIZE, y * TILE_SIZE))
-
+                    tile_id = tile
                     if tile in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 49, 50):
                         tile_actions[tile](x, y)
                     # Tiles que tendrán colisiones
                     elif 0 <= tile <= 9 or 22 <= tile <= 23 or tile == 36 or 41 <= tile <= 49:
-                        self.obstacle_list.append((img, rect))
+                        self.obstacle_list.append((img, rect, tile_id))
                     # Tiles que estarán de fondo, decorativos
                     elif 25 <= tile <= 35 or 37 <= tile <= 39:
-                        self.bg_list.append((img, rect))
+                        self.bg_list.append((img, rect, tile_id))
 
 
     def set_player(self, player):
@@ -256,18 +256,40 @@ class Level(Escena):
 
     def check_collision(self, dx, dy):
         for tile in self.obstacle_list:
-            if tile[1].colliderect(self.player.collision_rect.x + dx, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height):
-                dx = 0
-            if tile[1].colliderect(self.player.collision_rect.x, self.player.collision_rect.y + dy, self.player.collision_rect.width, self.player.collision_rect.height):
-                if self.player.vel_y < 0:
-                    self.player.vel_y = 0
-                    dy = tile[1].bottom - self.player.collision_rect.top
-                elif self.player.vel_y >= 0:
-                    self.player.vel_y = 0
-                    self.player.in_air = False
-                    self.player.jumps = 0
-                    dy = tile[1].top - self.player.collision_rect.bottom
-        return dx,dy
+            if tile[2] == 12:  # Verifica si el tile es un bloque (id = 12)
+                if self.player.got_sword and self.player.attack:  # Verifica si el jugador tiene la espada
+                    if tile[1].colliderect(self.player.rect):
+                        # Busca el bloque en el grupo de bloques para eliminarlo
+                        for block in self.item_blocks:
+                            if block.rect == tile[1]: # Comprueba que sus rect sean iguales
+                                block.do_destroy()
+                                self.item_blocks.remove(block)  # Elimina el bloque del grupo
+                                self.obstacle_list.remove(tile)  # Elimina el bloque de la lista
+                else:
+                    if tile[1].colliderect(self.player.collision_rect.x + dx, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height):
+                        dx = 0
+                    if tile[1].colliderect(self.player.collision_rect.x, self.player.collision_rect.y + dy, self.player.collision_rect.width, self.player.collision_rect.height):
+                        if self.player.vel_y < 0:
+                            self.player.vel_y = 0
+                            dy = tile[1].bottom - self.player.collision_rect.top
+                        elif self.player.vel_y >= 0:
+                            self.player.vel_y = 0
+                            self.player.in_air = False
+                            self.player.jumps = 0
+                            dy = tile[1].top - self.player.collision_rect.bottom
+            else:  # Lógica para los tiles que no son del tipo 12
+                if tile[1].colliderect(self.player.collision_rect.x + dx, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height):
+                    dx = 0
+                if tile[1].colliderect(self.player.collision_rect.x, self.player.collision_rect.y + dy, self.player.collision_rect.width, self.player.collision_rect.height):
+                    if self.player.vel_y < 0:
+                        self.player.vel_y = 0
+                        dy = tile[1].bottom - self.player.collision_rect.top
+                    elif self.player.vel_y >= 0:
+                        self.player.vel_y = 0
+                        self.player.in_air = False
+                        self.player.jumps = 0
+                        dy = tile[1].top - self.player.collision_rect.bottom
+        return dx, dy
     
 
     def run(self, player):
