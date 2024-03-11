@@ -54,8 +54,12 @@ class Level(Escena):
 
         self.whale_dead = False
 
-        # Crear la musica de fondo  
+        self.musica = pygame.mixer.Sound("./assets/Music/pirates.mp3")
+        self.musica.set_volume(BACKGROUND_MUSIC_VOLUME)
+        self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
+        self.espada.set_volume(EFFECTS_VOLUME)
 
+        self.musica.play(-1)
 
     def load_level(self):
 
@@ -129,6 +133,8 @@ class Level(Escena):
                     self.player.jump = True
                 if event.key == pygame.K_SPACE:
                     self.player.attack = True
+                    # Reproducir sonido de la espada al atacar
+                    self.espada.play(-1)
                 # Si la tecla es Escape
                 if event.key == pygame.K_ESCAPE:
                     # Se sale del programa
@@ -144,6 +150,7 @@ class Level(Escena):
                     self.player.move_right = False
                 if event.key == pygame.K_SPACE:
                     self.player.attack = False
+                    self.espada.stop()
 
             if event.type == pygame.QUIT:
                 self.director.quit_program()
@@ -197,8 +204,6 @@ class Level(Escena):
                         enemy.last_attack_time = current_time
                         enemy.get_Hit(self.player.damage+(self.player.points*10))
                         enemy.update_action(3)
-                        # Reproducir sonido de la espada al atacar
-                        #espada.play()
                     if enemy.health == 0:
                         enemy.update_action(4)
 

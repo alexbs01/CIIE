@@ -1,4 +1,5 @@
-
+import pygame
+from settings import *
 
 # Clase abstracta
 class Escena:
@@ -6,6 +7,7 @@ class Escena:
     def __init__(self, director):
         # Referencia a director para poder llamar a sus métodos
         self.director = director
+
 
 
     # Métodos de cada escena; definiciones abstractas

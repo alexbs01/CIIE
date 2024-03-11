@@ -19,6 +19,7 @@ class Level1(Level):
         if player.health <= 0:
             #dead = Final(self.director, 0, self.player.points)
             self.director.exit_scene()
+            self.musica.stop()
             self.director.stack_scene(Level1(self.director, player_status))
             #self.director.stack_scene(dead)
 
@@ -30,6 +31,8 @@ class Level1(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
+            self.musica.stop()
+            self.director.exit_scene()
             level = Level2(self.director, player_status)
             self.director.stack_scene(level)
             
@@ -47,7 +50,7 @@ class Level2(Level):
         player_status = PlayerDTO(player,2)
 
         if player.health <= 0:
-            #dead = Final(self.director, 0, self.player.points)
+            self.musica.stop()
             self.director.exit_scene()
             self.director.stack_scene(Level2(self.director, player_status))
             #self.director.stack_scene(dead)
@@ -59,6 +62,8 @@ class Level2(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
+            self.musica.stop()
+            self.director.exit_scene()
             level = Level3(self.director, player_status)
             self.director.stack_scene(level)
             # añadirlo a la pila
@@ -77,6 +82,7 @@ class Level3(Level):
         if player.health <= 0:
             #dead = Final(self.director, 0, self.player.points)
             self.director.exit_scene()
+            self.musica.stop()
             self.director.stack_scene(Level3(self.director, player_status))
             #self.director.stack_scene(dead)
 
@@ -87,6 +93,8 @@ class Level3(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
+            self.musica.stop()
+            self.director.exit_scene()
             level = Final(self.director, player.get_points())
             self.director.stack_scene(level)
             # añadirlo a la pila
