@@ -69,6 +69,32 @@ class Capitan(Entity):
     def draw(self, screen):
         return super().draw(screen, -1)
 
+class Marine(Entity):
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'Marine', first_image_number=1)
+        self.health = MARINE_HEALTH
+        self.damage = MARINE_DAMAGE
+        self.speed = MARINE_SPEED
+        self.direction = -1
+        self.attack_cooldown = MARINE_ATTACK_COOLDOWN
+        self.probability_to_hit = MARINE_PROBABILITY_TO_HIT
+
+    def draw(self, screen):
+        return super().draw(screen, -1)
+
+class MarineBoss(Entity):
+    def __init__(self, x, y, resource_manager):
+        super().__init__(x, y, resource_manager, 'MarineBoss', first_image_number=0)
+        self.health = MARINE_BOSS_HEALTH * 2
+        self.damage = MARINE_BOSS_DAMAGE * 2
+        self.speed = MARINE_BOSS_SPEED
+        self.direction = -1
+        self.attack_cooldown = MARINE_BOSS_ATTACK_COOLDOWN
+        self.probability_to_hit = MARINE_BOSS_PROBABILITY_TO_HIT
+
+    def draw(self, screen):
+        return super().draw(screen, -1)
+
 class Spike(pygame.sprite.Sprite):
     def __init__(self, x, y, resource_manager):
         pygame.sprite.Sprite.__init__(self)

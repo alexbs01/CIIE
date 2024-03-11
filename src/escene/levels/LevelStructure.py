@@ -92,6 +92,8 @@ class Level(Escena):
             16: lambda x, y: self.enemy_group.add(enemies.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Cucumber
             20: lambda x, y: self.spikes_group.add(enemies.Spike(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Obstáculo: Pinchos
             21: lambda x, y: self.enemy_group.add(enemies.WhaleEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Ballena
+            49: lambda x, y: self.enemy_group.add(enemies.Marine(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Jefe de marines
+            50: lambda x, y: self.enemy_group.add(enemies.MarineBoss(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Jefe de marines
             12: lambda x, y: (self.item_blocks.add(Interactive_obj.Block(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)), self.obstacle_list.append((img, rect))),  # Bloque interactivo
             24: lambda x, y: self.item_door.add(Interactive_obj.Door(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Objeto interactivo: Puerta
         }
@@ -104,7 +106,7 @@ class Level(Escena):
                     img = pygame.image.load(img_path)
                     rect = img.get_rect(topleft=(x * TILE_SIZE, y * TILE_SIZE))
 
-                    if tile in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24):
+                    if tile in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 49, 50):
                         tile_actions[tile](x, y)
                     # Tiles que tendrán colisiones
                     elif 0 <= tile <= 9 or 22 <= tile <= 23 or tile == 36 or 41 <= tile <= 49:
