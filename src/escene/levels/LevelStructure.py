@@ -173,7 +173,8 @@ class Level(Escena):
         # anteriores, pero detras de los enemigos
 
         self.player.draw(screen)
-        self.enemy_group.draw(screen)
+        for enemy in self.enemy_group:
+            enemy.draw(screen)
 
         # Muestra barra de salud por encima de los tiles
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)

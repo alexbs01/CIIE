@@ -13,7 +13,6 @@ class Entity(pygame.sprite.Sprite):
         self.health = 100
         self.damage = 10
         self.speed = 1
-        self.direction = 1
         self.resource_manager = resource_manager
         self.animation_list = []
         self.frame_index = 0
@@ -23,6 +22,7 @@ class Entity(pygame.sprite.Sprite):
         self.attack_cooldown = 2000
         self.probability_to_hit = 5
         self.scale = scale
+        self.orientacion = self.get_direction()
 
         self.move_distance = 20  # Número de píxeles para moverse aleatoriamente
         self.random_move_speed = 0.5  # Velocidad de movimiento aleatorio más lenta
@@ -60,27 +60,25 @@ class Entity(pygame.sprite.Sprite):
         
     def move(self):
         if self.health > 0:
-            self.collision_rect.x += self.speed * self.direction
-            self.rect.x += self.speed * self.direction
+            self.collision_rect.x += self.speed * self.orientacion
+            self.rect.x += self.speed * self.orientacion
             self.step_count += abs(self.speed)  # Actualizar el contador de pasos
 
             # Verificar si el enemigo ha alcanzado el límite de pasos
             if self.step_count >= self.max_steps:
                 # Cambiar la dirección del movimiento
-                self.direction *= -1
+                self.orientacion *= -1
                 # Reiniciar el contador de pasos
                 self.step_count = 0
 
-            # Actualizar la animación según la dirección del movimiento
-            if self.direction == 1:
-                self.update_action(1)
-            else:
-                self.update_action(1)
+
+            self.update_action(1)
+
 
     def move_back(self, distance=20):
         if self.health > 0:
-            self.rect.x += (self.direction * distance)
-            self.direction *= -1
+            self.rect.x += (self.orientacion * distance)
+            self.orientacion *= -1
     
     def ai(self, pirate):
         if self.health > 0:
@@ -139,26 +137,19 @@ class Entity(pygame.sprite.Sprite):
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
     
-    def draw(self, screen, direction=1):
+    def draw(self, screen):
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width // 4,
                                             self.rect.centery - self.rect.height // 4,
                                             self.rect.width / 2,
                                             self.rect.height)
         #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2) 
 
-        if direction == 1:
-            if self.direction == 1:
-                flipped_image = pygame.transform.flip(self.image, True, False)
-                screen.blit(flipped_image, self.rect)
-            else:
-                screen.blit(self.image, self.rect)
-                
-        elif direction == -1:
-            if self.direction == -1:
-                flipped_image = pygame.transform.flip(self.image, True, False)
-                screen.blit(flipped_image, self.rect)
-            else:
-                screen.blit(self.image, self.rect)
+        
+        if self.orientacion != self.get_direction():
+            screen.blit(self.image, self.rect)
+        else:
+            flipped_image = pygame.transform.flip(self.image, True, False)
+            screen.blit(flipped_image, self.rect)
 
     def update_health(self, health):
         self.health = health
@@ -171,3 +162,6 @@ class Entity(pygame.sprite.Sprite):
         self.collision_rect.x += screen_scroll
         self.update_animation()
         # self.check_alive()
+
+    def get_direction(self, direction):
+        pass
