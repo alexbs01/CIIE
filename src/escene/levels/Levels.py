@@ -18,7 +18,7 @@ class Level1(Level):
 
         if player.health <= 0:
             self.director.stop_music() # Al morir paramos la musica
-            self.director.play_music(MUSIC_PATH) # Y la volvemos a reproducir para empezar el nivel
+            self.director.play_music() # Y la volvemos a reproducir para empezar el nivel
             self.director.change_scene(Level1(self.director, player_status))
 
 
@@ -45,7 +45,7 @@ class Level2(Level):
 
         if player.health <= 0:
             self.director.stop_music()
-            self.director.play_music(MUSIC_PATH)
+            self.director.play_music()
 
             self.director.change_scene(Level2(self.director, player_status))
             # cambia de escena
@@ -74,7 +74,7 @@ class Level3(Level):
 
         if player.health <= 0:
             self.director.stop_music()
-            self.director.play_music(MUSIC_PATH)
+            self.director.play_music()
 
             self.director.change_scene(Level3(self.director, player_status))
             # cambia de escena

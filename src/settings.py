@@ -99,7 +99,7 @@ BOOTS_SCALE = 2.25
 
 ## SWORD
 PATH_ASSET_SWORD = Path("assets/items/sword/0.png")
-SWORD_SCALE = 1.5
+SWORD_SCALE = 1.15
 
 # Definir dimensiones de la pantalla
 SCREEN_WIDTH = 800
