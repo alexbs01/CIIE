@@ -27,11 +27,10 @@ class GUI():
 
         # Metodos abstractos
         def draw(self):
-            raise NotImplemented("Tiene que implementar el metodo dibujar.")
+            pass        
         
         def accion(self):
-            raise NotImplemented("Tiene que implementar el metodo accion.")
-        
+            pass        
 
     class Boton(ElementoGUI):
         def __init__(self, pantalla, img, posicion):
@@ -96,8 +95,6 @@ class GUI():
         def draw(self, pantalla):
             pantalla.blit(self.imagen, self.rect)
 
-        def action(self):
-            pass
         
     class TitleText(TextoGUI):
         def __init__(self, pantalla):

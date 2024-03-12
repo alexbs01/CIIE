@@ -24,9 +24,6 @@ class Menu2(Escena):
         self.mostrarPantallaInicial()
 
         
-
-
-
     def update(self, *args):
         return
     
