@@ -253,7 +253,7 @@ class Level(Escena):
     def check_collision(self, dx, dy):
         for tile in self.obstacle_list:
             if tile[2] == 12:  # Verifica si el tile es un bloque (id = 12)
-                if self.player.got_sword and self.player.attack:  # Verifica si el jugador tiene la espada
+                if self.player.got_sword and self.player.attack and self.player.direction == 1:  # Verifica si el jugador tiene la espada
                     if tile[1].colliderect(self.player.rect):
                         # Busca el bloque en el grupo de bloques para eliminarlo
                         for block in self.item_blocks:
