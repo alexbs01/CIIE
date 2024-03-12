@@ -17,11 +17,9 @@ class Level1(Level):
         player_status = PlayerDTO(player,1)
 
         if player.health <= 0:
-            #dead = Final(self.director, 0, self.player.points)
-            self.director.exit_scene()
-            self.musica.stop()
-            self.director.stack_scene(Level1(self.director, player_status))
-            #self.director.stack_scene(dead)
+            self.director.stop_music() # Al morir paramos la musica
+            self.director.play_music(MUSIC_PATH) # Y la volvemos a reproducir para empezar el nivel
+            self.director.change_scene(Level1(self.director, player_status))
 
 
         for door in self.item_door:
@@ -31,12 +29,8 @@ class Level1(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
-            self.musica.stop()
-            self.director.exit_scene()
-            level = Level2(self.director, player_status)
-            self.director.stack_scene(level)
-            
-            # añadirlo a la pila
+            self.director.change_scene(Level2(self.director, player_status))
+            # cambia de escena
 
 class Level2(Level):
 
@@ -50,10 +44,11 @@ class Level2(Level):
         player_status = PlayerDTO(player,2)
 
         if player.health <= 0:
-            self.musica.stop()
-            self.director.exit_scene()
-            self.director.stack_scene(Level2(self.director, player_status))
-            #self.director.stack_scene(dead)
+            self.director.stop_music()
+            self.director.play_music(MUSIC_PATH)
+
+            self.director.change_scene(Level2(self.director, player_status))
+            # cambia de escena
 
         for door in self.item_door:
             if player.rect.colliderect(door.rect) and player.got_key:
@@ -62,11 +57,9 @@ class Level2(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
-            self.musica.stop()
-            self.director.exit_scene()
-            level = Level3(self.director, player_status)
-            self.director.stack_scene(level)
-            # añadirlo a la pila
+            self.director.change_scene(Level3(self.director, player_status))
+            # cambia de escena
+
 
 class Level3(Level):
 
@@ -80,11 +73,11 @@ class Level3(Level):
         player_status = PlayerDTO(player,3)
 
         if player.health <= 0:
-            #dead = Final(self.director, 0, self.player.points)
-            self.director.exit_scene()
-            self.musica.stop()
-            self.director.stack_scene(Level3(self.director, player_status))
-            #self.director.stack_scene(dead)
+            self.director.stop_music()
+            self.director.play_music(MUSIC_PATH)
+
+            self.director.change_scene(Level3(self.director, player_status))
+            # cambia de escena
 
         for door in self.item_door:
             if player.rect.colliderect(door.rect) and player.got_key:
@@ -93,11 +86,9 @@ class Level3(Level):
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
-            self.musica.stop()
-            self.director.exit_scene()
-            level = Final(self.director, player.get_points())
-            self.director.stack_scene(level)
-            # añadirlo a la pila
+            self.director.stop_music()
+            self.director.change_scene(Final(self.director, player.get_points()))
+            # cambia de escena
 
 class Final(Escena):
 
@@ -111,7 +102,6 @@ class Final(Escena):
     def events(self, lista_eventos):
         for evento in lista_eventos:
         # Si se quiere salir, se le indica al director
-        
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE:
                     self.salirPrograma()

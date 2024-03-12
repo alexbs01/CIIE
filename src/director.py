@@ -1,7 +1,7 @@
 
 import pygame
 
-from settings import *
+from settings import MUSIC_PATH, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_MUSIC_VOLUME
 
 
 
@@ -27,11 +27,11 @@ class Director():
         
         # Variable para comprobar si la escena a terminado
         self.quit_scene = False
+        self.music_playing = False
 
         self.clock = pygame.time.Clock()
 
     def loop(self, scene):
-
         self.quit_scene = False
 
         pygame.event.clear()
@@ -50,6 +50,7 @@ class Director():
 
     # Ejecuta la escena que este en la cima de la pila
     def execute(self):
+        self.play_music(MUSIC_PATH)  # Inicia la música al comenzar el juego
         while (len(self.stack)>0):
             scene = self.stack[len(self.stack)-1]
             
@@ -76,3 +77,15 @@ class Director():
     def stack_scene(self, scene):
         self.quit_scene = True
         self.stack.append(scene)
+
+
+    def play_music(self, music_file):
+        pygame.mixer.music.load(music_file)
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(BACKGROUND_MUSIC_VOLUME)
+
+        self.music_playing = True
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+        self.music_playing = False

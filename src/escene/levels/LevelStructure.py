@@ -9,7 +9,6 @@ from items.Interactives import Interactive_obj
 import csv
 from world_generation.ResourceManager import ResourceManager
 from escene.pause.PausaMenu import Pausa
-from Observer import Observer
 
 
 class Level(Escena):
@@ -54,12 +53,8 @@ class Level(Escena):
 
         self.whale_dead = False
 
-        self.musica = pygame.mixer.Sound("./assets/Music/pirates.mp3")
-        self.musica.set_volume(BACKGROUND_MUSIC_VOLUME)
         self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
         self.espada.set_volume(EFFECTS_VOLUME)
-
-        self.musica.play(-1)
 
     def load_level(self):
 
