@@ -60,7 +60,7 @@ class GUI():
         def accion(self):
             self.pantalla.menu.ejecutarJuego()
 
-    class BotonConfig(Boton):
+    class BotonControles(Boton):
         def __init__(self, pantalla):
             self.img = pygame.image.load(PATH_CONFIG_BOTTON)
             super().__init__(pantalla, self.img, (220, 400))
@@ -96,25 +96,28 @@ class GUI():
 
     class TextoJugar(TextoGUI):
         def __init__(self, pantalla):
-            # La fuente la debería cargar el estor de recursos
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, (0, 0, 0), 'Play', (350, 250))
+            GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Play', (350, 250))
+
 
         def accion(self):
             self.pantalla.menu.ejecutarJuego()
 
 
-    class ConfigText(TextoGUI):
+    class ControlesText(TextoGUI):
         def __init__(self, pantalla):
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Configuración', (230, 400))
+            GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Controles', (300, 400))
+            
+        def accion(self):
+            self.pantalla.menu.mostrarPantallaControles()
             
 
     class TextoSalir(TextoGUI):
         def __init__(self, pantalla):
             # La fuente la debería cargar el estor de recursos
             font = pygame.font.Font("assets/inmortal.ttf", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'Salir', (350, 550))
+            GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Salir', (350, 550))
 
         def accion(self):
             self.pantalla.menu.salirPrograma()
@@ -143,6 +146,8 @@ class GUI():
                     if elemento.posicionEnElemento(evento.pos):
                         if (elemento == self.elementoClic):
                             elemento.accion()
+            
+
 
         def draw(self, screen):
             screen.blit(self.image, self.image.get_rect())
@@ -151,7 +156,6 @@ class GUI():
                 element.draw(screen)
 
     class PantallaInicial(PantallaGUI):
-
         def __init__(self, menu):
             GUI.PantallaGUI.__init__(self, menu)
 
@@ -159,20 +163,32 @@ class GUI():
             play_text = GUI.TextoJugar(self)
             exit_text = GUI.TextoSalir(self)
             title_text = GUI.TitleText(self)
-            config_text = GUI.ConfigText(self)
+            controles_text = GUI.ControlesText(self)
 
+            # Créase o botón e añádese á lista
             play_boton = GUI.BotonJugar(self)
-            config_boton = GUI.BotonConfig(self)
+            controles_boton = GUI.BotonControles(self)
             exit_boton = GUI.BotonSalir(self)
+            
 
+            # Añadir elementos a la lista
             self.Elementos_GUI.append(play_text)
             self.Elementos_GUI.append(exit_text)
             self.Elementos_GUI.append(title_text)
-            self.Elementos_GUI.append(config_text)
-
+            self.Elementos_GUI.append(controles_text)
+            
             self.Elementos_GUI.append(play_boton)
-            self.Elementos_GUI.append(config_boton)
+            self.Elementos_GUI.append(controles_boton)
             self.Elementos_GUI.append(exit_boton)
+
+
+            # Método para mostrar la pantalla de controles
+            def mostrarControles():
+                menu.mostrarPantallaControles()
+
+            # Enlace de acción del botón para mostrar la pantalla de controles
+            controles_boton.accion = mostrarControles
+
 
             #Tamén creamos unha lista cos elementos que queremos que sexan interactivos
             #self.GUI_interactive_elements.append(play_text)
@@ -180,6 +196,48 @@ class GUI():
             #self.GUI_interactive_elements.append(exit_text)
             #self.selected = self.GUI_interactive_elements[0]
             #self.selected.select(self)
+
+
+
+          
+    class PantallaControles(PantallaGUI):
+        def __init__(self, menu):
+            GUI.PantallaGUI.__init__(self, menu)
+            self.image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.image.fill((0, 0, 0)) # Fondo negro
+            
+            # Crear texto explicativo de los controles
+            controles = [
+                "Controles:",
+                "W: Saltar",
+                "A: Moverse a la izquierda",
+                "D: Moverse a la derecha",
+                "ESPACIO: Atacar",
+                "P: Pausar"
+            ]
+            
+            y_position = SCREEN_HEIGHT // 4 # Mover más arriba
+            for text in controles:
+                self.texto_controles = GUI.TextoGUI(self, pygame.font.Font("assets/inmortal.ttf", 30), (255, 255, 255), 
+                                                    text, (SCREEN_WIDTH // 4, y_position)) # Mover más a la izquierda
+                self.Elementos_GUI.append(self.texto_controles)
+                if text == "Controles:":  # Si es el título "Controles", agregamos un espacio adicional
+                    y_position += 30  # Incrementamos la posición vertical
+                y_position += 30  # Ajustar la posición vertical para el siguiente texto
+
+            # Añadir botón para volver al menú
+            volver_boton = GUI.Boton(self, pygame.image.load(PATH_BACK_BOTTON), (220, 600)) # Ajustar la posición del botón
+            volver_boton.accion = self.volverMenu
+            self.Elementos_GUI.append(volver_boton)
+            
+        def volverMenu(self):
+            self.menu.mostrarPantallaInicial()
+
+
+
+
+
+
 
         
     

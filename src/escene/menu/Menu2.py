@@ -23,6 +23,9 @@ class Menu2(Escena):
         # En que pantalla estamos actualmente
         self.mostrarPantallaInicial()
 
+        
+
+
 
     def update(self, *args):
         return
@@ -67,3 +70,13 @@ class Menu2(Escena):
 
     def mostrarPantallaInicial(self):
         self.pantallaActual = 0
+
+    def mostrarPantallaControles(self):
+        # Verificar si ya se ha creado la pantalla de controles
+        if len(self.listaPantallas) == 1:
+            # Si no está creada, la creamos y la añadimos a la lista
+            self.listaPantallas.append(GUI.PantallaControles(self))
+        else:
+            # Si ya está creada, simplemente cambiamos a ella
+            self.pantallaActual = 1 # La pantalla de controles siempre será la segunda en la lista
+  

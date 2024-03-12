@@ -38,7 +38,7 @@ class Entity(pygame.sprite.Sprite):
             n_frames = len(os.listdir(f'assets/enemies/{enemy}/{animation}'))
             for i in range(first_image_number, n_frames):
                 img_path = f'assets/enemies/{enemy}/{animation}/{i}.png'
-                img = self.resource_manager.load_image(img_path, img_path)
+                img = self.resource_manager.load_resource(f'{enemy}_{animation}_{i}', img_path, "image")  # Corrección aquí
                 img = pygame.transform.scale(img, (int(img.get_width() * self.scale), int(img.get_height() * self.scale)))
                 if img is not None:  # Asegurarse de que la imagen se ha cargado correctamente
                     temp_list.append(img)

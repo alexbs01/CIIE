@@ -15,7 +15,7 @@ class Interactive_obj():
             self.visible = True
 
             img_path = f'assets/tiles/12.png'
-            img = self.resource_manager.load_image(img_path, img_path)
+            img = self.resource_manager.load_resource(img_path, img_path, "image")  # Corrección aquí
             if img is None:  # Asegurarse de que la imagen se ha cargado correctamente
                 print(f"No se pudo cargar la imagen: {img_path}")
             else:
@@ -26,6 +26,7 @@ class Interactive_obj():
             self.rect.x = x
             self.rect.y = y
             self.collision_rect = self.image.get_rect()
+
             
         def do_destroy(self):
             self.visible = False
@@ -65,15 +66,15 @@ class Interactive_obj():
             # Tipos de animaciones
             animation_types = ['Closed', 'Opening', 'Closing']
 
-            # Bucle que comprueba que animacion hacer
+            # Bucle que comprueba qué animación hacer
             for animation in animation_types:
                 temp_list = []  # Reseteamos lista temporal
 
-                # Contamos n de ficheros en la carpeta
+                # Contamos el número de archivos en la carpeta
                 n_frames = len(os.listdir(f'assets/Door/{animation}'))
                 for i in range(n_frames):
                     img_path = f'assets/Door/{animation}/{i}.png'
-                    img = self.resource_manager.load_image(img_path, img_path)
+                    img = self.resource_manager.load_resource(f'{animation}_{i}', img_path, "image")  # Corrección aquí
                     if img is not None:  # Asegurarse de que la imagen se ha cargado correctamente
                         temp_list.append(img)
                     else:

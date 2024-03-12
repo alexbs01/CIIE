@@ -12,15 +12,15 @@ class Pirate(pygame.sprite.Sprite, Subject):
         Subject.__init__(self)
         self.char_type = char_type
         self.speed = PLAYER_SPEED
-        self.direction =  1
+        self.direction = 1
         self.flip = False
         self.jump = False
         self.max_jumps = PLAYER_MAX_JUMPS
         self.jumps = 0
         self.in_air = True
-        self.vel_y =  0
+        self.vel_y = 0
         self.attack = False
-        self.health =  PLAYER_HEALTH
+        self.health = PLAYER_HEALTH
         self.observers = []
         self.damage = PLAYER_DAMAGE
         self.points = 0
@@ -30,15 +30,15 @@ class Pirate(pygame.sprite.Sprite, Subject):
         self.move_right = False
 
         self.animation_list = []
-        self.frame_index =  0
-        self.action =  0
+        self.frame_index = 0
+        self.action = 0
         self.update_time = pygame.time.get_ticks()
         self.resource_manager = resource_manager
 
         self.got_key = False
         self.got_sword = False
         self.got_boots = False
-        
+
         self.control = KeyboardControl()
 
         animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
@@ -48,7 +48,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
             n_frames = len(os.listdir(f'assets/player/{animation}'))
             for i in range(n_frames):
                 img_path = f'assets/player/{animation}/{i}.png'
-                img = self.resource_manager.load_image(img_path, img_path)
+                img = self.resource_manager.load_resource(img_path, img_path, "image")  # Corrección aquí
                 img = pygame.transform.scale(img, (int(img.get_width() * self.scale), int(img.get_height() * self.scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list)
