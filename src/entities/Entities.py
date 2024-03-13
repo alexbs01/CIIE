@@ -1,10 +1,12 @@
 import pygame
 import os
 import random
+from Subject import Subject
 
-class Entity(pygame.sprite.Sprite):
+class Entity(pygame.sprite.Sprite, Subject):
     def __init__(self, x, y, resource_manager, enemy, first_image_number=0, scale=1): # Cucumber
         pygame.sprite.Sprite.__init__(self)
+        Subject.__init__(self)
         self.original_x = x
         self.original_y = y
         self.step_count = 0
@@ -156,6 +158,10 @@ class Entity(pygame.sprite.Sprite):
         
     def register(self, observer):
         self.observers.append(observer)
+
+    def set_health(self, health):
+        self.health = health
+        self.notify_observers(self.health)
     
     def update(self, screen_scroll):
         self.rect.x += screen_scroll

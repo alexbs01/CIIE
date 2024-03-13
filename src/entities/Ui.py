@@ -76,3 +76,44 @@ class Ui():
             # Mostrar la cantidad de llaves
             img = self.font.render(": "+str(self.key), True, WHITE)
             self.display_surface.blit(img, (90, 120))
+
+
+
+    class EnemyHealthObserver(Observer):
+
+        def __init__(self, enemy_sprite, display_surface, max_health):
+            self.enemy_sprite = enemy_sprite
+            self.max_health = max_health
+            self.display_surface = display_surface
+            self.font = pygame.font.Font(None, 16)  # Reducir el tamaño de la fuente para el texto
+
+        def notify(self, new_health):
+            # Update con la nueva vida
+            self.enemy_sprite.health = new_health
+            self.draw_health_bar()
+
+        def draw_health_bar(self):
+            # Posición de la barra de salud sobre la cabeza del enemigo
+            x = self.enemy_sprite.rect.centerx - 30  # Centrar la barra de vida sobre la cabeza del enemigo
+            y = self.enemy_sprite.rect.y - 12  # Ajustar la posición y
+
+            if self.enemy_sprite.health > 0:  # Verificar si la vida del enemigo es mayor que cero
+                # Dibuja el fondo de la barra de salud (rectángulo negro) más estrecho y menos alto
+                pygame.draw.rect(self.display_surface, BLACK, (x - 2, y - 2, 62, 10))  # Ancho dividido por 2 (124/2 = 62)
+                # Dibuja el rectángulo rojo que representa la vida máxima
+                pygame.draw.rect(self.display_surface, RED, (x, y, 60, 8))  # Ancho dividido por 2 (120/2 = 60)
+
+                if self.enemy_sprite.health > 0:
+                    # Calcula la relación de la vida actual con la vida máxima
+                    ratio = self.enemy_sprite.health / self.max_health
+                    # Dibuja el rectángulo verde que representa la vida actual
+                    pygame.draw.rect(self.display_surface, GREEN, (x, y, 60 * ratio, 8))  # Ancho dividido por 2 (120/2 = 60)
+
+                # Muestra la cantidad de vida actual como texto sobre la barra
+                #health_text = self.font.render(f"{self.enemy_sprite.health}/{self.max_health}", True, BLACK)
+                #self.display_surface.blit(health_text, (x + 12, y + 2))  # Ajustar la posición del texto
+
+
+
+
+

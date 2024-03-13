@@ -47,6 +47,13 @@ class Level(Escena):
 
         self.init_observers()
 
+        # Observadores para vida enemigos
+        self.enemy_observers = []
+        for enemy in self.enemy_group:
+            health_observer = self.ui_instance.EnemyHealthObserver(enemy, self.display_surface, enemy.health)
+            self.enemy_observers.append(health_observer)
+            enemy.add_observer(health_observer)
+
         # Registrar observadores en el jugador
         self.player.add_observer(self.health_observer)
         self.player.add_observer(self.points_observer)
@@ -176,7 +183,8 @@ class Level(Escena):
         for item in self.item_boxes_Group:
             item.draw(screen)
 
-            
+        for observer, enemy in zip(self.enemy_observers, self.enemy_group):
+            observer.notify(enemy.health)
 
         # Muestra barra de salud por encima de los tiles
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
