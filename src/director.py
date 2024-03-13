@@ -50,7 +50,6 @@ class Director():
 
     # Ejecuta la escena que este en la cima de la pila
     def execute(self):
-        self.play_music(MUSIC_PATH)  # Inicia la música al comenzar el juego
         while (len(self.stack)>0):
             scene = self.stack[len(self.stack)-1]
             
@@ -79,8 +78,8 @@ class Director():
         self.stack.append(scene)
 
 
-    def play_music(self, music_file):
-        pygame.mixer.music.load(music_file)
+    def play_music(self):
+        pygame.mixer.music.load(MUSIC_PATH)
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(BACKGROUND_MUSIC_VOLUME)
 

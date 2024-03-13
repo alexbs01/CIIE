@@ -30,7 +30,6 @@ class Level(Escena):
         self.item_boxes_Group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
         self.spikes_group = pygame.sprite.Group()
-        self.item_boots = pygame.sprite.Group()
         self.item_door = pygame.sprite.Group()
         self.item_blocks = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
@@ -51,7 +50,9 @@ class Level(Escena):
         self.player.add_observer(self.health_observer)
         self.player.add_observer(self.points_observer)
 
+
         self.whale_dead = False
+        self.capitan_dead = False
 
         self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
         self.espada.set_volume(EFFECTS_VOLUME)
@@ -72,16 +73,14 @@ class Level(Escena):
                 for y, tile in enumerate(row):
                     tiles[x][y] = int(tile)
 
-        level_length = len(tiles[0])
-
         # Diccionario de Entidades asociadas a su valor de tile
         tile_actions = {
             23: lambda x, y: self.set_player(Pirate('pirate', x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),
-            11: lambda x, y: self.item_boxes_Group.add(Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Espada
-            14: lambda x, y: self.item_boxes_Group.add(Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Llave
-            17: lambda x, y: self.item_boxes_Group.add(Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Moneda
-            18: lambda x, y: self.item_boots.add(Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT * 3)),  # Objeto recogible: Botas
-            19: lambda x, y: self.item_boxes_Group.add(Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT)),  # Objeto recogible: Salud
+            11: lambda x, y: self.item_boxes_Group.add(Collectables('Sword', x * TILE_WIDTH, y * TILE_HEIGHT, False)),  # Objeto recogible: Espada
+            14: lambda x, y: self.item_boxes_Group.add(Collectables('Key', x * TILE_WIDTH, y * TILE_HEIGHT, False if self.csv == PATH_LEVEL_3 else True)),  # Objeto recogible: Llave
+            17: lambda x, y: self.item_boxes_Group.add(Collectables('Berries', x * TILE_WIDTH, y * TILE_HEIGHT, True)),  # Objeto recogible: Moneda
+            18: lambda x, y: self.item_boxes_Group.add(Collectables('Boots', x * TILE_WIDTH, y * TILE_HEIGHT, False)),  # Objeto recogible: Botas
+            19: lambda x, y: self.item_boxes_Group.add(Collectables('Health', x * TILE_WIDTH, y * TILE_HEIGHT, True)),  # Objeto recogible: Salud
             13: lambda x, y: self.enemy_group.add(enemies.Capitan(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Capitán
             15: lambda x, y: self.enemy_group.add(enemies.badPirate(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Pirata malo
             16: lambda x, y: self.enemy_group.add(enemies.CucumberEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, self.resource_manager)),  # Enemigo: Cucumber
@@ -165,16 +164,19 @@ class Level(Escena):
             screen.blit(tile[0], tile[1])
 
         self.item_blocks.draw(screen)
-        self.item_boots.draw(screen)
         self.item_door.draw(screen)
         self.spikes_group.draw(screen)
-        self.item_boxes_Group.draw(screen)
         # Se pinta en este orden para que el jugador quede por delante de los objetos 
         # anteriores, pero detras de los enemigos
 
         self.player.draw(screen)
         for enemy in self.enemy_group:
             enemy.draw(screen)
+
+        for item in self.item_boxes_Group:
+            item.draw(screen)
+
+            
 
         # Muestra barra de salud por encima de los tiles
         title_font = pygame.font.Font("assets/inmortal.ttf", 25)
@@ -234,14 +236,25 @@ class Level(Escena):
                 if isinstance(enemy, enemies.WhaleEnemy) and enemy.health <= 0:
                     self.whale_dead = True
                     ## aparecen las botas
-                    boota = self.item_boots.sprites()[0]               
-                    boota.rect.midtop = (boota.rect.midtop[0], boota.rect.midtop[1] / 3)
+                    for item in self.item_boxes_Group:
+                        if isinstance(item, Collectables) and item.item_type == 'Boots':
+                            item.set_visible()             
 
+
+        if not self.capitan_dead:
+            for enemy in self.enemy_group:
+                if isinstance(enemy, enemies.Capitan) and enemy.health <= 0:
+                    self.capitan_dead = True
+                    ## aparece la espada
+                    for item in self.item_boxes_Group:
+                        if isinstance(item, Collectables) and item.item_type == 'Sword':
+                            item.set_visible()
+        
+        
         self.player.update(self.screen_scroll, self.bg_scroll)
         self.enemy_group.update(self.screen_scroll)
         self.spikes_group.update(self.screen_scroll)
         self.item_boxes_Group.update(self.screen_scroll, self.player)
-        self.item_boots.update(self.screen_scroll, self.player)
         self.item_door.update(self.screen_scroll)
         self.item_blocks.update(self.screen_scroll)
 
@@ -258,8 +271,7 @@ class Level(Escena):
                         # Busca el bloque en el grupo de bloques para eliminarlo
                         for block in self.item_blocks:
                             if block.rect == tile[1]: # Comprueba que sus rect sean iguales
-                                block.do_destroy()
-                                self.item_blocks.remove(block)  # Elimina el bloque del grupo
+                                block.kill()
                                 self.obstacle_list.remove(tile)  # Elimina el bloque de la lista
                 else:
                     if tile[1].colliderect(self.player.collision_rect.x + dx, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height):

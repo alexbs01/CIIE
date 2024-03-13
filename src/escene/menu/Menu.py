@@ -11,7 +11,6 @@ class Menu2(Escena):
 
         # Llamamos al constructor de la clase padre
         Escena.__init__(self, director)
-
         # Creamos la lista de pantallas
         self.listaPantallas = []
 
@@ -56,6 +55,7 @@ class Menu2(Escena):
     # Boton play del menu
     def ejecutarJuego(self):
         # Creamos el nivel 1, le pasamos status None porque no tiene datos de otros niveles
+        self.director.play_music()
         level = Level1(self.director, None)
 
         self.director.stack_scene(level)

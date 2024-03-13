@@ -25,7 +25,7 @@ item_scales = {
 }
 
 class Collectables(pygame.sprite.Sprite):
-    def __init__(self, item_type, x, y):
+    def __init__(self, item_type, x, y, visible):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
         self.scale = item_scales[self.item_type]
@@ -34,12 +34,13 @@ class Collectables(pygame.sprite.Sprite):
                                             (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale)))
         self.rect = self.image.get_rect()
         self.rect.midtop = (x + TILE_SIZE //  2, y + (TILE_SIZE - self.image.get_height()))
+        self.visible = visible
 
 
     def update(self,screen_scroll, player):
         self.rect.x += screen_scroll
         # Confirmar que el pirata coge el item
-        if pygame.sprite.collide_rect(self, player):
+        if pygame.sprite.collide_rect(self, player) and self.visible:
             if self.item_type == 'Health':
                 if player.health <  MAX_HEALTH:
                     new_health = player.health + 25
@@ -63,5 +64,12 @@ class Collectables(pygame.sprite.Sprite):
 
         
     def draw(self, SCREEN):
-        SCREEN.blit(self.image, self.rect)
+        print(self.visible)
+        if self.visible == True:
+            SCREEN.blit(self.image, self.rect)
+        else:
+            print("Not visible")
+
+    def set_visible(self):
+        self.visible = True
         

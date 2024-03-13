@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from director import Director
-from escene.menu.Menu2 import Menu2
+from escene.menu.Menu import Menu2
 
 def main():
 
