@@ -6,7 +6,7 @@ class PlayerDTO(object):
         if player.health > 0:
             self.vida = player.health
             self.puntos = player.points
-            self.max_jumps = 2 if level != 1 or player.got_boots else 1
+            self.max_jumps = 2 if level != 0 or player.got_boots else 1
             self.sword = player.got_sword if level >= 2 else False
         else:
             self.vida = MAX_HEALTH

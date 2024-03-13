@@ -13,6 +13,7 @@ class CucumberEnemy(Entity):
         self.damage = CUCUMBER_DAMAGE
         self.speed = CUCUMBER_SPEED
         self.attack_cooldown = CUCUMBER_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = CUCUMBER_ATTACK_ANIMATION_RATE
         self.probability_to_hit = CUCUMBER_PROBABILITY_TO_HIT
 
     def get_direction(self):
@@ -30,6 +31,7 @@ class WhaleEnemy(Entity):
         self.damage = WHALE_DAMAGE
         self.speed = WHALE_SPEED
         self.attack_cooldown = WHALE_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = WHALE_ATTACK_ANIMATION_RATE
         self.probability_to_hit = WHALE_PROBABILITY_TO_HIT
 
     def get_direction(self):
@@ -48,6 +50,7 @@ class badPirate(Entity):
         self.damage = BAD_PIRATE_DAMAGE
         self.speed = BAD_PIRATE_SPEED
         self.attack_cooldown = BAD_PIRATE_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = BAD_PIRATE_ATTACK_ANIMATION_RATE
         self.probability_to_hit = BAD_PIRATE_PROBABILITY_TO_HIT
 
     def get_direction(self):
@@ -65,6 +68,7 @@ class Capitan(Entity):
         self.damage = CAPITAN_DAMAGE
         self.speed = CAPITAN_SPEED
         self.attack_cooldown = CAPITAN_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = CAPITAN_ATTACK_ANIMATION_RATE
         self.probability_to_hit = CAPITAN_PROBABILITY_TO_HIT
 
     def get_direction(self):
@@ -81,6 +85,7 @@ class Marine(Entity):
         self.damage = MARINE_DAMAGE
         self.speed = MARINE_SPEED
         self.attack_cooldown = MARINE_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = MARINE_ATTACK_ANIMATION_RATE
         self.probability_to_hit = MARINE_PROBABILITY_TO_HIT
         self.scale = MARINE_SCALE
 
@@ -100,6 +105,7 @@ class MarineBoss(Entity):
         self.damage = MARINE_BOSS_DAMAGE 
         self.speed = MARINE_BOSS_SPEED
         self.attack_cooldown = MARINE_BOSS_ATTACK_COOLDOWN
+        self.attack_animation_cooldown = MARINE_BOSS_ATTACK_ANIMATION_RATE
         self.probability_to_hit = MARINE_BOSS_PROBABILITY_TO_HIT
         self.scale = MARINE_BOSS_SCALE
 

@@ -19,6 +19,7 @@ class Entity(pygame.sprite.Sprite, Subject):
         self.update_time = pygame.time.get_ticks()
         self.last_attack_time = 0
         self.attack_cooldown = 2000
+        self.attack_animation_cooldown = 100
         self.probability_to_hit = 5
         self.scale = scale
         self.orientacion = self.get_direction()
@@ -104,15 +105,15 @@ class Entity(pygame.sprite.Sprite, Subject):
                 self.update_action(2)
     
     def update_animation(self):
-        ANIMATION_COOLDOWN = 60
+        animation_cooldown = 60
         if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
+            animation_cooldown = self.attack_animation_cooldown
         if self.action == 4:  # Si la acción es de muerte, no se mueve
-            ANIMATION_COOLDOWN = 500
+            animation_cooldown = 500
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
         # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
+        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
             self.update_time = pygame.time.get_ticks()
             self.frame_index += 1
         # Si la animación ha terminado, reiniciar

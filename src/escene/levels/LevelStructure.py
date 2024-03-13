@@ -239,7 +239,7 @@ class Level(Escena):
                 current_time = pygame.time.get_ticks()
                 if current_time - spikes.last_contact_time > 0:
                     spikes.last_contact_time = current_time
-                    self.player.get_Hit(8)
+                    self.player.get_Hit(SPIKE_DAMAGE)
 
                   
         self.player.update(self.screen_scroll, self.bg_scroll)
