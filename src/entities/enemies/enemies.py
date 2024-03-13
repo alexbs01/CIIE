@@ -93,6 +93,8 @@ class Marine(Entity):
 class MarineBoss(Entity):
     def __init__(self, x, y, resource_manager):
         self.direction = -1
+        self.boss_dead = False
+
         super().__init__(x, y, resource_manager, 'MarineBoss', first_image_number=0, scale=MARINE_BOSS_SCALE)
         self.health = MARINE_BOSS_HEALTH
         self.damage = MARINE_BOSS_DAMAGE 

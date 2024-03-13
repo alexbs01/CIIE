@@ -51,9 +51,6 @@ class Level(Escena):
         self.player.add_observer(self.points_observer)
 
 
-        self.whale_dead = False
-        self.capitan_dead = False
-
         self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
         self.espada.set_volume(EFFECTS_VOLUME)
 
@@ -231,26 +228,7 @@ class Level(Escena):
                     spikes.last_contact_time = current_time
                     self.player.get_Hit(8)
 
-        if not self.whale_dead:              
-            for enemy in self.enemy_group:
-                if isinstance(enemy, enemies.WhaleEnemy) and enemy.health <= 0:
-                    self.whale_dead = True
-                    ## aparecen las botas
-                    for item in self.item_boxes_Group:
-                        if isinstance(item, Collectables) and item.item_type == 'Boots':
-                            item.set_visible()             
-
-
-        if not self.capitan_dead:
-            for enemy in self.enemy_group:
-                if isinstance(enemy, enemies.Capitan) and enemy.health <= 0:
-                    self.capitan_dead = True
-                    ## aparece la espada
-                    for item in self.item_boxes_Group:
-                        if isinstance(item, Collectables) and item.item_type == 'Sword':
-                            item.set_visible()
-        
-        
+                  
         self.player.update(self.screen_scroll, self.bg_scroll)
         self.enemy_group.update(self.screen_scroll)
         self.spikes_group.update(self.screen_scroll)
@@ -260,7 +238,7 @@ class Level(Escena):
 
         self.health_observer.notify(self.player.health)
         self.points_observer.notify(self.player.points)
-        self.run(self.player)
+        self.run()
 
 
     def check_collision(self, dx, dy):
@@ -300,7 +278,7 @@ class Level(Escena):
         return dx, dy
     
 
-    def run(self, player):
+    def run(self):
         # Este método debe ser implementado en cada subclase de Level
         pass
 

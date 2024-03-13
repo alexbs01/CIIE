@@ -2,6 +2,8 @@
 from settings import *
 from escene.levels.LevelStructure import Level
 from items.Interactives import Interactive_obj
+from items.Collectables import Collectables
+from entities.enemies import enemies
 from dto import PlayerDTO
 from escene.Escena import Escena
 
@@ -9,21 +11,33 @@ class Level1(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status, PATH_LEVEL_1)
+        self.whale_dead = False
         
-        
-    def run(self,player):
-        super().run(player)
 
-        player_status = PlayerDTO(player,1)
+    def update(self, time):
+        super().update(time)
+        if not self.whale_dead:              
+            for enemy in self.enemy_group:
+                if isinstance(enemy, enemies.WhaleEnemy) and enemy.health <= 0:
+                    self.whale_dead = True
+                    ## aparecen las botas
+                    for item in self.item_boxes_Group:
+                        if isinstance(item, Collectables) and item.item_type == 'Boots':
+                            item.set_visible()   
 
-        if player.health <= 0:
+    def run(self):
+        super().run()
+
+        player_status = PlayerDTO(self.player,1)
+
+        if self.player.health <= 0:
             self.director.stop_music() # Al morir paramos la musica
             self.director.play_music() # Y la volvemos a reproducir para empezar el nivel
             self.director.change_scene(Level1(self.director, player_status))
 
 
         for door in self.item_door:
-            if player.rect.colliderect(door.rect) and player.got_key:
+            if door.rect.colliderect(self.player.collision_rect.x, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height) and self.player.got_key and self.player.in_air == False:
                 next_lvl = door.set_open()  # Establece la puerta como abierta
             elif not door.is_open():
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
@@ -36,14 +50,27 @@ class Level2(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status, PATH_LEVEL_2)
+        self.capitan_dead = False
 
-    def run(self,player):
 
-        super().run(player)
+    def update(self, time):
+        super().update(time)
+        if not self.capitan_dead:
+            for enemy in self.enemy_group:
+                if isinstance(enemy, enemies.Capitan) and enemy.health <= 0:
+                    self.capitan_dead = True
+                    ## aparece la espada
+                    for item in self.item_boxes_Group:
+                        if isinstance(item, Collectables) and item.item_type == 'Sword':
+                            item.set_visible()
 
-        player_status = PlayerDTO(player,2)
+    def run(self):
 
-        if player.health <= 0:
+        super().run()
+
+        player_status = PlayerDTO(self.player,2)
+
+        if self.player.health <= 0:
             self.director.stop_music()
             self.director.play_music()
 
@@ -51,7 +78,7 @@ class Level2(Level):
             # cambia de escena
 
         for door in self.item_door:
-            if player.rect.colliderect(door.rect) and player.got_key:
+            if door.rect.colliderect(self.player.collision_rect.x, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height) and self.player.got_key and self.player.in_air == False:
                 next_lvl = door.set_open()  # Establece la puerta como abierta
             elif not door.is_open():
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
@@ -65,14 +92,37 @@ class Level3(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status,PATH_LEVEL_3)
+        self.check_boss_dead = 0
 
-    def run(self,player):
 
-        super().run(player)
+    def update(self, time):
+        super().update(time)
+        if self.check_boss_dead != 2:
+            for enemy in self.enemy_group:
+                if isinstance(enemy, enemies.MarineBoss) and enemy.health <= 0:
+                    if enemy.boss_dead == False:
+                        self.check_boss_dead += 1
+                        enemy.boss_dead = True
 
-        player_status = PlayerDTO(player,3)
+                    if self.check_boss_dead == 2:
+                        ## aparece la llave que este mas cerca del jugador
+                        llaves = []
+                        for item in self.item_boxes_Group:
+                            if isinstance(item, Collectables) and item.item_type == 'Key':
+                                llaves.append(item)
+                        
+                        if abs(llaves[0].rect.x) + self.player.collision_rect.x > abs(llaves[1].rect.x) + self.player.collision_rect.x:
+                            llaves[1].set_visible()
+                        else:
+                            llaves[0].set_visible()
 
-        if player.health <= 0:
+    def run(self):
+
+        super().run()
+
+        player_status = PlayerDTO(self.player,3)
+
+        if self.player.health <= 0:
             self.director.stop_music()
             self.director.play_music()
 
@@ -80,14 +130,14 @@ class Level3(Level):
             # cambia de escena
 
         for door in self.item_door:
-            if player.rect.colliderect(door.rect) and player.got_key:
+            if self.player.rect.colliderect(door.rect) and self.player.got_key:
                 next_lvl = door.set_open()  # Establece la puerta como abierta
             elif not door.is_open():
                 next_lvl = door.set_closed()  # Establece la puerta como cerrada
 
         if next_lvl:
             self.director.stop_music()
-            self.director.change_scene(Final(self.director, player.get_points()))
+            self.director.change_scene(Final(self.director, self.player.get_points()))
             # cambia de escena
 
 class Final(Escena):

@@ -64,11 +64,8 @@ class Collectables(pygame.sprite.Sprite):
 
         
     def draw(self, SCREEN):
-        print(self.visible)
-        if self.visible == True:
+        if self.visible:
             SCREEN.blit(self.image, self.rect)
-        else:
-            print("Not visible")
 
     def set_visible(self):
         self.visible = True
