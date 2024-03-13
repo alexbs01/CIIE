@@ -249,7 +249,6 @@ class Level(Escena):
         self.item_door.update(self.screen_scroll)
         self.item_blocks.update(self.screen_scroll)
 
-        self.run()
 
 
     def check_collision(self, dx, dy):
@@ -288,11 +287,6 @@ class Level(Escena):
                         dy = tile[1].top - self.player.collision_rect.bottom
         return dx, dy
     
-
-    def run(self):
-        # Este método debe ser implementado en cada subclase de Level
-        pass
-
     def move(self):
 
             #screen_scroll = 0

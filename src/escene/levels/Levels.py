@@ -25,9 +25,6 @@ class Level1(Level):
                         if isinstance(item, Collectables) and item.item_type == 'Boots':
                             item.set_visible()   
 
-    def run(self):
-        super().run()
-
         player_status = PlayerDTO(self.player,1)
 
         if self.player.health <= 0:
@@ -64,9 +61,6 @@ class Level2(Level):
                         if isinstance(item, Collectables) and item.item_type == 'Sword':
                             item.set_visible()
 
-    def run(self):
-
-        super().run()
 
         player_status = PlayerDTO(self.player,2)
 
@@ -115,10 +109,6 @@ class Level3(Level):
                             llaves[1].set_visible()
                         else:
                             llaves[0].set_visible()
-
-    def run(self):
-
-        super().run()
 
         player_status = PlayerDTO(self.player,3)
 
