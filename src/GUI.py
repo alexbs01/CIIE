@@ -3,7 +3,8 @@ from world_generation.ResourceManager import ResourceManager
 from settings import *
 
 class GUI():
-
+    # Cargamos los recursos con el resource manager
+    resource_manager = ResourceManager()
     class ElementoGUI:
    
         def __init__(self, pantalla, rectangulo):
@@ -53,7 +54,8 @@ class GUI():
 
     class BotonJugar(Boton):
         def __init__(self, pantalla):
-            self.img = pygame.image.load(PATH_PLAY_BOTTON)
+            # carga la imagen con el recurso manager
+            self.img = GUI.resource_manager.load_resource("play_boton", PATH_PLAY_BOTTON, "image")
             super().__init__(pantalla, self.img, (220, 250))
 
         def accion(self):
@@ -61,7 +63,7 @@ class GUI():
 
     class BotonControles(Boton):
         def __init__(self, pantalla):
-            self.img = pygame.image.load(PATH_CONFIG_BOTTON)
+            self.img = GUI.resource_manager.load_resource("controles_boton", PATH_CONTROLS_BOTTON, "image")
             super().__init__(pantalla, self.img, (220, 400))
 
         def accion(self):
@@ -69,7 +71,7 @@ class GUI():
 
     class BotonSalir(Boton):
         def __init__(self, pantalla):
-            self.img = pygame.image.load(PATH_EXIT_BOTTON)
+            self.img = GUI.resource_manager.load_resource("exit_boton", PATH_EXIT_BOTTON, "image")
             super().__init__(pantalla, self.img, (220, 550))
 
         def accion(self):
@@ -77,7 +79,7 @@ class GUI():
 
     class BotonReturn(Boton):
         def __init__(self, pantalla):
-            self.img = pygame.image.load(PATH_BACK_BOTTON)
+            self.img = GUI.resource_manager.load_resource("return_boton", PATH_BACK_BOTTON, "image")
             super().__init__(pantalla, self.img, (220, 600))
 
         def accion(self):
@@ -98,7 +100,7 @@ class GUI():
         
     class TitleText(TextoGUI):
         def __init__(self, pantalla):
-            font = pygame.font.Font("assets/inmortal.ttf", 50)
+            font = GUI.resource_manager.load_resource("title_font", "assets/inmortal.ttf", "font")
             GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'MENU', (320, 100))
 
         def action(self):
@@ -106,7 +108,7 @@ class GUI():
 
     class TextoJugar(TextoGUI):
         def __init__(self, pantalla):
-            font = pygame.font.Font("assets/inmortal.ttf", 50)
+            font = GUI.resource_manager.load_resource("play_font", "assets/inmortal.ttf", "font")
             GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Play', (350, 250))
 
 
@@ -116,7 +118,7 @@ class GUI():
 
     class ControlesBotonText(TextoGUI):
         def __init__(self, pantalla):
-            font = pygame.font.Font("assets/inmortal.ttf", 50)
+            font = GUI.resource_manager.load_resource("controles_font", "assets/inmortal.ttf", "font")
             GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Controles', (300, 400))
             
         def accion(self):
@@ -124,7 +126,7 @@ class GUI():
             
     class ControlesText(TextoGUI):
         def __init__(self, pantalla, texto, posicion):
-            font = pygame.font.Font("assets/inmortal.ttf", 30)
+            font = GUI.resource_manager.load_resource("controles_font", "assets/inmortal.ttf", "font")
             GUI.TextoGUI.__init__(self, pantalla, font, (255,255,255), texto, posicion)
 
         def action(self):
@@ -135,7 +137,7 @@ class GUI():
     class TextoSalir(TextoGUI):
         def __init__(self, pantalla):
             # La fuente la debería cargar el estor de recursos
-            font = pygame.font.Font("assets/inmortal.ttf", 50)
+            font = GUI.resource_manager.load_resource("exit_font", "assets/inmortal.ttf", "font")
             GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Salir', (350, 550))
 
         def accion(self):
@@ -146,7 +148,7 @@ class GUI():
         def __init__(self, menu):
             self.menu = menu
             # Se carga la imagen de fondo
-            self.image = pygame.image.load(PATH_BG_MENU)
+            self.image = GUI.resource_manager.load_resource("bg_menu", PATH_BG_MENU, "image")
             self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH, SCREEN_HEIGHT))
             # Se tiene una lista de elementos GUI
             self.Elementos_GUI = []
@@ -215,11 +217,12 @@ class GUI():
 
           
     class PantallaControles(PantallaGUI):
+
         def __init__(self, menu):
             GUI.PantallaGUI.__init__(self, menu)
             self.image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
             self.image.fill((0, 0, 0)) # Fondo negro
-            
+                
             # Crear texto explicativo de los controles
             controles = [
                 "Controles:",
@@ -230,17 +233,17 @@ class GUI():
                 "ESPACIO: Atacar",
                 "P: Pausar"
             ]
-            
+                
             y_position = SCREEN_HEIGHT // 4  # Mover más arriba
             for text in controles:
                 texto_controles = GUI.ControlesText(self, text, (SCREEN_WIDTH // 4, y_position))  # Usar ControlesText en lugar de TextoGUI
                 self.Elementos_GUI.append(texto_controles)
-                y_position += 30  # Ajustar la posición vertical para el siguiente texto
-
+                y_position += 45  # Ajustar la posición vertical para el siguiente texto
 
             # Añadir botón para volver al menú
             volver_boton = GUI.BotonReturn(self)
             self.Elementos_GUI.append(volver_boton)
+
             
 
 

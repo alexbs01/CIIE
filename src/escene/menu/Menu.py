@@ -4,7 +4,7 @@ from GUI import GUI
 from settings import *
 from escene.levels.Levels import Level1
 
-class Menu2(Escena):
+class Menu(Escena):
 
     def __init__(self, director):
 

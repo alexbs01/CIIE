@@ -1,19 +1,20 @@
 import sys
 import pygame
-
-from world_generation.ResourceManager import ResourceManager
-from escene.Escena import Escena
 from pygame.locals import *
 from settings import *
+from escene.Escena import Escena
+from world_generation.ResourceManager import ResourceManager
+
 
 class Pausa(Escena):
-
     def __init__(self, director):
-        Escena.__init__(self, director)
-
-        self.title_font = pygame.font.Font("assets/inmortal.ttf", 100)
+        super().__init__(director)
+        # Usa el ResourceManager para cargar la fuente
+        resource_manager = ResourceManager()
+        self.title_font = resource_manager.load_resource("pausa_font", "assets/inmortal.ttf", "font")
         self.title = self.title_font.render('PAUSA', True, (237, 82, 47))
         self.title_rect = self.title.get_rect()
+
 
     def update(self, *args):
         return

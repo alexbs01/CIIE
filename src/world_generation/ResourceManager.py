@@ -9,7 +9,7 @@ class ResourceManager:
                 if resource_type == "image":
                     resource = pygame.image.load(path)
                 elif resource_type == "font":
-                    resource = pygame.font.Font(path, 30)
+                    resource = pygame.font.Font(path, 45)
                 elif resource_type == "sound":
                     resource = pygame.mixer.Sound(path)
                 elif resource_type == "csv":  # Agregar soporte para cargar archivos CSV

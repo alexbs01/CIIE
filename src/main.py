@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from director import Director
-from escene.menu.Menu import Menu2
+from escene.menu.Menu import Menu
 
 def main():
 
@@ -12,7 +12,7 @@ def main():
     director = Director()
 
     # Creamos la escena con la pantalla inicial
-    escena = Menu2(director)
+    escena = Menu(director)
 
     # Le decimos al director que apile esta escena
     director.stack_scene(escena)
