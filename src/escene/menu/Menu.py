@@ -1,7 +1,6 @@
 import pygame
 from escene.Escena import Escena
 from GUI import GUI
-from world_generation.ResourceManager import ResourceManager
 from settings import *
 from escene.levels.Levels import Level1
 
