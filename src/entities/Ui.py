@@ -78,6 +78,26 @@ class Ui():
             self.display_surface.blit(img, (90, 120))
 
 
+    class SwordObserver(Observer):
+        
+        def __init__(self, display_surface):
+            self.sword = 0
+            self.display_surface = display_surface
+            self.sword_img = pygame.image.load(PATH_ASSET_SWORD)  # Cargar la imagen del icono de la llave
+            self.sword_img = pygame.transform.scale(self.sword_img, (int(self.sword_img.get_width() * 0.15), int(self.sword_img.get_height() * 0.15)))
+            self.font = pygame.font.Font("assets/inmortal.ttf", 25)  # Definir la fuente para el texto
+
+        def notify(self, got_sword):
+
+            if got_sword:
+                self.sword = 1
+
+                # Dibujar el icono de la llave
+                self.display_surface.blit(self.sword_img, (50, 150))
+                # Mostrar la cantidad de llaves
+                img = self.font.render(": "+str(self.sword), True, WHITE)
+                self.display_surface.blit(img, (90, 150))
+
 
     class EnemyHealthObserver(Observer):
 
@@ -109,9 +129,6 @@ class Ui():
                     # Dibuja el rectángulo verde que representa la vida actual
                     pygame.draw.rect(self.display_surface, GREEN, (x, y, 60 * ratio, 8))  # Ancho dividido por 2 (120/2 = 60)
 
-                # Muestra la cantidad de vida actual como texto sobre la barra
-                #health_text = self.font.render(f"{self.enemy_sprite.health}/{self.max_health}", True, BLACK)
-                #self.display_surface.blit(health_text, (x + 12, y + 2))  # Ajustar la posición del texto
 
 
 
