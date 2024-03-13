@@ -10,10 +10,7 @@ class Entity(pygame.sprite.Sprite, Subject):
         self.original_x = x
         self.original_y = y
         self.step_count = 0
-        self.max_steps = 120
-        self.observers = []
-        self.health = 100
-        self.damage = 10
+        self.max_steps = random.randint(60, 120)
         self.speed = 1
         self.resource_manager = resource_manager
         self.animation_list = []
@@ -77,10 +74,6 @@ class Entity(pygame.sprite.Sprite, Subject):
             self.update_action(1)
 
 
-    def move_back(self, distance=20):
-        if self.health > 0:
-            self.rect.x += (self.orientacion * distance)
-            self.orientacion *= -1
     
     def ai(self, pirate):
         if self.health > 0:
@@ -91,9 +84,6 @@ class Entity(pygame.sprite.Sprite, Subject):
             else:
                 self.move()
 
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update_health(self.health)
 
     def get_Hit(self, damage):
         self.health -= damage
@@ -102,9 +92,7 @@ class Entity(pygame.sprite.Sprite, Subject):
         if self.health == 0:
             # Quiero que el sprite del enemigo desaparezca
             self.update_action(4)
-        self.notify_observers()
-        self.move_back()
-        print(self.health)
+
     
     def attack(self, pirate, damage):
         # Ataque aleatorio basado en el tiempo
@@ -153,11 +141,6 @@ class Entity(pygame.sprite.Sprite, Subject):
             flipped_image = pygame.transform.flip(self.image, True, False)
             screen.blit(flipped_image, self.rect)
 
-    def update_health(self, health):
-        self.health = health
-        
-    def register(self, observer):
-        self.observers.append(observer)
 
     def set_health(self, health):
         self.health = health
@@ -167,7 +150,6 @@ class Entity(pygame.sprite.Sprite, Subject):
         self.rect.x += screen_scroll
         self.collision_rect.x += screen_scroll
         self.update_animation()
-        # self.check_alive()
 
     def get_direction(self, direction):
         pass

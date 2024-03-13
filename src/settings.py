@@ -116,7 +116,7 @@ EFFECTS_VOLUME = 0.1
 ROWS = 20 # Filas mapa 1
 COLS = 150 # Columnas mapa 1
 
-SCREEN_THRESH = 200 # Distancia a la que puede llegar el player antes de que la pantalla se mueva
+SCREEN_THRESH = 350 # Distancia a la que puede llegar el player antes de que la pantalla se mueva
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 
 MAX_POINTS = 100 # Máximo de berries que puede juntar

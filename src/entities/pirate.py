@@ -73,7 +73,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
                                           self.rect.height)
         
         
-        pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
+        #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
 
 
     def update(self, screen_scroll, bg_scroll):
