@@ -60,7 +60,6 @@ class Ui():
     class KeyObserver(Observer):
         
         def __init__(self, display_surface):
-            self.key = 0
             self.display_surface = display_surface
             self.key_img = pygame.image.load(PATH_ASSET_KEY)  # Cargar la imagen del icono de la llave
             self.key_img = pygame.transform.scale(self.key_img, (int(self.key_img.get_width() * 0.15), int(self.key_img.get_height() * 0.15)))
@@ -69,13 +68,9 @@ class Ui():
         def notify(self, got_key):
 
             if got_key:
-                self.key = 1
 
-            # Dibujar el icono de la llave
-            self.display_surface.blit(self.key_img, (50, 120))
-            # Mostrar la cantidad de llaves
-            img = self.font.render(": "+str(self.key), True, WHITE)
-            self.display_surface.blit(img, (90, 120))
+                # Dibujar el icono de la llave
+                self.display_surface.blit(self.key_img, (100, 140))
 
 
     class SwordObserver(Observer):
@@ -84,7 +79,7 @@ class Ui():
             self.sword = 0
             self.display_surface = display_surface
             self.sword_img = pygame.image.load(PATH_ASSET_SWORD)  # Cargar la imagen del icono de la llave
-            self.sword_img = pygame.transform.scale(self.sword_img, (int(self.sword_img.get_width() * 0.15), int(self.sword_img.get_height() * 0.15)))
+            self.sword_img = pygame.transform.scale(self.sword_img, (int(self.sword_img.get_width() * 0.75), int(self.sword_img.get_height() * 0.75)))
             self.font = pygame.font.Font("assets/inmortal.ttf", 25)  # Definir la fuente para el texto
 
         def notify(self, got_sword):
@@ -93,10 +88,25 @@ class Ui():
                 self.sword = 1
 
                 # Dibujar el icono de la llave
-                self.display_surface.blit(self.sword_img, (50, 150))
-                # Mostrar la cantidad de llaves
-                img = self.font.render(": "+str(self.sword), True, WHITE)
-                self.display_surface.blit(img, (90, 150))
+                self.display_surface.blit(self.sword_img, (80, 140))
+
+
+    class BootsObserver(Observer):
+        
+        def __init__(self, display_surface):
+            self.boots = 0
+            self.display_surface = display_surface
+            self.boots_img = pygame.image.load(PATH_ASSET_BOOTS)  # Cargar la imagen del icono de la llave
+            self.boots_img = pygame.transform.scale(self.boots_img, (int(self.boots_img.get_width() * 1.75), int(self.boots_img.get_height() * 1.75)))
+            self.font = pygame.font.Font("assets/inmortal.ttf", 25)  # Definir la fuente para el texto
+
+        def notify(self, got_boots):
+
+            if got_boots:
+                self.boots = 1
+
+                # Dibujar el icono de la llave
+                self.display_surface.blit(self.boots_img, (50, 140))
 
 
     class EnemyHealthObserver(Observer):

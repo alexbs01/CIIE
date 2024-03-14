@@ -7,11 +7,19 @@ class PlayerDTO(object):
             self.vida = player.health
             self.puntos = player.points
             self.max_jumps = 2 if level != 0 or player.got_boots else 1
+            if self.max_jumps == 2:
+                self.boots = True
+            else:
+                self.boots = False
             self.sword = player.got_sword if level >= 2 else False
         else:
             self.vida = MAX_HEALTH
-            self.puntos = player.points // 2
+            self.puntos = player.points
             self.max_jumps = 2 if level != 1 else 1
+            if self.max_jumps == 2:
+                self.boots = True
+            else:
+                self.boots = False
             self.sword = False
 
     # getters
@@ -26,6 +34,9 @@ class PlayerDTO(object):
     
     def get_sword(self):
         return self.sword
+    
+    def get_boots(self):
+        return self.boots
 
     # setters
     def set_vida(self, vida):
@@ -39,3 +50,6 @@ class PlayerDTO(object):
 
     def set_sword(self, sword):
         self.sword = sword
+
+    def set_boots(self, boots):
+        self.boots = boots

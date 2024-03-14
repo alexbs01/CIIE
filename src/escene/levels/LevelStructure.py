@@ -45,6 +45,7 @@ class Level(Escena):
         self.points_observer = None
         self.key_observer = None
         self.sword_observer = None
+        self.boots_observer = None
 
         self.init_observers()
 
@@ -60,6 +61,7 @@ class Level(Escena):
         self.player.add_observer(self.points_observer)
         self.player.add_observer(self.key_observer)
         self.player.add_observer(self.sword_observer)
+        self.player.add_observer(self.boots_observer)
 
 
         self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
@@ -126,6 +128,8 @@ class Level(Escena):
         self.points_observer = self.ui_instance.PointsObserver(self.player.points)
         self.key_observer = self.ui_instance.KeyObserver(self.display_surface)
         self.sword_observer = self.ui_instance.SwordObserver(self.display_surface)
+        self.boots_observer = self.ui_instance.BootsObserver(self.display_surface)
+
 
 
     def events(self, events_list):
@@ -195,9 +199,12 @@ class Level(Escena):
         self.health_observer.notify(self.player.health)
         self.key_observer.notify(self.player.got_key)
         self.sword_observer.notify(self.player.got_sword)
+        self.boots_observer.notify(self.player.got_boots)
         self.points_observer.notify(self.player.points)
         self.ui_instance.draw_text('Vida', title_font, WHITE, 50, 15)
         self.ui_instance.draw_text('Berries: ' + str(self.player.points), title_font, WHITE, 50, 80)
+        self.ui_instance.draw_text('Items:', title_font, WHITE, 50, 110)
+
 
     def update(self, time):
 
