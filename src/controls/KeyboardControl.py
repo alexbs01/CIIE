@@ -1,5 +1,5 @@
 import pygame
-from Control import Control
+from controls.Control import Control
 
 
 class KeyboardControl(Control):

@@ -6,7 +6,7 @@ class GUI():
     # Cargamos los recursos con el resource manager
     resource_manager = ResourceManager()
     class ElementoGUI:
-   
+
         def __init__(self, pantalla, rectangulo):
             self.pantalla = pantalla
             self.rect = rectangulo

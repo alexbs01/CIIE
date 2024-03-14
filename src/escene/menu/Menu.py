@@ -1,6 +1,6 @@
 import pygame
 from escene.Escena import Escena
-from GUI import GUI
+from escene.menu.GUI import GUI
 from settings import *
 from escene.levels.Levels import Level1
 

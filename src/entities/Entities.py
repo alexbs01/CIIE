@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-from Subject import Subject
+from observer.Subject import Subject
 
 class Entity(pygame.sprite.Sprite, Subject):
     def __init__(self, x, y, resource_manager, enemy, first_image_number=0, scale=1): # Cucumber

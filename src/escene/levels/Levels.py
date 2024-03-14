@@ -4,7 +4,7 @@ from escene.levels.LevelStructure import Level
 from items.Interactives import Interactive_obj
 from items.Collectables import Collectables
 from entities.enemies import enemies
-from dto import PlayerDTO
+from escene.levels.playerDTO.dto import PlayerDTO
 from escene.Escena import Escena
 
 class Level1(Level):
