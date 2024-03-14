@@ -1,6 +1,6 @@
 from settings import MAX_HEALTH
 
-class PlayerDTO(object):
+class PlayerSatus(object):
         
     def __init__(self, player, level):
         if player.health > 0:

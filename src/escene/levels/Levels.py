@@ -4,7 +4,7 @@ from escene.levels.LevelStructure import Level
 from items.Interactives import Interactive_obj
 from items.Collectables import Collectables
 from entities.enemies import enemies
-from escene.levels.playerDTO.dto import PlayerDTO
+from escene.levels.PlayerStatus.PlayerStatus import PlayerSatus
 from escene.Escena import Escena
 
 class Level1(Level):
@@ -25,7 +25,7 @@ class Level1(Level):
                         if isinstance(item, Collectables) and item.item_type == 'Boots':
                             item.set_visible()   
 
-        player_status = PlayerDTO(self.player,1)
+        player_status = PlayerSatus(self.player,1)
 
         if self.player.health <= 0:
             self.director.stop_music() # Al morir paramos la musica
@@ -62,7 +62,7 @@ class Level2(Level):
                             item.set_visible()
 
 
-        player_status = PlayerDTO(self.player,2)
+        player_status = PlayerSatus(self.player,2)
 
         if self.player.health <= 0:
             self.director.stop_music()
@@ -110,7 +110,7 @@ class Level3(Level):
                         else:
                             llaves[0].set_visible()
 
-        player_status = PlayerDTO(self.player,3)
+        player_status = PlayerSatus(self.player,3)
 
         if self.player.health <= 0:
             self.director.stop_music()

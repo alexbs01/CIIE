@@ -1,15 +1,20 @@
 import pygame
+import csv
+
 class ResourceManager:
     def __init__(self):
         self.resources = {}
 
-    def load_resource(self, name, path, resource_type):
+    def load_resource(self, name, path, resource_type, font_size = None):
         if name not in self.resources:
             try:
                 if resource_type == "image":
                     resource = pygame.image.load(path)
                 elif resource_type == "font":
-                    resource = pygame.font.Font(path, 45)
+                    if font_size is not None:
+                        resource = pygame.font.Font(path, font_size)
+                    else:
+                        resource = pygame.font.Font(path, 45)
                 elif resource_type == "sound":
                     resource = pygame.mixer.Sound(path)
                 elif resource_type == "csv":  # Agregar soporte para cargar archivos CSV
