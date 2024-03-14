@@ -150,6 +150,7 @@ class Level(Escena):
                     # Se sale del programa
                     self.director.quit_program()
                 if event.key == pygame.K_p:
+                    self.director.pause_music()
                     pause = Pausa(self.director)
                     self.director.stack_scene(pause)
 

@@ -61,17 +61,25 @@ class GUI():
             self.pantalla.menu.ejecutarJuego()
 
     class BotonControles(Boton):
-        def __init__(self, pantalla):
-            self.img = GUI.resource_manager.load_resource("controles_boton", PATH_CONTROLS_BOTTON, "image")
-            super().__init__(pantalla, self.img, (220, 400), (350, 70))
+        def __init__(self, pantalla, position = (220, 400), scale = (350, 70)):
+
+            controles_boton_img = GUI.resource_manager.get_resource("controles_boton")
+            if controles_boton_img is None:
+                self.img = GUI.resource_manager.load_resource("controles_boton", PATH_CONTROLS_BOTTON, "image")
+            else:
+                self.img = controles_boton_img
+            super().__init__(pantalla, self.img, position, scale)
 
         def accion(self):
             self.pantalla.menu.mostrarPantallaControles()
 
     class BotonSalir(Boton):
-        def __init__(self, pantalla):
-            self.img = GUI.resource_manager.load_resource("exit_boton", PATH_EXIT_BOTTON, "image")
-            super().__init__(pantalla, self.img, (220, 550), (350, 70))
+        def __init__(self, pantalla, position=(220, 550), scale=(350,70)):
+            if not GUI.resource_manager.get_resource("exit_boton"):
+                self.img = GUI.resource_manager.load_resource("exit_boton", PATH_EXIT_BOTTON, "image")
+            else:
+                self.img = GUI.resource_manager.get_resource("exit_boton")
+            super().__init__(pantalla, self.img, position, scale)
 
         def accion(self):
             self.pantalla.menu.salirPrograma()
@@ -98,9 +106,12 @@ class GUI():
 
         
     class TitleText(TextoGUI):
-        def __init__(self, pantalla):
-            font = GUI.resource_manager.load_resource("title_font", "assets/inmortal.ttf", "font", 50)
-            GUI.TextoGUI.__init__(self, pantalla, font, COLOR_TEXT_MENU, 'MENU', (310, 100))
+        def __init__(self, pantalla, text, color=COLOR_TEXT_MENU):
+
+            font = GUI.resource_manager.get_resource("title_font")
+            if font is None:
+                font = GUI.resource_manager.load_resource("title_font", "assets/inmortal.ttf", "font", 50)
+            GUI.TextoGUI.__init__(self, pantalla, font, color, text, (310, 100))
 
         def action(self):
             pass
@@ -116,9 +127,11 @@ class GUI():
 
 
     class ControlesBotonText(TextoGUI):
-        def __init__(self, pantalla):
-            font = GUI.resource_manager.load_resource("controles_font", "assets/inmortal.ttf", "font", 45)
-            GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Controles', (300, 400))
+        def __init__(self, pantalla, color= (0,0,0), position = (300,400) ):
+            font = GUI.resource_manager.get_resource("controels_font")
+            if font is None:
+                font = GUI.resource_manager.load_resource("controles_font", "assets/inmortal.ttf", "font", 45)
+            GUI.TextoGUI.__init__(self, pantalla, font, color, 'Controles', position)
             
         def accion(self):
             self.pantalla.menu.mostrarPantallaControles()
@@ -134,10 +147,12 @@ class GUI():
         
 
     class TextoSalir(TextoGUI):
-        def __init__(self, pantalla):
+        def __init__(self, pantalla, text="Salir", color=(0,0,0), position=(350, 550)):
             # La fuente la debería cargar el estor de recursos
-            font = GUI.resource_manager.load_resource("exit_font", "assets/inmortal.ttf", "font", 45)
-            GUI.TextoGUI.__init__(self, pantalla, font, (0,0,0), 'Salir', (350, 550))
+            font = GUI.resource_manager.get_resource("exit_font")
+            if font is None:
+                font = GUI.resource_manager.load_resource("exit_font", "assets/inmortal.ttf", "font", 45)
+            GUI.TextoGUI.__init__(self, pantalla, font, color, text, position)
 
         def accion(self):
             self.pantalla.menu.salirPrograma()
@@ -182,7 +197,7 @@ class GUI():
             # Créase o texto e añádese á lista
             play_text = GUI.TextoJugar(self)
             exit_text = GUI.TextoSalir(self)
-            title_text = GUI.TitleText(self)
+            title_text = GUI.TitleText(self, "MENÚ")
             controles_text = GUI.ControlesBotonText(self)
 
             # Créase o botón e añádese á lista
@@ -254,6 +269,7 @@ class GUI():
 
 
             self.Elementos_GUI.extend([sword_imgBoton, sword_text, block_imgBoton, boots_imgBoton, boots_text, key_imgBoton, key_text])
+
 
 
             # Añadir botón para volver al menú

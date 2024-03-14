@@ -88,3 +88,11 @@ class Director():
     def stop_music(self):
         pygame.mixer.music.stop()
         self.music_playing = False
+
+    def pause_music(self):
+        pygame.mixer.music.pause()
+        self.music_playing = False
+
+    def unpause_music(self):
+        pygame.mixer.music.unpause()
+        self.music_playing = True
