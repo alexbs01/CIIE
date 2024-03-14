@@ -218,6 +218,31 @@ class GUI():
             self.Elementos_GUI.append(controles_text)
             
 
+    class PantallaPausa(PantallaGUI):
+
+        def __init__(self, menu):
+            GUI.PantallaGUI.__init__(self, menu)
+
+            self.image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.image.fill((0, 0, 0)) # Fondo negro
+
+            # Créase o texto e añádese á lista
+            title_text = GUI.TitleText(self, "PAUSA", (237, 82, 47))
+            exit_text = GUI.TextoSalir(self, "Salir del juego", (234, 190, 63), (240, 550))
+            controles_text = GUI.ControlesBotonText(self, (234, 190, 63))
+
+            # Créase o botón e añádese á lista
+            controles_boton = GUI.BotonControles(self)
+            exit_boton = GUI.BotonSalir(self)
+            
+
+            # Añadir elementos a la lista
+            self.Elementos_GUI.append(title_text)
+            self.Elementos_GUI.append(controles_boton)
+            self.Elementos_GUI.append(exit_boton)
+
+            self.Elementos_GUI.append(exit_text)
+            self.Elementos_GUI.append(controles_text)
 
     class PantallaControles(PantallaGUI):
 
