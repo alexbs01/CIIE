@@ -1,5 +1,5 @@
 import pygame
-from observer.Observer import Observer
+from entities.observer.Observer import Observer
 from settings import *
 
 RED = (200, 25, 25)

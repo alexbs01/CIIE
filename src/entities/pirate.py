@@ -3,7 +3,7 @@ from random import random
 import pygame
 import os
 from settings import *
-from observer.Subject import Subject
+from entities.observer.Subject import Subject
 from controls.KeyboardControl import KeyboardControl
 
 class Pirate(pygame.sprite.Sprite, Subject):
