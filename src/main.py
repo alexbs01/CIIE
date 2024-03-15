@@ -6,7 +6,7 @@ from escene.menu.Menu import Menu
 def main():
 
     # Inicializamos la libreria de pygame
-    pygame.init()
+    pygame.init()      
 
     # Creamos el director
     director = Director()

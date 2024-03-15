@@ -146,6 +146,8 @@ class Level(Escena):
                 if event.key == pygame.K_w:
                     self.player.jump = True
                 if event.key == pygame.K_SPACE and current_time - self.last_attack_time > ATAQUE_COOLDOWN:
+                    print(current_time - self.last_attack_time)
+                    self.last_attack_time = current_time
                     self.player.attack = True
                     # Reproducir sonido de la espada al atacar
                     self.espada.play(-1)

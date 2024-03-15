@@ -25,6 +25,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
         self.damage = PLAYER_DAMAGE
         self.points = 0
         self.scale = PLAYER_SCALE
+        self.last_attack_time = 0
 
         self.move_left = False
         self.move_right = False
@@ -42,7 +43,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
         self.control = KeyboardControl()
 
         animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
-
+        
         for animation in animation_types:
             temp_list = []
             n_frames = len(os.listdir(f'assets/player/{animation}'))
@@ -90,21 +91,28 @@ class Pirate(pygame.sprite.Sprite, Subject):
 
     # Actualizar la animación
     def update_animation(self):
+        current_time = pygame.time.get_ticks()
+        animation_cooldown = 100
 
-        ANIMATION_COOLDOWN = 100
         if self.action == 3:  # Si la acción es de ataque reducimos cooldown entre frames
-            ANIMATION_COOLDOWN = 10
+            animation_cooldown = 10
+            self.last_attack_time = current_time
 
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
         # Actualizar la animación
-        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
+        if current_time - self.update_time > animation_cooldown:
             self.update_time = pygame.time.get_ticks()
             self.frame_index += 1
         # Si la animación ha terminado, reiniciar
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
+            if self.action == 3:
+                self.action = 0
+                self.attack = False
+
         # Actualizar la imagen del jugador
+        
 
 
     # Actualiza la accion 
