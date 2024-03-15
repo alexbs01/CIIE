@@ -22,6 +22,7 @@ class Level(Escena):
         self.screen_scroll = 0
         self.bg_scroll = 0
         self.resource_manager = ResourceManager()
+        self.last_attack_time = 0
 
         # Guardamos la superficie superficie
         self.display_surface = pygame.display.get_surface()
@@ -40,6 +41,7 @@ class Level(Escena):
 
         self.player.set_stats_dto(player_status)
         self.ui_instance = Ui(self.display_surface)
+
 
         self.health_observer = None
         self.points_observer = None
@@ -133,6 +135,8 @@ class Level(Escena):
 
 
     def events(self, events_list):
+        current_time = pygame.time.get_ticks()
+        #print(current_time)
         for event in events_list:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
@@ -141,7 +145,7 @@ class Level(Escena):
                     self.player.move_right = True
                 if event.key == pygame.K_w:
                     self.player.jump = True
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and current_time - self.last_attack_time > ATAQUE_COOLDOWN:
                     self.player.attack = True
                     # Reproducir sonido de la espada al atacar
                     self.espada.play(-1)
