@@ -37,8 +37,7 @@ scroll_right = False
 scroll = 0
 scroll_speed = 1
 
-# load images
-dungeon_img = pygame.image.load(PATH_ASSET_BACKGROUND).convert_alpha()
+
 # store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
@@ -76,9 +75,7 @@ def draw_text(text, font, text_col, x, y):  # x,y son las coordenadas de la esqu
 # funcion que dibuja el fondo
 def draw_bg():
     screen.fill(GREEN)
-    width = dungeon_img.get_width()
-    for x in range(4):
-        screen.blit(dungeon_img, ((x * width) - scroll, 0))
+    
 
 
 # funcion que dibuja  el mundo de tiles
