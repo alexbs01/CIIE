@@ -15,7 +15,7 @@ PATH_BG_MENU = Path("assets/menu/2523.jpg")
 PATH_PLAY_BOTTON = Path("assets/menu/Play Rect.png")
 PATH_CONTROLS_BOTTON = Path("assets/menu/Options Rect.png")
 PATH_EXIT_BOTTON = Path("assets/menu/Quit Rect.png")
-PATH_BACK_BOTTON = Path("assets/menu/Menu.png")
+PATH_BACK_BOTTON = Path("assets/menu/Back Button.png")
 
 
 INITIAL_LEVEL = 1

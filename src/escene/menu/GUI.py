@@ -87,10 +87,16 @@ class GUI():
     class BotonReturn(Boton):
         def __init__(self, pantalla):
             self.img = GUI.resource_manager.load_resource("return_boton", PATH_BACK_BOTTON, "image")
-            super().__init__(pantalla, self.img, (365, 600), (self.img.get_width(), self.img.get_height()))
+            # Ajustar el tamaño de la imagen a una escala específica
+            escala = 0.2  # Modifica esta escala según sea necesario
+            nueva_ancho = int(self.img.get_width() * escala)
+            nueva_alto = int(self.img.get_height() * escala)
+            img_redimensionada = pygame.transform.scale(self.img, (nueva_ancho, nueva_alto))
+            super().__init__(pantalla, img_redimensionada, (320, 615), (nueva_ancho, nueva_alto))
 
         def accion(self):
-            self.pantalla.menu.returnPantalla()    
+            self.pantalla.menu.returnPantalla()
+ 
 
     class TextoGUI(ElementoGUI):
         def __init__(self, pantalla, fuente, color, texto, posicion):
