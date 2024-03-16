@@ -2,7 +2,7 @@ import pygame
 import os
 import random
 from entities.observer.Subject import Subject
-
+# Clase para los enemigos del juego 
 class Entity(pygame.sprite.Sprite, Subject):
     def __init__(self, x, y, resource_manager, enemy, first_image_number=0, scale=1): # Cucumber
         pygame.sprite.Sprite.__init__(self)

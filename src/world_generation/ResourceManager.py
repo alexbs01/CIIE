@@ -4,7 +4,7 @@ import csv
 class ResourceManager:
     def __init__(self):
         self.resources = {}
-
+    # Cargar un recurso en el diccionario de recursos
     def load_resource(self, name, path, resource_type, font_size = None):
         if name not in self.resources:
             try:

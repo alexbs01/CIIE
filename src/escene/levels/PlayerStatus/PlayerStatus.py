@@ -1,5 +1,6 @@
 from settings import MAX_HEALTH
 
+# Clase para almacenar el estado del jugador
 class PlayerSatus(object):
         
     def __init__(self, player, level):

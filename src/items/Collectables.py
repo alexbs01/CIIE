@@ -7,7 +7,7 @@ key_box_img = pygame.image.load(PATH_ASSET_KEY)
 berries_box_img = pygame.image.load(PATH_ASSET_BERRIES)
 boots_box_img = pygame.image.load(PATH_ASSET_BOOTS)
 sword_box_img = pygame.image.load(PATH_ASSET_SWORD)
-
+# Escalas de los objetos
 item_boxes = {
     'Health': health_box_img,
     'Key': key_box_img,
@@ -15,7 +15,6 @@ item_boxes = {
     'Boots': boots_box_img,
     'Sword': sword_box_img
 }
-
 item_scales = {
     'Health': HEALTH_SCALE,
     'Key': KEY_SCALE,
@@ -23,7 +22,7 @@ item_scales = {
     'Boots': BOOTS_SCALE,
     'Sword': SWORD_SCALE
 }
-
+# Clase para los objetos coleccionables
 class Collectables(pygame.sprite.Sprite):
     def __init__(self, item_type, x, y, visible):
         pygame.sprite.Sprite.__init__(self)

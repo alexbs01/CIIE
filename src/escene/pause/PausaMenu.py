@@ -30,7 +30,8 @@ class Pausa(Escena):
 
     def update(self, *args):
         return
-
+    
+    # Eventos de la pantalla
     def events(self, events_list):
         for event in events_list:
             if event.type == KEYDOWN:

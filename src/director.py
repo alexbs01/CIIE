@@ -31,6 +31,7 @@ class Director():
 
         self.clock = pygame.time.Clock()
 
+    # Bucle principal de la escena
     def loop(self, scene):
         self.quit_scene = False
 
@@ -77,7 +78,7 @@ class Director():
         self.quit_scene = True
         self.stack.append(scene)
 
-
+    # Reproducir música de fondo
     def play_music(self):
         pygame.mixer.music.load(MUSIC_PATH)
         pygame.mixer.music.play(-1)

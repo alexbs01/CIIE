@@ -23,6 +23,8 @@ class Level(Escena):
         self.bg_scroll = 0
         self.resource_manager = ResourceManager()
         self.last_attack_time = 0
+        self.attack_duration = 0
+
 
         # Guardamos la superficie superficie
         self.display_surface = pygame.display.get_surface()
@@ -125,6 +127,7 @@ class Level(Escena):
     def set_player(self, player):
         self.player = player
 
+    # Inicializa los observadores
     def init_observers(self):
         self.health_observer = self.ui_instance.HealthObserver(30, 45, self.display_surface, self.player.health)
         self.points_observer = self.ui_instance.PointsObserver(self.player.points)
@@ -136,7 +139,8 @@ class Level(Escena):
 
     def events(self, events_list):
         current_time = pygame.time.get_ticks()
-        #print(current_time)
+
+        # Manejo de eventos
         for event in events_list:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
@@ -145,12 +149,14 @@ class Level(Escena):
                     self.player.move_right = True
                 if event.key == pygame.K_w:
                     self.player.jump = True
-                if event.key == pygame.K_SPACE and current_time - self.last_attack_time > ATAQUE_COOLDOWN:
-                    print(current_time - self.last_attack_time)
-                    self.last_attack_time = current_time
-                    self.player.attack = True
-                    # Reproducir sonido de la espada al atacar
-                    self.espada.play(-1)
+                if event.key == pygame.K_SPACE:
+                    # Si la animación de ataque no está activa y ha pasado el cooldown
+                    if not self.player.attack and current_time - self.last_attack_time > ATAQUE_COOLDOWN:
+                        self.last_attack_time = current_time
+                        self.attack_start_time = current_time  # Tiempo de inicio del ataque
+                        self.player.attack = True
+                        self.espada.play(-1)
+
                 # Si la tecla es Escape
                 if event.key == pygame.K_ESCAPE:
                     # Se sale del programa
@@ -169,8 +175,16 @@ class Level(Escena):
                     self.player.attack = False
                     self.espada.stop()
 
+        # Actualizar la duración del ataque
+            if self.player.attack:
+                attack_duration = current_time - self.attack_start_time
+                if attack_duration >= ATTACK_DURATION:
+                    self.player.attack = False
+                    self.espada.stop()
+
             if event.type == pygame.QUIT:
                 self.director.quit_program()
+
 
     
     

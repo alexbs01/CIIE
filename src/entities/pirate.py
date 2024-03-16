@@ -95,7 +95,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
         animation_cooldown = 100
 
         if self.action == 3:  # Si la acción es de ataque reducimos cooldown entre frames
-            animation_cooldown = 10
+            animation_cooldown = 15
             self.last_attack_time = current_time
 
         # Actualizar imagen de la animación dependiendo del frame
@@ -151,7 +151,7 @@ class Pirate(pygame.sprite.Sprite, Subject):
     def set_points(self, points):
         self.points = points
         self.notify_observers(self.points)
-
+    # Funcion en caso de muerte se guarda el estado del jugador
     def set_stats_dto(self, dto):
         if dto is not None:
             if dto.get_vida() > 0:

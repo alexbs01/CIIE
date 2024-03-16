@@ -1,9 +1,9 @@
 import pygame
 import os
 from settings import *
-
+# Clase para los objetos interactivos
 class Interactive_obj():
-
+    
     class Block(pygame.sprite.Sprite):
 
         def __init__(self, x, y, resource_manager):
@@ -43,7 +43,7 @@ class Interactive_obj():
             self.rect.x += screen_scroll
             self.collision_rect.x += screen_scroll
 
-
+    # Clase para las puertas
     class Door(pygame.sprite.Sprite):
 
         def __init__(self, x, y, resource_manager):
