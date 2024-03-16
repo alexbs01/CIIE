@@ -22,9 +22,6 @@ class Level(Escena):
         self.screen_scroll = 0
         self.bg_scroll = 0
         self.resource_manager = ResourceManager()
-        self.last_attack_time = 0
-        self.attack_duration = 0
-
 
         # Guardamos la superficie superficie
         self.display_surface = pygame.display.get_surface()
@@ -148,11 +145,10 @@ class Level(Escena):
                     self.player.move_right = True
                 if event.key == pygame.K_w:
                     self.player.jump = True
-                if event.key == pygame.K_SPACE and current_time - self.last_attack_time > ATAQUE_COOLDOWN:
-                    self.last_attack_time = current_time
-                    self.attack_duration = ATTACK_DURATION  # Establecer la duración del ataque
+                if event.key == pygame.K_SPACE and current_time - self.player.last_attack_time > ATAQUE_COOLDOWN:
+                    self.player.last_attack_time = current_time
                     self.player.attack = True
-                    self.espada.play(-1)
+                    self.espada.play(1)
                    
                 # Si la tecla es Escape
                 if event.key == pygame.K_ESCAPE:
@@ -170,15 +166,6 @@ class Level(Escena):
                     self.player.move_right = False
                 if event.key == pygame.K_SPACE:
                     self.player.attack = False
-                    self.espada.stop()
-
-            if self.attack_duration > 0:
-                self.attack_duration -= current_time - self.last_update_time
-            if self.attack_duration <= 0:
-                self.player.attack = False
-                self.espada.stop()
-
-            self.last_update_time = current_time
 
             if event.type == pygame.QUIT:
                 self.director.quit_program()
