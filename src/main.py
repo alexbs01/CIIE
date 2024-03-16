@@ -4,7 +4,7 @@ from director import Director
 from escene.menu.Menu import Menu
 
 def main():
-
+    
     # Inicializamos la libreria de pygame
     pygame.init()      
 

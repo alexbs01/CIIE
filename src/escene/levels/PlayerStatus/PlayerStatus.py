@@ -21,7 +21,7 @@ class PlayerSatus(object):
                 self.boots = True
             else:
                 self.boots = False
-            self.sword = False
+            self.sword = True if level > 2 else False
 
     # getters
     def get_vida(self):
