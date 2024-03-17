@@ -17,8 +17,8 @@ class Level(Escena):
 
         Escena.__init__(self, director)
 
-        self.csv = csv
-        self.player = None
+        self.csv = csv # Variable con el mapa en formato csv
+        self.player = None # Variable para el jugador
         self.screen_scroll = 0
         self.bg_scroll = 0
         self.resource_manager = ResourceManager()
@@ -36,12 +36,12 @@ class Level(Escena):
         self.obstacle_list = [] # Lista para tiles con colisiones
         self.bg_list = [] # Lista para tiles de decoracion
 
-        self.load_level()
+        self.load_level() # Cargamos el nivel
 
-        self.player.set_stats_dto(player_status)
+        self.player.set_stats_dto(player_status) # Cargamos el status del pirata
         self.ui_instance = Ui(self.display_surface)
 
-
+        # Creamos los observadores del nivel
         self.health_observer = None
         self.points_observer = None
         self.key_observer = None
@@ -65,12 +65,15 @@ class Level(Escena):
         self.player.add_observer(self.boots_observer)
 
 
-        self.espada = pygame.mixer.Sound("./assets/Music/Espada.ogg")
+        # Creamos el sonido de la espada
+        self.espada = self.resource_manager.get_resource("espadaSound")
+        if self.espada is None:
+            self.espada = self.resource_manager.load_resource("espadaSound", "./assets/Music/Espada.ogg", "sound")
         self.espada.set_volume(EFFECTS_VOLUME)
 
     def load_level(self):
 
-        tiles = []
+        tiles = [] # Variable con los numeros de las posiciones de la matriz
 
         with open(self.csv, newline='') as csvfile:
 
@@ -145,6 +148,7 @@ class Level(Escena):
                     self.player.move_right = True
                 if event.key == pygame.K_w:
                     self.player.jump = True
+                # Se realizará un cooldown para no poder atacar seguido
                 if event.key == pygame.K_SPACE and current_time - self.player.last_attack_time > ATAQUE_COOLDOWN:
                     self.player.last_attack_time = current_time
                     self.player.attack = True
@@ -199,7 +203,10 @@ class Level(Escena):
             observer.notify(enemy.health)
 
         # Muestra barra de salud por encima de los tiles
-        title_font = pygame.font.Font("assets/inmortal.ttf", 25)
+        title_font = self.resource_manager.get_resource("fuentePrincipal")
+        if title_font is None:
+            title_font = self.resource_manager.load_resource("fuentePrincipal","assets/inmortal.ttf","font",25)
+
 
         self.health_observer.notify(self.player.health)
         self.key_observer.notify(self.player.got_key)
@@ -224,7 +231,7 @@ class Level(Escena):
         if self.player.attack:
             self.player.update_action(3)  # 3 -> animacion ataque
             for enemy in self.enemy_group:
-                if self.player.rect.colliderect(enemy.rect):
+                if self.player.rect.colliderect(enemy.rect): # Si el jugador colisiona con algun enemigo
                     current_time = pygame.time.get_ticks()
                     if current_time - enemy.last_attack_time > ATAQUE_COOLDOWN:
                         enemy.last_attack_time = current_time
@@ -305,7 +312,6 @@ class Level(Escena):
     
     def move(self):
 
-            #screen_scroll = 0
             # Resetear variables de movimiento
             dx = 0
             dy = 0

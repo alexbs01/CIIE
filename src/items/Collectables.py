@@ -7,6 +7,7 @@ key_box_img = pygame.image.load(PATH_ASSET_KEY)
 berries_box_img = pygame.image.load(PATH_ASSET_BERRIES)
 boots_box_img = pygame.image.load(PATH_ASSET_BOOTS)
 sword_box_img = pygame.image.load(PATH_ASSET_SWORD)
+
 # Escalas de los objetos
 item_boxes = {
     'Health': health_box_img,
@@ -59,7 +60,7 @@ class Collectables(pygame.sprite.Sprite):
             elif self.item_type == 'Sword':
                 print('Has cogido una espada mejor')
                 player.got_sword = True
-            self.kill()
+            self.kill() # Una vez lo tiene se elimina el objeto
 
         
     def draw(self, SCREEN):

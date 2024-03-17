@@ -1,3 +1,6 @@
+#######
+# Clase usada para prácticas
+
 import pygame
 from controls.Control import Control
 

@@ -134,7 +134,7 @@ class GUI():
 
     class ControlesBotonText(TextoGUI):
         def __init__(self, pantalla, color= (0,0,0), position = (300,400) ):
-            font = GUI.resource_manager.get_resource("controels_font")
+            font = GUI.resource_manager.get_resource("controles_font")
             if font is None:
                 font = GUI.resource_manager.load_resource("controles_font", "assets/inmortal.ttf", "font", 45)
             GUI.TextoGUI.__init__(self, pantalla, font, color, 'Controles', position)

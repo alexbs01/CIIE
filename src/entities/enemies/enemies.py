@@ -1,13 +1,15 @@
-import os
 import pygame
-import random
 from settings import *
 from entities.Entities import Entity
+
+
+# Se crea una clase para cada tipo de enemigo con sus valores predeterminados cargados a través
+# del fichero settings
 
 class CucumberEnemy(Entity):
     def __init__(self, x, y, resource_manager):
         
-        self.direction = 1
+        self.direction = 1 # Direccion en la que mira
         super().__init__(x, y, resource_manager, 'Cucumber')
         self.health = CUCUMBER_HEALTH
         self.damage = CUCUMBER_DAMAGE

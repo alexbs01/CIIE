@@ -13,8 +13,9 @@ class Interactive_obj():
             self.resource_manager = resource_manager
             self.visible = True
 
-            img_path = f'assets/tiles/12.png'
-            img = self.resource_manager.load_resource(img_path, img_path, "image")  # Corrección aquí
+            img_path = "assets/tiles/12.png"
+    
+            img = self.resource_manager.load_resource(img_path, img_path, "image")  
             if img is None:  # Asegurarse de que la imagen se ha cargado correctamente
                 print(f"No se pudo cargar la imagen: {img_path}")
             else:
@@ -36,7 +37,6 @@ class Interactive_obj():
                         self.rect.height)
             pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)
             
-
 
 
         def update(self, screen_scroll):

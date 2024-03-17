@@ -9,7 +9,6 @@ class Escena:
         self.director = director
 
 
-
     # Métodos de cada escena; definiciones abstractas
     def update(self, *args):
         raise NotImplemented("Tiene que implementar el metodo update.")

@@ -1,7 +1,6 @@
 
 from settings import *
 from escene.levels.LevelStructure import Level
-from items.Interactives import Interactive_obj
 from items.Collectables import Collectables
 from entities.enemies import enemies
 from escene.levels.PlayerStatus.PlayerStatus import PlayerSatus
@@ -11,16 +10,17 @@ class Level1(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status, PATH_LEVEL_1)
-        self.whale_dead = False
+        self.whale_dead = False # Variable para comprobar si el boss del nivel 1 ha sido derrotado
         
 
     def update(self, time):
         super().update(time)
+
         if not self.whale_dead:              
             for enemy in self.enemy_group:
                 if isinstance(enemy, enemies.WhaleEnemy) and enemy.health <= 0:
                     self.whale_dead = True
-                    ## aparecen las botas
+                    # aparecen las botas
                     for item in self.item_boxes_Group:
                         if isinstance(item, Collectables) and item.item_type == 'Boots':
                             item.set_visible()   
@@ -34,6 +34,7 @@ class Level1(Level):
 
 
         for door in self.item_door:
+            # Si el pirata entra colisiona con la puerta y tiene la llave
             if door.rect.colliderect(self.player.collision_rect.x, self.player.collision_rect.y, self.player.collision_rect.width, self.player.collision_rect.height) and self.player.got_key and self.player.in_air == False:
                 next_lvl = door.set_open()  # Establece la puerta como abierta
             elif not door.is_open():
@@ -47,16 +48,17 @@ class Level2(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status, PATH_LEVEL_2)
-        self.capitan_dead = False
+        self.capitan_dead = False # Variable para comprobar si el boss del nivel 2 ha sido derrotado
 
 
     def update(self, time):
         super().update(time)
+
         if not self.capitan_dead:
             for enemy in self.enemy_group:
                 if isinstance(enemy, enemies.Capitan) and enemy.health <= 0:
                     self.capitan_dead = True
-                    ## aparece la espada
+                    # aparece la espada
                     for item in self.item_boxes_Group:
                         if isinstance(item, Collectables) and item.item_type == 'Sword':
                             item.set_visible()
@@ -86,25 +88,27 @@ class Level3(Level):
 
     def __init__(self, director, player_status):
         super().__init__(director, player_status,PATH_LEVEL_3)
-        self.check_boss_dead = 0
+        self.check_boss_dead = 0 # Variable que usaremos para ver si los dos jefes del nivel 3 han sido derrotados
 
 
     def update(self, time):
         super().update(time)
-        if self.check_boss_dead != 2:
+
+        if self.check_boss_dead != 2: # Si no ha muerto los dos
             for enemy in self.enemy_group:
                 if isinstance(enemy, enemies.MarineBoss) and enemy.health <= 0:
                     if enemy.boss_dead == False:
-                        self.check_boss_dead += 1
+                        self.check_boss_dead += 1 # Si ha muerto por primera vez sumamos 1 a la variable de control
                         enemy.boss_dead = True
 
-                    if self.check_boss_dead == 2:
-                        ## aparece la llave que este mas cerca del jugador
-                        llaves = []
+                    if self.check_boss_dead == 2: # SI han muerto los dos
+                        # aparece la llave que este mas cerca del jugador
+                        llaves = [] # Lista donde guardamos las dos llaves que hay puestas en el nivel
                         for item in self.item_boxes_Group:
                             if isinstance(item, Collectables) and item.item_type == 'Key':
                                 llaves.append(item)
                         
+                        # Se calcula cual está a menos distancia del jugador y se muestra esa
                         if abs(llaves[0].rect.x) + self.player.collision_rect.x > abs(llaves[1].rect.x) + self.player.collision_rect.x:
                             llaves[1].set_visible()
                         else:
@@ -130,6 +134,7 @@ class Level3(Level):
             self.director.change_scene(Final(self.director, self.player.get_points()))
             # cambia de escena
 
+# Escena final
 class Final(Escena):
 
     def __init__(self, director, puntos_finales):

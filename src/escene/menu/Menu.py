@@ -59,11 +59,6 @@ class Menu(Escena):
 
         self.director.stack_scene(level)
 
-    # Si al final agregamos menu configuracion sería aqui donde pantallaActual toma otro valor
-    # Boton configuración del menu        
-    #def mostrarPantallaConfiguracion(self):
-        # self.pantallaActual = ...
-
     def mostrarPantallaInicial(self):
         self.pantallaActual = 0
 

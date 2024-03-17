@@ -2,16 +2,13 @@ import pygame
 from entities.observer.Observer import Observer
 from settings import *
 
-RED = (200, 25, 25)
-GREEN = (0, 255, 0)
-BLACK = (0,0,0)
-
+# Clase para representar lo que se muestra por pantalla en los niveles
 class Ui():
     
     def __init__(self, display_surface):
         self.display_surface = display_surface
 
-
+    # Método para dibujar en pantalla
     def draw_text(self,text,font,text_col,x,y):
         img = font.render(text, True, text_col)
         self.display_surface.blit(img, (x,y))
@@ -68,7 +65,6 @@ class Ui():
         def notify(self, got_key):
 
             if got_key:
-
                 # Dibujar el icono de la llave
                 self.display_surface.blit(self.key_img, (100, 140))
 
@@ -87,7 +83,7 @@ class Ui():
             if got_sword:
                 self.sword = 1
 
-                # Dibujar el icono de la llave
+                # Dibujar el icono de la espada
                 self.display_surface.blit(self.sword_img, (80, 140))
 
 
@@ -105,7 +101,7 @@ class Ui():
             if got_boots:
                 self.boots = 1
 
-                # Dibujar el icono de la llave
+                # Dibujar el icono de las botas
                 self.display_surface.blit(self.boots_img, (50, 140))
 
 
@@ -129,15 +125,15 @@ class Ui():
 
             if self.enemy_sprite.health > 0:  # Verificar si la vida del enemigo es mayor que cero
                 # Dibuja el fondo de la barra de salud (rectángulo negro) más estrecho y menos alto
-                pygame.draw.rect(self.display_surface, BLACK, (x - 2, y - 2, 62, 10))  # Ancho dividido por 2 (124/2 = 62)
+                pygame.draw.rect(self.display_surface, BLACK, (x - 2, y - 2, 62, 10))  # Ancho dividido entre 2
                 # Dibuja el rectángulo rojo que representa la vida máxima
-                pygame.draw.rect(self.display_surface, RED, (x, y, 60, 8))  # Ancho dividido por 2 (120/2 = 60)
+                pygame.draw.rect(self.display_surface, RED, (x, y, 60, 8))  # Ancho dividido entre 2 
 
                 if self.enemy_sprite.health > 0:
                     # Calcula la relación de la vida actual con la vida máxima
                     ratio = self.enemy_sprite.health / self.max_health
                     # Dibuja el rectángulo verde que representa la vida actual
-                    pygame.draw.rect(self.display_surface, GREEN, (x, y, 60 * ratio, 8))  # Ancho dividido por 2 (120/2 = 60)
+                    pygame.draw.rect(self.display_surface, GREEN, (x, y, 60 * ratio, 8))  # Ancho dividido entre 2
 
 
 

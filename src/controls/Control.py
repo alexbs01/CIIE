@@ -1,3 +1,5 @@
+#Clase usada para prácticas
+
 class Control():
     def __init__(self):
         self.up_key = None

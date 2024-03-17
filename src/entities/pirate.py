@@ -8,60 +8,61 @@ from controls.KeyboardControl import KeyboardControl
 
 class Pirate(pygame.sprite.Sprite, Subject):
     def __init__(self, char_type, x, y, resource_manager):
+
         pygame.sprite.Sprite.__init__(self)
         Subject.__init__(self)
-        self.char_type = char_type
-        self.speed = PLAYER_SPEED
-        self.direction = 1
-        self.flip = False
-        self.jump = False
-        self.max_jumps = PLAYER_MAX_JUMPS
-        self.jumps = 0
-        self.in_air = True
-        self.vel_y = 0
-        self.attack = False
-        self.health = PLAYER_HEALTH
-        self.observers = []
-        self.damage = PLAYER_DAMAGE
-        self.points = 0
-        self.scale = PLAYER_SCALE
-        self.last_attack_time = 0
+        self.char_type = char_type # Variable para indicar el nombre de la entidad
+        self.speed = PLAYER_SPEED # Variable que designa la velocidad del jugador
+        self.direction = 1 # Variable que indica en que direccion está mirando 1 der, -1 izq
+        self.flip = False # Variable para hacer flip al sprite
+        self.jump = False # Variable que indica si está saltando
+        self.max_jumps = PLAYER_MAX_JUMPS # Variable que usaremos para el doble salto
+        self.jumps = 0 # Variable que usaremos para el doble salto
+        self.in_air = True # Variable que comprueba si el judador está en el aire
+        self.vel_y = 0 # Variable para controlar la velocidad en el eje y
+        self.attack = False # Variable para comprobar si el jugador está atacando
+        self.health = PLAYER_HEALTH # Salud del jugador
+        self.observers = [] # Observadores del jugador
+        self.damage = PLAYER_DAMAGE # Daño base que hace el jugador al atacar
+        self.points = 0 # Puntos que tiene el jugador
+        self.scale = PLAYER_SCALE # Escala del sprite
+        self.last_attack_time = 0 # Variable para comprobar cuando fue la ultima vez que atacó, cooldown
 
-        self.move_left = False
-        self.move_right = False
+        self.move_left = False # Variable para mov a la izq
+        self.move_right = False # Variable para mov a la der
 
-        self.animation_list = []
-        self.frame_index = 0
-        self.action = 0
-        self.update_time = pygame.time.get_ticks()
-        self.resource_manager = resource_manager
+        self.animation_list = [] # Lista de listas con las animaciones posibles
+        self.frame_index = 0 # Controlara que frames enseñar
+        self.action = 0 # Controla que accion está ejecutando el jugador
+        self.update_time = pygame.time.get_ticks() # Nos ayudara en la fluidez de la animacion
+        self.resource_manager = resource_manager # Resource manager
 
-        self.got_key = False
-        self.got_sword = False
-        self.got_boots = False
+        self.got_key = False # Controla si se tiene la llave
+        self.got_sword = False # Controla si se tiene la espada
+        self.got_boots = False # Controla si se tienen las botas
 
-        self.control = KeyboardControl()
+        self.control = KeyboardControl() # Se usó para pruebas
 
-        animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit']
+        animation_types = ['Idle', 'Run', 'Jump', 'Attack', 'Hit'] # Tipos de animacion
         
         for animation in animation_types:
-            temp_list = []
-            n_frames = len(os.listdir(f'assets/player/{animation}'))
+            temp_list = [] # Creamos una lista temporal
+            n_frames = len(os.listdir(f'assets/player/{animation}')) # Guarda cuantos frames tiene cada animacion
             for i in range(n_frames):
                 img_path = f'assets/player/{animation}/{i}.png'
-                img = self.resource_manager.load_resource(img_path, img_path, "image")  # Corrección aquí
+                img = self.resource_manager.load_resource(img_path, img_path, "image")
                 img = pygame.transform.scale(img, (int(img.get_width() * self.scale), int(img.get_height() * self.scale)))
-                temp_list.append(img)
-            self.animation_list.append(temp_list)
+                temp_list.append(img) # Vamos guardando en la lista cada imagen de la animacion
+            self.animation_list.append(temp_list) # Guardamos en la lista de animaciones las listas de cada animacion
 
-        self.image = self.animation_list[self.action][self.frame_index]
+        self.image = self.animation_list[self.action][self.frame_index] #Carga la imagen en funcion de la accion y el indice
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4,
                                           self.rect.centery - self.rect.height / 2, self.rect.width / 2,
-                                          self.rect.height)
+                                          self.rect.height) # Hitbox personalizada
 
 
     # Dibujar el pirata en la pantalla
@@ -69,21 +70,17 @@ class Pirate(pygame.sprite.Sprite, Subject):
 
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
         
+        # Se va actualizando la hitbox
         self.collision_rect = pygame.Rect(self.rect.centerx - self.rect.width / 4,
                                           self.rect.centery - self.rect.height / 2, self.rect.width / 2,
                                           self.rect.height)
         
         
-        #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2)  # 2 es el grosor del borde
-
 
     def update(self, screen_scroll, bg_scroll):
         bg_scroll -= screen_scroll
         
-
         self.update_animation()
-
-
 
         self.rect.x += screen_scroll
         self.rect.x -= screen_scroll
@@ -124,25 +121,25 @@ class Pirate(pygame.sprite.Sprite, Subject):
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
 
-    ############ PATRON OBSERVADOR
     
-    # Funcion de daño
+    # Funcion de daño al jugador
     def get_Hit(self, damage):
         self.health -= damage
         if self.health < 0:
             self.health = 0
         self.set_health(self.health)
-        print("Daño")
 
 
-    def set_health(self, health):
-        self.health = health
-        self.notify_observers(self.health)
+    # Funcion de ataque que al final solo se uso en prácticas
+    def attack(self, enemy):
+        # quiero que el ataque tenga un cooldown y que cada ataque haga un daño de 20
+        if self.collision_rect.colliderect(enemy.collision_rect):
+            enemy.get_Hit(self.damage + self.points)
+            print(self.damage + self.points)
+            print("Ataque")
+            print(self.points)
 
-    def set_points(self, points):
-        self.points = points
-        self.notify_observers(self.points)
-    # Funcion en caso de muerte se guarda el estado del jugador
+    # Funcion para cargar los datos del jugador al iniciarlo en cada nivel
     def set_stats_dto(self, dto):
         if dto is not None:
             if dto.get_vida() > 0:
@@ -159,12 +156,12 @@ class Pirate(pygame.sprite.Sprite, Subject):
                 self.got_boots = dto.get_boots()
 
 
-
+    # Funcion que movia hacia atras el personaje, usada en prácticas solo
     def move_back(self, distance=20):
         # Mover hacia atrás
         self.rect.x -= distance  # Disminuir la coordenada x para mover hacia atrás
     
-    # Creame un getter y setter del estado del pirata
+    # Getters y setters
     def get_health(self):
         return self.health
 

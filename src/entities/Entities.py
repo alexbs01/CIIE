@@ -2,6 +2,7 @@ import pygame
 import os
 import random
 from entities.observer.Subject import Subject
+
 # Clase para los enemigos del juego 
 class Entity(pygame.sprite.Sprite, Subject):
     def __init__(self, x, y, resource_manager, enemy, first_image_number=0, scale=1): # Cucumber
@@ -9,8 +10,8 @@ class Entity(pygame.sprite.Sprite, Subject):
         Subject.__init__(self)
         self.original_x = x
         self.original_y = y
-        self.step_count = 0
-        self.max_steps = random.randint(60, 120)
+        self.step_count = 0 # Variable que usaremos para el movimiento del enemigo
+        self.max_steps = random.randint(60, 120) # Numero de pasos aleatorio que dará
         self.speed = 1
         self.resource_manager = resource_manager
         self.animation_list = []
@@ -20,12 +21,12 @@ class Entity(pygame.sprite.Sprite, Subject):
         self.last_attack_time = 0
         self.attack_cooldown = 2000
         self.attack_animation_cooldown = 100
-        self.probability_to_hit = 5
+        self.probability_to_hit = 5 # Probabilidad de golpear
         self.scale = scale
         self.orientacion = self.get_direction()
 
-        self.move_distance = 20  # Número de píxeles para moverse aleatoriamente
-        self.random_move_speed = 0.5  # Velocidad de movimiento aleatorio más lenta
+        # self.move_distance = 20 Se usó en prácticas
+        # self.random_move_speed = 0.5  Se usó en prácticas
 
         # Tipos de animaciones
         animation_types = ['Idle', 'Run', 'Attack', 'Hit', 'DeathGround']
@@ -56,10 +57,12 @@ class Entity(pygame.sprite.Sprite, Subject):
 
         self.rect.x = x
         self.rect.y = y
+        # Hitbox personalizada
         self.collision_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
         
     def move(self):
         if self.health > 0:
+            # Nos movemos en funcion de la direccion y la velocidad
             self.collision_rect.x += self.speed * self.orientacion
             self.rect.x += self.speed * self.orientacion
             self.step_count += abs(self.speed)  # Actualizar el contador de pasos
@@ -71,8 +74,7 @@ class Entity(pygame.sprite.Sprite, Subject):
                 # Reiniciar el contador de pasos
                 self.step_count = 0
 
-
-            self.update_action(1)
+            self.update_action(1) # Actualizamos la accion a movimiento
 
 
     
@@ -86,13 +88,13 @@ class Entity(pygame.sprite.Sprite, Subject):
                 self.move()
 
 
+    # Si el enemigo recibe daño
     def get_Hit(self, damage):
         self.health -= damage
         if self.health < 0:
             self.health = 0
         if self.health == 0:
-            # Quiero que el sprite del enemigo desaparezca
-            self.update_action(4)
+            self.update_action(4) # Accion de enemigo muerto
 
     
     def attack(self, pirate, damage):
@@ -105,13 +107,17 @@ class Entity(pygame.sprite.Sprite, Subject):
                 self.update_action(2)
     
     def update_animation(self):
-        animation_cooldown = 60
+
+        animation_cooldown = 60 # Cooldown predeterminado
+
         if self.action == 2:  # Si la acción es de ataque reducimos cooldown entre frames
             animation_cooldown = self.attack_animation_cooldown
         if self.action == 4:  # Si la acción es de muerte, no se mueve
             animation_cooldown = 500
+
         # Actualizar imagen de la animación dependiendo del frame
         self.image = self.animation_list[self.action][self.frame_index]
+
         # Actualizar la animación
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:
             self.update_time = pygame.time.get_ticks()
@@ -133,9 +139,8 @@ class Entity(pygame.sprite.Sprite, Subject):
                                             self.rect.centery - self.rect.height // 4,
                                             self.rect.width / 2,
                                             self.rect.height)
-        #pygame.draw.rect(screen, (255, 0, 0), self.collision_rect, 2) 
-
         
+        # Comprobamos la dirección para saber si la imagen debe ir con flip o sin flip
         if self.orientacion != self.get_direction():
             screen.blit(self.image, self.rect)
         else:
@@ -154,3 +159,4 @@ class Entity(pygame.sprite.Sprite, Subject):
 
     def get_direction(self, direction):
         pass
+    
